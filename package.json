@@ -1,0 +1,21 @@
+{
+  "name": "academia-client",
+  "version": "0.0.1",
+  "description": "Client of Academia service.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "academia"
+  ],
+  "author": "Trigeek Group",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "electron": "^1.4.1"
+  },
+  "dependencies": {
+    "vue": "^2.1.0"
+  }
+}
