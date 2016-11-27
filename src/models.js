@@ -1,6 +1,16 @@
 //Models.js: Academia backend API-mapped models.
-import {Model} from "backbone";
+import {DS} from "js-data";
+import DSHttpAdapter from "js-data-http";
 
-export var User = Model.extend({
-
+//HTTP adaptor
+let http_adapter = new DSHttpAdapter({
+    //Deserialize data from server
+    deserialize(conf, data)
+    {   return data.data;
+    }
 });
+//Data store
+let store = new DS();
+
+//User model
+export let User = store.defineResource("users");

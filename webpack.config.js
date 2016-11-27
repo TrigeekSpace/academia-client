@@ -4,12 +4,19 @@ var webpack = require("webpack");
 
 module.exports = {
     entry: {
-        "app": "./src/index.js",
-        "vendor": ["vue", "vuex", "jquery", "underscore", "backbone", "bootstrap-cosmo"]
+        app: "./src/index.js",
+        vendor: [
+            "vue",
+            "vuex",
+            "jquery",
+            "js-data",
+            "bootstrap-cosmo",
+            "bootstrap"
+        ]
     },
     output: {
         path: path.resolve(__dirname, "./dist"),
-        publicPath: "/dist/",
+        publicPath: "./dist/",
         filename: "bundle.js"
     },
     module: {
@@ -29,7 +36,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: "css-loader",
+                loader: "style-loader!css-loader",
                 exclude: /node_modules/
             },
             {
@@ -42,16 +49,28 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.js")
+        new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.js"),
+        new webpack.ProvidePlugin({"$": "jquery", "jQuery": "jquery"})
     ],
-    devtool: "source-map",
     resolve: {
         alias: {
             "academia": path.resolve(__dirname, "./src"),
             "bootstrap-cosmo": path.resolve(__dirname, "./misc/bootstrap/css/bootstrap.min.css")
         }
-    }
+    },
+    target: "electron-renderer"
 };
+
+//Release
+if (process.env.NODE_ENV=="production")
+{
+
+}
+//Debug
+else
+{   module.exports.devtool = "source-map";
+
+}
 
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'
@@ -60,12 +79,6 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"'
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
       }
     }),
     new webpack.LoaderOptionsPlugin({

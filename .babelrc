@@ -1,3 +1,8 @@
 {
-    "presets": ["electron"]
+    "presets": ["electron"],
+    "env": {
+        "production": {
+            "presets": ["babili"]
+        }
+    }
 }
