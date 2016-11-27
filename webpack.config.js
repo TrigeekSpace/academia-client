@@ -1,0 +1,75 @@
+//Webpack.config.js: Webpack configuration
+var path = require("path");
+var webpack = require("webpack");
+
+module.exports = {
+    entry: {
+        "app": "./src/index.js",
+        "vendor": ["vue", "vuex", "jquery", "underscore", "backbone", "bootstrap-cosmo"]
+    },
+    output: {
+        path: path.resolve(__dirname, "./dist"),
+        publicPath: "/dist/",
+        filename: "bundle.js"
+    },
+    module: {
+        loaders: [
+            {
+                test: /\.vue$/,
+                loader: "vue-loader",
+                options: {
+                    // vue-loader options go here
+                },
+                exclude: /node_modules/
+            },
+            {
+                test: /\.js$/,
+                loader: "babel-loader",
+                exclude: /node_modules/
+            },
+            {
+                test: /\.css$/,
+                loader: "css-loader",
+                exclude: /node_modules/
+            },
+            {
+                test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+                loader: "file-loader",
+                options: {
+                    name: "[name].[ext]?[hash]"
+                }
+            }
+        ]
+    },
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.js")
+    ],
+    devtool: "source-map",
+    resolve: {
+        alias: {
+            "academia": path.resolve(__dirname, "./src"),
+            "bootstrap-cosmo": path.resolve(__dirname, "./misc/bootstrap/css/bootstrap.min.css")
+        }
+    }
+};
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports.devtool = '#source-map'
+  // http://vue-loader.vuejs.org/en/workflow/production.html
+  module.exports.plugins = (module.exports.plugins || []).concat([
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+      compress: {
+        warnings: false
+      }
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
+    })
+  ])
+}
