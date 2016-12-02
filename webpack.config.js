@@ -7,11 +7,13 @@ module.exports = {
         app: "./src/index.js",
         vendor: [
             "vue",
-            "vuex",
+            "vue-router",
             "jquery",
             "js-data",
+            "js-data-http",
             "bootstrap-cosmo",
-            "bootstrap"
+            "bootstrap",
+            "lodash"
         ]
     },
     output: {
