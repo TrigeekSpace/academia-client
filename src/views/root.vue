@@ -37,14 +37,19 @@
 </template>
 <!-- Script -->
 <script>
-import {adaptor} from "academia/models";
+import {User, adaptor} from "academia/models";
+import {AUTH_TOKEN_HEADER} from "academia/config";
 
 export default {
     //Methods
     methods: {
         //Logout
         logout()
-        {   delete adaptor.defaults.httpConfig.headers["X-Academia-Auth-Token"];
+        {   //Log user out
+            User.logout();
+            //Remove authentication token
+            delete adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER];
+            //Reset user
             this.$root.user = null;
         }
     }

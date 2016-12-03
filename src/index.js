@@ -20,11 +20,12 @@ let router = new VueRouter({routes});
 
 //Root view
 let root_view = new Vue({
-    el: "body",
+    //Root level data
     data: {
         user: null,
         token: null
     },
+    el: "body",
     render: (resolve) => resolve(Root),
     router
 });

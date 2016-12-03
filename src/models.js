@@ -1,8 +1,10 @@
 //Models.js: Academia backend API-mapped models.
 import {DS} from "js-data";
 import DSHttpAdapter from "js-data-http";
+import _ from "lodash";
 
-import {parse_resp} from "academia/util";
+import {parse_resp, res_action} from "academia/util";
+import {ADAPTOR_NAME} from "academia/config"
 
 //[ Data store ]
 //Data store
@@ -19,16 +21,15 @@ export let adaptor = new DSHttpAdapter({
     }
 });
 //Register adaptor
-store.registerAdapter("http", adaptor, {default: true});
+store.registerAdapter(ADAPTOR_NAME, adaptor, {default: true});
 
 //[ Models ]
 //User model
-export let User = store.defineResource({
-    name: "users",
-    actions: {
-        login: {
-            method: "POST"
-        }
-    }
+export let User = store.defineResource("users");
+
+//[ Resource Actions & Data ]
+//User model
+_.extend(User, {
+    login: res_action(User, "login"),
+    logout: res_action(User, "logout")
 });
-window.User = User;

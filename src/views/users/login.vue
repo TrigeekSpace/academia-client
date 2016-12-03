@@ -33,6 +33,7 @@
 <script>
 import {User, adaptor} from "academia/models";
 import {to_plain} from "academia/util";
+import {AUTH_TOKEN_HEADER} from "academia/config";
 
 export default {
     //View data
@@ -46,18 +47,17 @@ export default {
     methods: {
         login()
         {   User.login({
-                data: {
-                    username: this.username,
-                    password: this.password
-                }
+                username: this.username,
+                password: this.password
             }).then((resp) => {
-                window.root_view = this.$root;
+                let data = resp.data;
+
                 //Set user and token
-                console.log(resp);
-                let token = this.$root.token = resp.data.token;
-                this.$root.user = resp.data.user;
+                let token = this.$root.token = data.token;
+                this.$root.user = data.user;
                 //Set token header
-                adaptor.defaults.httpConfig.headers["X-Academia-Auth-Token"] = token;
+                adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = token;
+
                 //Jump to index page
                 this.$router.push("index");
             }, (e) => {
