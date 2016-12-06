@@ -15,6 +15,7 @@
                         <input type="text" class="form-control" placeholder="对应论文" v-model="related_paper" />
                     </div>
                     <div class="form-group">
+                        <textarea id="note_content"></textarea>
                         <input type="text" class="form-control" placeholder="笔记内容" v-model="note_content" />
                     </div>
                     <div class="form-group">
@@ -30,6 +31,8 @@
 </template>
 <!-- Script -->
 <script>
+import SimpleMDE from "simplemde";
+
 import {Paper, adaptor} from "academia/models";
 import {to_plain} from "academia/util";
 import {AUTH_TOKEN_HEADER} from "academia/config";
@@ -44,12 +47,15 @@ export default {
             paper: null,
         };
     },
-    ready()
+    mounted()
     {
-      console.log("fuck")
-      let p_id = this.$route.params.paper_id
-      this.paper = Paper.get(p_id)
-      this.related_paper = paper.title
+      //let p_id = this.$route.params.paper_id
+      //this.paper = to_plain(Paper.get(p_id))
+      //this.related_paper = paper.title
+      //Editor
+      this.editor = new SimpleMDE({
+          elements: $("#note_content")
+      });
     },
     //Methods
     methods: {
@@ -73,6 +79,21 @@ export default {
             }, (e) => {
                 alert(JSON.stringify(e));
             });
+        }
+    },
+    //Computed properties
+    computed: {
+        note_content: {
+            get()
+            {   if (this.editor)
+                    return this.editor.value();
+                else
+                    return null;
+            },
+            set(markdown)
+            {   if (this.editor)
+                    this.editor.value(markdown);
+            }
         }
     }
 };

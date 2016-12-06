@@ -3,6 +3,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import "bootstrap-cosmo";
 import "bootstrap";
+import "simplemde-css";
 
 //Root component
 import Root from "academia/views/root.vue";

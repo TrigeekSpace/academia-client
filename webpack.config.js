@@ -13,7 +13,9 @@ module.exports = {
             "js-data-http",
             "bootstrap-cosmo",
             "bootstrap",
-            "lodash"
+            "lodash",
+            "simplemde",
+            "simplemde-css"
         ]
     },
     output: {
@@ -57,7 +59,8 @@ module.exports = {
     resolve: {
         alias: {
             "academia": path.resolve(__dirname, "./src"),
-            "bootstrap-cosmo": path.resolve(__dirname, "./misc/bootstrap/css/bootstrap.min.css")
+            "bootstrap-cosmo": path.resolve(__dirname, "./misc/bootstrap/css/bootstrap.min.css"),
+            "simplemde-css": path.resolve(__dirname, "./misc/simplemde.min.css")
         }
     },
     target: "electron-renderer"
