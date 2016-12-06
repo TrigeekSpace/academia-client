@@ -12,11 +12,13 @@
                         <input type="text" class="form-control" placeholder="笔记名称" v-model="note_title" />
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="对应论文" v-model="related_paper" />
+                        <input disabled="disable" type="text" class="form-control" placeholder="对应论文" v-model="related_paper" />
                     </div>
                     <div class="form-group">
                         <textarea id="note_content"></textarea>
-                        <input type="text" class="form-control" placeholder="笔记内容" v-model="note_content" />
+                    </div>
+                    <div class="form-group">
+                        <input type="file" id="input-file" placeholder="笔记内容" />
                     </div>
                     <div class="form-group">
                         <button class="btn btn-primary" @click="create_note()">发布</button>&nbsp;
