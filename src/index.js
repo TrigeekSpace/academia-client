@@ -20,6 +20,7 @@ let routes = [
     {name: "paper_detail", path: "/papers/detail", component: require("academia/views/papers/detail.vue")},
     {name: "paper_content", path: "/papers/content", component: require("academia/views/papers/content.vue")},
     {name: "paper_list", path: "/papers/list", component: require("academia/views/papers/list.vue")},
+    {name: "upload_paper", path: "/papers/upload", component: require("academia/views/papers/upload.vue")},
 
     {name: "upload_note", path: "/notes/upload", component: require("academia/views/notes/upload.vue")},
 
