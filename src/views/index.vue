@@ -8,7 +8,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="在Academia上搜索论文" v-model="search_text">
                         <span class="input-group-btn">
-                            <router-link class="btn btn-default" to="/papers/list?query={{encodeURIComponent(search_text)}}">
+                            <router-link class="btn btn-default" :to="`/papers/list?query=${encodeURIComponent(search_text)}`">
                                 Search!
                             </router-link>
                         </span>

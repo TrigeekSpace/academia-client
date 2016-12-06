@@ -24,6 +24,7 @@ let routes = [
 
     {name: "upload_note", path: "/notes/upload", component: require("academia/views/notes/upload.vue")},
 
+    {name: "transfer_tasks", path: "/misc/transfer", component: require("academia/views/misc/transfer.vue")}
 ];
 //Router
 let router = new VueRouter({routes});
