@@ -12,8 +12,17 @@ Vue.use(VueRouter);
 //Routes
 let routes = [
     {name: "index", path: "/", component: require("academia/views/index.vue")},
+
     {name: "login", path: "/users/login", component: require("academia/views/users/login.vue")},
-    {name: "register", path: "/users/register", component: require("academia/views/users/register.vue")}
+    {name: "register", path: "/users/register", component: require("academia/views/users/register.vue")},
+    {name: "user_space", path: "/users/space", component: require("academia/views/users/space.vue")},
+
+    {name: "paper_detail", path: "/papers/detail", component: require("academia/views/papers/detail.vue")},
+    {name: "paper_content", path: "/papers/content", component: require("academia/views/papers/content.vue")},
+    {name: "paper_list", path: "/papers/list", component: require("academia/views/papers/list.vue")},
+
+    {name: "upload_note", path: "/notes/upload", component: require("academia/views/notes/upload.vue")},
+
 ];
 //Router
 let router = new VueRouter({routes});
