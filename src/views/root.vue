@@ -5,7 +5,7 @@
     <nav class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#/">Academia</a>
+                <a class="navbar-brand" href="javascript:void(0)" @click="$root.toggle_sidebar()">Academia</a>
             </div>
             <!-- Menu -->
             <ul class="nav navbar-nav">
@@ -31,8 +31,24 @@
             </ul>
         </div>
     </nav>
-    <!-- Router view -->
-    <router-view></router-view>
+    <!-- Content view -->
+    <div class="container-fluid">
+        <div class="sidebar" :class="$root.sidebar_classes">
+            <ul class="nav sidebar-group">
+                <li class="active"><a href="#">test1</a></li>
+                <li><a href="#">test2</a></li>
+                <li><a href="#">test3</a></li>
+            </ul>
+            <ul class="nav sidebar-group">
+                <li class="active"><a href="#">test1</a></li>
+                <li><a href="#">test2</a></li>
+                <li><a href="#">test3</a></li>
+            </ul>
+        </div>
+        <div :class="$root.router_view_classes">
+            <router-view></router-view>
+        </div>
+    </div>
 </body>
 </template>
 <!-- Script -->
@@ -55,3 +71,38 @@ export default {
     }
 };
 </script>
+<!-- Style -->
+<style>
+/* Sidebar */
+.sidebar
+{   position: fixed;
+    top: 52px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    background-color: #f5f5f5;
+}
+
+/* Sidebar group */
+.sidebar-group
+{   margin-right: -21px;
+    margin-bottom: 20px;
+    margin-left: -20px;
+}
+
+/* Sidebar group links */
+.sidebar-group > li > a
+{   padding-right: 20px;
+    padding-left: 20px;
+}
+
+.sidebar-group > .active > a,
+.sidebar-group > .active > a:hover,
+.sidebar-group > .active > a:focus
+{   color: #fff;
+    background-color: #428bca;
+}
+</style>
