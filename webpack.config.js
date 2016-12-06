@@ -69,10 +69,6 @@ if (process.env.NODE_ENV=="production")
         //Production mode
         new webpack.DefinePlugin({
             "process.env": {NODE_ENV: "\"production\""}
-        }),
-        //Minimize bundle
-        new webpack.LoaderOptionsPlugin({
-            minimize: true
         })
     ]);
 }

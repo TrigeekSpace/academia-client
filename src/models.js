@@ -3,7 +3,7 @@ import {DS} from "js-data";
 import DSHttpAdapter from "js-data-http";
 import _ from "lodash";
 
-import {parse_resp, res_action} from "academia/util";
+import {transform_query, parse_resp, res_action} from "academia/util";
 import {ADAPTOR_NAME} from "academia/config"
 
 //[ Data store ]
@@ -12,9 +12,11 @@ export let store = new DS();
 //HTTP adaptor
 export let adaptor = new DSHttpAdapter({
     //Base path
-    basePath: "http://127.0.0.1:8080",
+    basePath: "http://101.200.176.184:8080",
     //Deserialize
     deserialize: parse_resp,
+    //Query transform
+    queryTransform: transform_query,
     //HTTP default configuration
     httpConfig: {
         headers: {}

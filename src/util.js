@@ -39,6 +39,13 @@ export function urlsafe_b64decode(str, encoding="utf-8")
 {   return b64decode(decodeURIComponent(str), encoding);
 }
 
+//Query transformer
+export function transform_query(config, params)
+{   if (!(_.isEmpty(params)))
+        params = {json_params: urlsafe_b64encode(JSON.stringify(params))};
+    return params;
+}
+
 //[ Store & Model ]
 /**
  * Parse response data.
