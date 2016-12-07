@@ -46,7 +46,7 @@
 <!-- Script -->
 <script>
 import {Paper, adaptor} from "academia/models";
-import {to_plain} from "academia/util";
+import {to_plain, contains} from "academia/util";
 import {AUTH_TOKEN_HEADER} from "academia/config";
 
 export default {
@@ -59,7 +59,17 @@ export default {
     },
     mounted() {
       this.query_arg = decodeURIComponent(this.$route.query.query)
-      this.papers_list = Paper.findAll()
+      this.current_num = 0
+      this.each_load = 10
+      Paper.findAll({
+        query: contains("title", this.query_arg),
+        offset: 0,
+        limit: this.each_load
+      }).then((plist) => {
+        this.current_num += this.each_load
+        this.papers_list = plist
+        return plist;
+      })
     },
     //Methods
     methods: {
@@ -68,18 +78,25 @@ export default {
           $("#query_arg").popover('show');
         } else {
           $("#query_arg").popover('hide');
-          this.$router.push({path: "list", query: {query: encodeURIComponent(this.query_arg)}});
+          this.$router.push({path: "/papers/list", query: {query: encodeURIComponent(this.query_arg)}});
         }
       },
       detail(p_id) {
         console.log(p_id)
-        this.$router.push({path: "paper/detail", query: {paper_id: p_id}});
+        this.$router.push({path: "/papers/detail", query: {paper_id: p_id}});
       },
       more_paper() {
-        let following_data = Paper.findAll()
-        for (let item of following_data) {
-          this.papers_list.push(item)
-        }
+        Paper.findAll({
+          query: contains("title", this.query_arg),
+          offset: this.current_num,
+          limit: this.each_load
+        }).then((plist) => {
+          this.current_num += this.each_load
+          for (let item of plist) {
+            this.papers_list.push(item)
+          }
+          return plist;
+        })
       },
     }
 };

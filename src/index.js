@@ -83,3 +83,4 @@ let root_view = new Vue({
     render: (resolve) => resolve(Root),
     router
 });
+window.router =  router

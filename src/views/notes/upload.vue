@@ -18,10 +18,10 @@
                         <textarea id="note_content"></textarea>
                     </div>
                     <div class="form-group">
-                        <input type="file" id="input-file" placeholder="笔记内容" />
+                        <input type="file" id="file-selector" placeholder="笔记内容" />
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary" @click="create_note($event)">发布</button>&nbsp;
+                        <button class="btn btn-primary" @click="create_or_modify_note()">发布</button>&nbsp;
                         <button class="btn btn-primary" @click="create_note()">暂存</button>&nbsp;
                     </div>
                 </form>
@@ -34,8 +34,8 @@
 <!-- Script -->
 <script>
 import SimpleMDE from "simplemde";
-
-import {Paper, adaptor} from "academia/models";
+import $ from "jquery";
+import {Paper, Note, adaptor} from "academia/models";
 import {to_plain} from "academia/util";
 import {AUTH_TOKEN_HEADER} from "academia/config";
 
@@ -43,49 +43,88 @@ export default {
     //View data
     data()
     {   return {
-            note_title: null,
-            related_paper: null,
-            note_content: null,
+            note_title: "",
+            related_paper: "",
+            note_content: "",
             paper: null,
         };
     },
     mounted()
     {
-      //let p_id = this.$route.params.paper_id
-      //this.paper = to_plain(Paper.get(p_id))
-      //this.related_paper = paper.title
+      let p_id = this.$route.query.paper_id
+      let n_id = this.$route.query.note_id
+      console.log(p_id)
+      this.paper = Paper.get(p_id)
+      if (n_id) {
+        Note.find(n_id).then((x)=>{
+          this.note_title = x.title
+          this.note_content = x.content
+          this.note = x
+        })
+      }
+
+      if (this.paper == null) {
+        Paper.find(p_id).then((x)=>{
+          this.paper = x
+          this.related_paper = this.paper.title
+          if (this.note && this.note.paper != p_id) {
+            this.error_visit = true
+            alert("错误的访问");
+            return;
+          }
+        })
+      } else {
+        this.related_paper = this.paper.title
+      }
       //Editor
+      this.query_arg = decodeURIComponent(this.$route.query.note_id)
       this.editor = new SimpleMDE({
           elements: $("#note_content")
       });
     },
     //Methods
     methods: {
-        create_note(event) {
-            if (event.target.files.length < 1) {
-              alert("至少上传一份注释文件！")
-            }
+        create_or_modify_note(event) {
+          if (this.error_visit) {
+              alert("错误的访问");
+              return;
+          }
+          if (!this.check_input()) {
+              alert("有一些必填项没有填写");
+              return;
+          }
+          if ($("#file-selector")[0].files.length == 0) {
+            alert("至少上传一份注释文件！")
+            return;
+          }
+          if (this.$route.query.note_id === undefined) {
             Note.create({
-                title: this.note_title,
-                content: this.note_content,
-                annotation_file: event.target.files[0],
-                
+              title: this.note_title,
+              content: this.note_content,
+              annotation_file: $("#file-selector")[0].files[0],
+              paper: this.paper.id,
             }).then((resp) => {
-                let data = resp.data;
+              let data = resp.data;
 
-                //Set user and token
-                let token = this.$root.token = data.token;
-                this.$root.user = data.user;
-                //Set token header
-                adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = token;
+              //Set user and token
+              //let token = this.$root.token = data.token;
+              //Set token header
+              adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = token;
 
-                //Jump to index page
-                this.$router.push("index");
+              //Jump to index page
+              this.$router.go(-1)
             }, (e) => {
-                alert(JSON.stringify(e));
+              alert(JSON.stringify(e));
             });
+          } else {
+
+          }
+        },
+        check_input() {
+          return this.note_title !== "" && this.related_paper !== "" && this.note_content !== "" && this.paper !== null;
         }
-    },
+      },
+
     //Computed properties
     computed: {
         note_content: {
