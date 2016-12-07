@@ -1,14 +1,14 @@
 <template>
 <div>
     <div class="col-sm-9 col-md-9 col-lg-9">
-        <iframe id="paper-pdf"></iframe>
+        <iframe id="paper-pdf" src="./vendor/pdf.js/web/viewer.html?file=file:///Users/lqf/Playground/1.pdf"></iframe>
     </div>
     <div class="col-sm-3 col-md-3 col-lg-3">
         <h2>热门版本</h2>
         <ul class="list-group">
-            <li class="list-group-item" v-for="note of notes">
+            <li class="list-group-item" v-for="note in paper.notes">
                 名称：{{note.title}}<br />
-                作者：{{note.author.username}}
+                作者：{{note.author}}
             </li>
         </ul>
     </div>
@@ -16,19 +16,33 @@
 </template>
 
 <script>
+import {Paper} from "academia/models";
+import {to_plain} from "academia/util";
 
 export default {
+    //Mount
+    async mounted()
+    {   let paper_id = this.$route.query.paper_id;
+        let paper = await Paper.find(paper_id, {
+            params: {
+                with: ["notes", "notes.author"]
+            }
+        });
+
+        this.paper = {
+            ...to_plain(paper),
+            notes: to_plain(paper.notes)
+        };
+    },
     //Data
     data()
     {   return {
-            notes: [{
-                title: null,
-                author: {
-                    username: ""
-                }
-            }]
+            paper: {
+                notes: []
+            }
         };
-    }
+    },
+    //
 }
 </script>
 

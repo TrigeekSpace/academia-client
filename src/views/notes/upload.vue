@@ -104,13 +104,6 @@ export default {
               annotation_file: $("#file-selector")[0].files[0],
               paper: this.paper.id,
             }).then((resp) => {
-              let data = resp.data;
-
-              //Set user and token
-              //let token = this.$root.token = data.token;
-              //Set token header
-              adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = token;
-
               //Jump to index page
               this.$router.go(-1)
             }, (e) => {

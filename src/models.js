@@ -31,8 +31,31 @@ store.registerAdapter(ADAPTOR_NAME, adaptor, {default: true});
 //[ Models ]
 //User model
 export let User = store.defineResource("users");
-export let Paper = store.defineResource("papers");
-export let Note = store.defineResource("notes");
+
+export let Paper = store.defineResource({
+    name: "papers",
+    relations: {
+        hasMany: {
+            notes: {
+                localField: "notes",
+                foreignKey: "id"
+            }
+        }
+    }
+});
+
+export let Note = store.defineResource({
+    name: "notes",
+    relations: {
+        hasOne: {
+            users: {
+                localField: "author",
+                foreignKey: "id"
+            }
+        }
+    }
+});
+
 window.User = User
 window.Paper = Paper
 window.Note = Note
