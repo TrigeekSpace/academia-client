@@ -83,6 +83,19 @@ export function to_plain(obj)
     return _.extend({}, obj);
 }
 
+/**
+ * Convert object to FormData type
+ *
+ * @param obj - Any object to converted.
+ * @return A FormData object.
+ */
+export function to_form_data(obj)
+{   let form_data = new FormData();
+    for (let key in obj)
+        form_data.append(key, obj[key]);
+    return form_data;
+}
+
 //[ Model Actions & Data ]
 /**
  * Get resource path from model
