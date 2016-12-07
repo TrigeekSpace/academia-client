@@ -11,7 +11,7 @@
     <div align="right">
         <button class="btn btn-primary">下载论文</button>
         <router-link class="btn btn-success" :to="`/notes/upload?paper_id=${paper.id}`">撰写笔记</router-link>
-        <router-link class="btn btn-info" :to="`/papers/detail?paper_id=${paper.id}`">在线查看</router-link>
+        <router-link class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">在线查看</router-link>
     </div>
     <!-- Questions -->
     <h2>热门问答</h2>
@@ -23,20 +23,27 @@
 </template>
 
 <script>
+import {Paper} from "academia/models";
+import {to_plain} from "academia/util";
+
 export default {
     //Data
     data()
     {   return {
-            //Current paper
             paper: {
-                id: 1,
-                title: "towards very, very, very long paper title",
-                authors: "Xue Yujing",
-                conference: "Trigeek Private Meeting",
-                publish_date: "2333-3-3",
-                abstract: "liwfh;iweufheorufhireughvurygeuiruhgoeurhgevjdfxykhdsmhajwhsdb,cbjseh,wuadhqwudhwa"
+                id: 0,
+                title: null,
+                authors: null,
+                conference: null,
+                publish_date: null,
+                abstract: null
             }
         };
+    },
+    //Mounted
+    async mounted()
+    {   let paper_id = this.$route.query.paper_id;
+        this.paper = to_plain(await Paper.find(paper_id));
     }
 }
 </script>

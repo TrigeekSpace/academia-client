@@ -4,7 +4,7 @@ import Vue from "vue";
 
 import {ADAPTOR_NAME} from "academia/config";
 
-//[ Encoding ] (Buggy; may be removed)
+//[ Encoding ]
 //Encode unicode string to byte string
 export function encode(unicode_str, encoding="utf-8")
 {   let bytes = new TextEncoder(encoding).encode(unicode_str);
@@ -93,6 +93,19 @@ export function transform_request_form_data(data)
     }
 
     return data;
+}
+
+//To plain object
+export function to_plain(obj)
+{   if (_.isArray(obj))
+        return obj.map(to_plain);
+
+    let plain_obj = {};
+    for (let key in obj)
+        if (!key.startsWith("DS"))
+            plain_obj[key] = obj[key];
+
+    return plain_obj;
 }
 
 //[ Model Actions & Data ]

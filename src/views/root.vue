@@ -38,7 +38,6 @@
                 <li><router-link to="/"><span class="glyphicon glyphicon-search"></span> 论文搜索</router-link></li>
                 <li><router-link to="/users/space"><span class="glyphicon glyphicon-globe"></span> 我的空间</router-link></li>
                 <li><router-link to="/papers/upload"><span class="glyphicon glyphicon-upload"></span> 上传论文</router-link></li>
-                <li><router-link to="/notes/upload"><span class="glyphicon glyphicon-plus"></span> 撰写笔记</router-link></li>
             </ul>
         </div>
         <div :class="$root.router_view_classes" id="main-view">
