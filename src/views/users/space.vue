@@ -27,7 +27,7 @@
                 <h3>我收藏的论文</h3>
             </div>
             <div class="row">
-                <!-- <div class="col-sm-2 col-md-2 col-lg-2" v-for="paper in this.papers">
+                <!-- <div class="col-sm-1 col-md-1 col-lg-1" v-for="paper in this.papers">
                     <div class="well paper_item" align="center">
                         aaa
                     </div>

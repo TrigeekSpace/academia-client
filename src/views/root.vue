@@ -2,7 +2,7 @@
 <template>
 <body>
     <!-- Navigation bar -->
-    <nav class="navbar navbar-default" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="javascript:void(0)" @click="$root.toggle_sidebar()">Academia</a>
@@ -33,7 +33,7 @@
     </nav>
     <!-- Content view -->
     <div class="container-fluid">
-        <div class="sidebar" :class="$root.sidebar_classes">
+        <div class="sidebar" :class="$root.sidebar_classes" id="root-side-bar">
             <ul class="nav sidebar-group">
                 <li><router-link to="/"><span class="glyphicon glyphicon-search"></span> 论文搜索</router-link></li>
                 <li><router-link to="/users/space"><span class="glyphicon glyphicon-globe"></span> 我的空间</router-link></li>
@@ -41,7 +41,7 @@
                 <li><router-link to="/notes/upload"><span class="glyphicon glyphicon-plus"></span> 撰写笔记</router-link></li>
             </ul>
         </div>
-        <div :class="$root.router_view_classes">
+        <div :class="$root.router_view_classes" id="main-view">
             <router-view></router-view>
         </div>
     </div>
@@ -64,6 +64,11 @@ export default {
             //Reset user
             this.$root.user = null;
         }
+    },
+    mounted(){
+        $("#root-side-bar").mouseleave(()=>{
+            this.$root.toggle_sidebar();
+        });
     }
 };
 </script>
@@ -74,12 +79,18 @@ export default {
 {   position: fixed;
     top: 52px;
     bottom: 0;
-    left: 0;
+    left: -200px;
+    width: 200px;
     z-index: 1000;
     display: block;
     padding: 20px;
     overflow-x: hidden;
     background-color: #f5f5f5;
+    opacity: 0.9;
+}
+
+#main-view {
+    margin-top: 100px;
 }
 
 /* Sidebar group */

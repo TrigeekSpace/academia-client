@@ -30,24 +30,6 @@ let routes = [
 //Router
 let router = new VueRouter({routes});
 
-//[ Root View ]
-//Side bar visible classes
-const SIDEBAR_VISIBLE_CLASSES = ["hidden-xs col-sm-3", "col-md-3", "col-lg-2"];
-//Side bar hidden classes
-const SIDEBAR_HIDDEN_CLASSES = ["hidden"];
-
-//Router view with side bar classes
-const ROUTER_VIEW_SIDEBAR_CLASSES = [
-    "col-sm-offset-3",
-    "col-sm-9",
-    "col-md-offset-3",
-    "col-md-9",
-    "col-lg-offset-2",
-    "col-lg-10"
-];
-//Router view only classes
-const ROUTER_VIEW_ONLY_CLASSES = [];
-
 //Root view
 let root_view = new Vue({
     //Root level data
@@ -63,20 +45,23 @@ let root_view = new Vue({
     },
     //Computed properties
     computed: {
-        //Sidebar classes
-        sidebar_classes()
-        {   return this.show_side_bar?SIDEBAR_VISIBLE_CLASSES:SIDEBAR_HIDDEN_CLASSES;
-        },
-        //Router view classes
-        router_view_classes()
-        {   return this.show_side_bar?ROUTER_VIEW_SIDEBAR_CLASSES:ROUTER_VIEW_ONLY_CLASSES;
-        }
+        
     },
     //Methods
     methods: {
         //Toggle side bar
         toggle_sidebar()
         {   this.show_side_bar = !this.show_side_bar;
+            if (this.show_side_bar) {
+                $("#root-side-bar").animate({
+                    left: 0
+                }, 100);
+            }
+            else {
+                $("#root-side-bar").animate({
+                    left: "-200px"
+                }, 100);
+            }
         }
     },
     el: "body",
