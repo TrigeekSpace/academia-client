@@ -21,7 +21,7 @@
                         <input type="file" id="input-file" placeholder="笔记内容" />
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary" @click="create_note()">发布</button>&nbsp;
+                        <button class="btn btn-primary" @click="create_note($event)">发布</button>&nbsp;
                         <button class="btn btn-primary" @click="create_note()">暂存</button>&nbsp;
                     </div>
                 </form>
@@ -61,12 +61,15 @@ export default {
     },
     //Methods
     methods: {
-        create_note()
-        {
+        create_note(event) {
+            if (event.target.files.length < 1) {
+              alert("至少上传一份注释文件！")
+            }
             Note.create({
                 title: this.note_title,
-                password: this.password,
                 content: this.note_content,
+                annotation_file: event.target.files[0],
+                
             }).then((resp) => {
                 let data = resp.data;
 
@@ -86,15 +89,15 @@ export default {
     //Computed properties
     computed: {
         note_content: {
-            get()
-            {   if (this.editor)
-                    return this.editor.value();
-                else
-                    return null;
+            get() {
+              if (this.editor)
+                return this.editor.value();
+              else
+                return null;
             },
-            set(markdown)
-            {   if (this.editor)
-                    this.editor.value(markdown);
+            set(markdown){
+              if (this.editor)
+              this.editor.value(markdown);
             }
         }
     }

@@ -47,16 +47,16 @@ export default {
     //Methods
     methods: {
         //User register
-        register_user()
-        {   User.create({
-                username: this.username,
-                email: this.email,
-                password: this.password
-            }).then((user) => {
-                this.$router.push("login");
-            }, (e) => {
-                alert(JSON.stringify(e));
-            });
+        register_user() {
+          User.create({
+              username: this.username,
+              email: this.email,
+              password: this.password
+          }).then((user) => {
+              this.$router.push("login");
+          }, (e) => {
+              alert(JSON.stringify(e));
+          });
         }
     }
 };

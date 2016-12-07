@@ -59,7 +59,7 @@ export default {
                 adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = token;
 
                 //Jump to index page
-                this.$router.push("index");
+                this.$router.push("/");
             }, (e) => {
                 alert(JSON.stringify(e));
             });

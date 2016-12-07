@@ -30,6 +30,9 @@ store.registerAdapter(ADAPTOR_NAME, adaptor, {default: true});
 export let User = store.defineResource("users");
 export let Paper = store.defineResource("papers");
 export let Note = store.defineResource("notes");
+window.User = User
+window.Paper = Paper
+window.Note = Note
 
 //[ Resource Actions & Data ]
 //User model
