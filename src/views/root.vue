@@ -25,7 +25,7 @@
                         <b class="caret"></b>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><button class="btn btn-link" @click="logout()"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;Logout</button></li>
+                        <li><a class="dropdown-item" @click="logout()"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;Logout</a></li>
                     </ul>
                 </li>
             </ul>
