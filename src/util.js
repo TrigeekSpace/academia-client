@@ -222,17 +222,18 @@ export function inst_data(model, name, default_http_opts={})
 
 //[ Query Builder ]
 //Command query operators
-export let and = _.bind(Array, null, "and"),
-    or = _.bind(Array, null, "or"),
-    not = _.bind(Array, null, "not"),
-    eq = _.bind(Array, null, "eq"),
-    neq = _.bind(Array, null, "neq"),
-    gt = _.bind(Array, null, "gt"),
-    gte = _.bind(Array, null, "gte"),
-    lt = _.bind(Array, null, "lt"),
-    lte = _.bind(Array, null, "lte"),
-    in_ = _.bind(Array, null, "in"),
-    nin = _.bind(Array, null, "nin");
+export let and = _.bind(Array, null, "and");
+export let or = _.bind(Array, null, "or");
+export let not = _.bind(Array, null, "not");
+export let eq = _.bind(Array, null, "eq");
+export let neq = _.bind(Array, null, "neq");
+export let gt = _.bind(Array, null, "gt");
+export let gte = _.bind(Array, null, "gte");
+export let lt = _.bind(Array, null, "lt");
+export let lte = _.bind(Array, null, "lte");
+export let in_ = _.bind(Array, null, "in");
+export let nin = _.bind(Array, null, "nin");
+export let contains = _.bind(Array, null, "contains");
 
 //[ Error Handling ]
 //Unknown error prompt
