@@ -44,17 +44,18 @@ export let Paper = store.defineResource({
     }
 });
 
-export let Note = store.defineResource({
+export let Note = store.defineResource("notes");
+/*export let Note = store.defineResource({
     name: "notes",
     relations: {
-        hasOne: {
+        belongsTo: {
             users: {
-                localField: "author",
+                localField: "",
                 foreignKey: "id"
             }
         }
     }
-});
+});*/
 
 window.User = User
 window.Paper = Paper

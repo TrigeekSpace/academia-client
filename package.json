@@ -35,7 +35,6 @@
     "js-data": "^2.9.0",
     "js-data-http": "^2.2.2",
     "lodash": "^4.17.2",
-    "pdf.js": "^0.1.0",
     "simplemde": "^1.11.2",
     "vue": "^2.1.0",
     "vue-router": "^2.0.3"

@@ -8,7 +8,7 @@
         <ul class="list-group">
             <li class="list-group-item" v-for="note in paper.notes">
                 名称：{{note.title}}<br />
-                作者：{{note.author}}
+                作者：{{note.author.username}}
             </li>
         </ul>
     </div>
@@ -29,9 +29,14 @@ export default {
             }
         });
 
+        let notes = to_plain(paper.notes);
+        console.log(paper);
+        for (let i=0;i<notes.length;i++)
+            notes[i].author = to_plain(paper.notes[i].author);
+
         this.paper = {
             ...to_plain(paper),
-            notes: to_plain(paper.notes)
+            notes
         };
     },
     //Data
