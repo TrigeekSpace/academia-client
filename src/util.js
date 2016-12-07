@@ -70,30 +70,26 @@ export function parse_resp(config, resp)
 }
 
 /**
- * Convert anything to plain object.
- *
- * @param obj - Any type of object, including class instance.
- * @return A plain object with keys and values from original object.
+ * Transform request to FormData.
  */
-export function to_plain(obj)
-{   //Array
-    if (obj instanceof Array)
-        return obj.map(to_plain);
+export function transform_request_form_data(data)
+{   //Transform detection
+    let need_transform = false;
+    for (let key in data)
+        if (data[key] instanceof Blob)
+        {   need_transform = true;
+            break;
+        }
 
-    return _.extend({}, obj);
-}
+    //Transform data to FormData
+    if (need_transform)
+    {   let form_data = new FormData()
+        for (let key in data)
+            form_data.append(key, data[key]);
+        data = form_data;
+    }
 
-/**
- * Convert object to FormData type
- *
- * @param obj - Any object to converted.
- * @return A FormData object.
- */
-export function to_form_data(obj)
-{   let form_data = new FormData();
-    for (let key in obj)
-        form_data.append(key, obj[key]);
-    return form_data;
+    return data;
 }
 
 //[ Model Actions & Data ]

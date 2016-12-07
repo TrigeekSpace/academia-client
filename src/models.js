@@ -3,7 +3,7 @@ import {DS} from "js-data";
 import DSHttpAdapter from "js-data-http";
 import _ from "lodash";
 
-import {transform_query, parse_resp, res_action} from "academia/util";
+import {transform_query, transform_request_form_data, parse_resp, res_action} from "academia/util";
 import {ADAPTOR_NAME} from "academia/config"
 
 //[ Data store ]
@@ -19,7 +19,8 @@ export let adaptor = new DSHttpAdapter({
     queryTransform: transform_query,
     //HTTP default configuration
     httpConfig: {
-        headers: {}
+        headers: {},
+        transformRequest: [transform_request_form_data]
     }
 });
 //Register adaptor
