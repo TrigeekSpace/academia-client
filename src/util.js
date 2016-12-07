@@ -85,7 +85,7 @@ export function transform_request_form_data(data)
     if (need_transform)
     {   let form_data = new FormData()
         for (let key in data)
-            form_data.append(key, data[key]);
+            form_data.append(key, JSON.stringify(data[key]));
         data = form_data;
     }
 
