@@ -72,7 +72,7 @@ export function parse_resp(config, resp)
 /**
  * Transform request to FormData.
  */
-export function transform_request_form_data(data, headers)
+export function transform_request_form_data(data)
 {   //Transform detection
     let need_transform = false;
     for (let key in data)

@@ -19,10 +19,12 @@ export let adaptor = new DSHttpAdapter({
     queryTransform: transform_query,
     //HTTP default configuration
     httpConfig: {
-        headers: {},
-        transformRequest: [transform_request_form_data]
+        headers: {}
     }
 });
+
+//Request transformer (Cannot be added to adaptor settings)
+adaptor.http.defaults.transformRequest.unshift(transform_request_form_data);
 //Register adaptor
 store.registerAdapter(ADAPTOR_NAME, adaptor, {default: true});
 
