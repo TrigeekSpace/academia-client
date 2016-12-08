@@ -290,3 +290,25 @@ export function html_error(data)
     else
         return UNKNOWN_ERROR_PROMPT;
 }
+
+//[ Routing ]
+export function pre_route(...hooks)
+{   //Pre-route handler
+    return function(from, to, next) {
+        next((vm) => {
+            console.log(vm);
+            //View initialization
+            vm.init(to, from);
+        });
+    };
+}
+
+export async function on_reload(to, from)
+{   //View initialization
+    this.init(to, from);
+}
+
+export function auth_required()
+{
+
+}

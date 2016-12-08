@@ -30,6 +30,11 @@ let routes = [
 //Router
 let router = new VueRouter({routes});
 
+router.beforeEach((from, to, next) => {
+    //to.__test = new Date().toString();
+    next();
+});
+
 //Root view
 let root_view = new Vue({
     //Root level data
@@ -42,10 +47,6 @@ let root_view = new Vue({
         show_side_bar: false,
         //File transfer tasks
         transfer_tasks: []
-    },
-    //Computed properties
-    computed: {
-        
     },
     //Methods
     methods: {

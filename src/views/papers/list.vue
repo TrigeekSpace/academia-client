@@ -46,7 +46,7 @@
 <!-- Script -->
 <script>
 import {Paper, adaptor} from "academia/models";
-import {to_plain, contains} from "academia/util";
+import {to_plain, contains, pre_route, on_reload} from "academia/util";
 import {AUTH_TOKEN_HEADER} from "academia/config";
 
 export default {
@@ -57,22 +57,23 @@ export default {
         query_arg: ""
       };
     },
-    mounted() {
-      this.query_arg = decodeURIComponent(this.$route.query.query)
-      this.current_num = 0
-      this.each_load = 10
-      Paper.findAll({
-        query: contains("title", this.query_arg),
-        offset: 0,
-        limit: this.each_load
-      }).then((plist) => {
-        this.current_num += this.each_load
-        this.papers_list = plist
-        return plist;
-      })
-    },
+    beforeRouteEnter: pre_route(),
     //Methods
     methods: {
+        init() {
+          this.query_arg = decodeURIComponent(this.$route.query.query)
+          this.current_num = 0
+          this.each_load = 10
+          Paper.findAll({
+            query: contains("title", this.query_arg),
+            offset: 0,
+            limit: this.each_load
+          }).then((plist) => {
+            this.current_num += this.each_load
+            this.papers_list = plist
+            return plist;
+          })
+        },
       search() {
         if (this.query_arg.length == 0) {
           $("#query_arg").popover('show');
@@ -98,7 +99,10 @@ export default {
           return plist;
         })
       },
-    }
+  },
+  watch: {
+      $route: on_reload
+  }
 };
 </script>
 <style>

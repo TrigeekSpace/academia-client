@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="col-sm-9 col-md-9 col-lg-9">
-        <iframe id="paper-pdf" src="./vendor/pdf.js/web/viewer.html?file=file:///Users/lqf/Playground/1.pdf"></iframe>
+        <iframe id="paper-pdf" src="./dist/pdf.js/web/viewer.html?file=file:///Users/lqf/Playground/1.pdf"></iframe>
     </div>
     <div class="col-sm-3 col-md-3 col-lg-3">
         <h2>热门版本</h2>
@@ -22,7 +22,9 @@ import {to_plain} from "academia/util";
 export default {
     //Mount
     async mounted()
-    {   let paper_id = this.$route.query.paper_id;
+    {   console.log(this);
+
+        let paper_id = this.$route.query.paper_id;
         let paper = await Paper.find(paper_id, {
             params: {
                 with: ["notes", "notes.author"]
@@ -46,8 +48,7 @@ export default {
                 notes: []
             }
         };
-    },
-    //
+    }
 }
 </script>
 

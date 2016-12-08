@@ -4,8 +4,8 @@ var webpack = require("webpack");
 
 module.exports = {
     entry: {
-        app: "./src/index.js",
-        vendor: [
+        "app": "./src/index.js",
+        "vendor": [
             "vue",
             "vue-router",
             "jquery",
@@ -16,12 +16,12 @@ module.exports = {
             "lodash",
             "simplemde",
             "simplemde-css"
-        ]
+        ],
     },
     output: {
-        path: path.resolve(__dirname, "./dist"),
-        publicPath: "./dist/",
-        filename: "bundle.js"
+        path: path.resolve(__dirname, "./dist/webpack"),
+        publicPath: "./dist/webpack/",
+        filename: "[name].js"
     },
     module: {
         loaders: [
