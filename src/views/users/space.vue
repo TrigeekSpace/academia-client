@@ -1,7 +1,7 @@
 <!-- component template -->
 <template>
 <div>
-    <div class="row">
+    <div class="row" v-if="this.$root.user != null">
         <div class="col-sm-1 col-md-1 col-lg-1"></div>
         <div class="col-sm-10 col-md-10 col-lg-10">
             <div class="row">
@@ -44,13 +44,18 @@
                     </ul>
                 </div>
                 <div class="col-sm-1 col-md-1 col-lg-1"></div>
-
-
-                </div>
-
             </div>
         </div>
         <div class="col-sm-1 col-md-1 col-lg-1"></div>
+    </div>
+    <div class="row" v-else>
+        <div class="well center" align="center">
+            <h4>你还没有登录</h4>
+            <button class="btn btn-primary" @click="to_register()">注册</button>
+            <br>
+            <p>or</p>
+            <button class="btn btn-primary" @click="to_login()">登录</button>
+        </div>
     </div>
 </div>
 </template>
@@ -93,7 +98,12 @@ export default {
         }
     },
     methods: {
-
+        to_register() {
+            this.$router.push("register");
+        },
+        to_login() {
+            this.$router.push("login");
+        }
     }
 };
 </script>
@@ -108,5 +118,13 @@ export default {
     max-height: 90%;
     border: solid 1px grey;
     border-radius: 5px;
+}
+
+.center {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 </style>
