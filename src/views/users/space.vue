@@ -51,10 +51,10 @@
     <div class="row" v-else>
         <div class="well center" align="center">
             <h4>你还没有登录</h4>
-            <button class="btn btn-primary" @click="to_register()">注册</button>
+            <button class="btn btn-primary btn-front" @click="to_register()">注册</button>
             <br>
             <p>or</p>
-            <button class="btn btn-primary" @click="to_login()">登录</button>
+            <button class="btn btn-primary btn-front" @click="to_login()">登录</button>
         </div>
     </div>
 </div>
@@ -121,10 +121,13 @@ export default {
 }
 
 .center {
+    width: 300px;
     display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
+    margin: 12% auto;
+}
+
+.btn-front {
+    width: 230px;
 }
 </style>
