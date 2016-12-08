@@ -27,9 +27,11 @@
                 <div class="control-group">
                     <div class="col-sm-10">
                         <label>发表时间</label>
+                        <div class="form-inline">
                         <select class="form-control" id="year_select" v-model="year">
                             <option>选择年份</option>
                         </select>
+                        年
                         <select class="form-control" v-model="month">
                             <option>选择月份</option>
                             <option>1</option>
@@ -45,6 +47,8 @@
                             <option>11</option>
                             <option>12</option>
                         </select>
+                        月
+                        </div>
                     </div>
                 </div>
                 <div class="control-group">
@@ -62,7 +66,7 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <div class="controls">
+                    <div class="controls col-sm-10">
                         <button class="btn btn-default" @click="upload()">提交</button>
                     </div>
                 </div>
@@ -82,8 +86,8 @@ export default {
             authors: "",
             abstract: "",
             conference: "",
-            year: "",
-            month: ""
+            year: "选择年份",
+            month: "选择月份"
         }
     },
     mounted() {
@@ -135,5 +139,9 @@ export default {
 <style>
 textarea {
     max-width: 100%;
+}
+[class^='col-'] {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 </style>
