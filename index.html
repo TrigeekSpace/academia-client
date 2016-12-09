@@ -6,7 +6,14 @@
 <body></body>
 <!-- Script bootstrap stub -->
 <script>
+//Vendor script
 require("./dist/webpack/vendor.js");
-require("./dist/webpack/app.js");
+
+//Test
+if (process.env.NODE_ENV=="test")
+    require("./dist/webpack/test.js");
+//Debug or production
+else
+    require("./dist/webpack/app.js");
 </script>
 </html>

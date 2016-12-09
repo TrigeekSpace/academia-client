@@ -39,6 +39,9 @@
                 <li><router-link to="/users/space"><span class="glyphicon glyphicon-globe"></span> 我的空间</router-link></li>
                 <li><router-link to="/papers/upload"><span class="glyphicon glyphicon-upload"></span> 上传论文</router-link></li>
             </ul>
+            <ul class="nav sidebar-group">
+                <li><router-link to="/local/transfer"><span class="glyphicon glyphicon-transfer"></span> 传输任务</router-link></li>
+            </ul>
         </div>
         <div :class="$root.router_view_classes" id="main-view">
             <router-view></router-view>
@@ -65,7 +68,7 @@ export default {
         }
     },
     mounted(){
-        $("#root-side-bar").mouseleave(()=>{
+        $("#root-side-bar").mouseleave(() => {
             this.$root.toggle_sidebar();
         });
     }

@@ -1,6 +1,7 @@
 //Data.js: Data and model utilities for frontend
 import _ from "lodash";
 import Vue from "vue";
+import $ from "jquery";
 
 import {ADAPTOR_NAME} from "academia/config";
 
@@ -95,15 +96,31 @@ export function transform_request_form_data(data)
     return data;
 }
 
-//To plain object
-export function to_plain(obj)
-{   if (_.isArray(obj))
-        return obj.map(to_plain);
+/**
+ * Convert JS-Data model to plain object.
+ *
+ * @param obj Single or multiple JS-Data model instance(s).
+ * @param nested Keypath of nested fields to be converted.
+ * @return Converted plain object.
+ */
+export function to_plain(obj, nested=[])
+{   //Multiple objects
+    if (_.isArray(obj))
+        return obj.map((single) => to_plain(single, nested));
+    //Convert nested fields to hierarchical representation
+    if (_.isArray(nested))
+    {   let hierarchy = {}
+        for (let key_path of nested)
+            _.set(hierarchy, key_path, {});
+        nested = hierarchy;
+    }
 
     let plain_obj = {};
-    for (let key in obj)
-        if (!key.startsWith("DS"))
-            plain_obj[key] = obj[key];
+    //Copy original object
+    for (let key of _.keys(obj))
+        plain_obj[key] = obj[key];
+    for (let key of _.keys(nested))
+        plain_obj[key] = to_plain(obj[key], nested[key]);
 
     return plain_obj;
 }
@@ -292,23 +309,110 @@ export function html_error(data)
 }
 
 //[ Routing ]
-export function pre_route(...hooks)
-{   //Pre-route handler
-    return function(from, to, next) {
-        next((vm) => {
-            console.log(vm);
-            //View initialization
-            vm.init(to, from);
-        });
+//Inject route context
+export function inject_route_ctx(router)
+{   //Routing hook
+    return (to, from, next) => {
+        //Create context object with root component
+        to.meta.__ctx = {$root: router.app};
+        //Call next hook
+        next();
     };
 }
 
-export async function on_reload(to, from)
-{   //View initialization
-    this.init(to, from);
+/**
+ * Create a pre-route handler with hooks
+ *
+ * @param hooks An array of router middlewares
+ * @return Pre-route handler
+ */
+export function pre_route(...hooks)
+{   //Pre-route handler
+    return _.extend(async (to, from, next) => {
+        //Context object
+        let ctx = to.meta.__ctx;
+        delete to.meta.__ctx;
+
+        //Run hooks
+        for (let hook of hooks)
+        {   //Call hook
+            let next_arg = await new Promise((resolve) => {
+                hook.call(ctx, to, from, resolve);
+            });
+
+            //Pass to "next" function
+            if (next_arg!=null)
+            {   next(next_arg);
+                return;
+            }
+        }
+
+        //Enter new route
+        next((vm) => {
+            if (vm.init)
+                vm.init();
+        });
+    }, {hooks});
 }
 
-export function auth_required()
-{
+//Deactivate oneshot flag
+let deactivate_oneshot = false;
 
+/**
+ * Handle route change on the same component
+ *
+ * @param to Destination route object.
+ * @param from Source route object.
+ */
+export async function on_reload(to, from)
+{   //Deactivate oneshot
+    if (deactivate_oneshot)
+    {   deactivate_oneshot = false;
+        return;
+    }
+
+    //Leave old route
+    if (this.beforeRouteLeave)
+        this.beforeRouteLeave();
+
+    let pre_route = this.beforeRouteEnter;
+    //Make context object
+    let ctx = {$root: this.$root};
+    //Run pre-route hooks if exist
+    if (pre_route&&pre_route.hooks)
+        for (let hook of pre_route.hooks)
+        {   //Call hook
+            let next_arg = await new Promise((resolve) => {
+                hook.call(ctx, to, from, resolve);
+            });
+
+            //Stop navigation
+            if (next_arg==false)
+            {   deactivate_oneshot = true;
+                this.$router.back();
+                return;
+            }
+            //Navigate to given position
+            else if (next_arg!=null)
+            {   this.$router.go(next_arg);
+                return;
+            }
+        }
+
+    //Enter new route
+    if (this.init)
+        this.init();
+}
+
+//Navigate user to log-in page if user not logged in
+export function login_required(to, from, next)
+{   if (this.$root.user)
+        next();
+    else
+    {   //Next route parameters
+        let next_params = {path: to.path, query: to.query, params: to.params};
+        next_params = encodeURIComponent(JSON.stringify(next_params));
+        //Go to log-in page
+        next({name: "login", query: {next: next_params}});
+    }
 }

@@ -63,7 +63,12 @@ module.exports = {
             "simplemde-css": path.resolve(__dirname, "./vendor/simplemde.min.css")
         }
     },
-    target: "electron-renderer"
+    target: "electron-renderer",
+    externals: [
+        {
+            "mocha": true
+        }
+    ]
 };
 
 //Release
@@ -75,7 +80,10 @@ if (process.env.NODE_ENV=="production")
         })
     ]);
 }
-//Debug
+//Debug or test
 else
-{   module.exports.devtool = "source-map";
+{   //Source map
+    module.exports.devtool = "source-map";
+    //Test bundle
+    module.exports.entry["test"] = "./src/tests/entry.js";
 }

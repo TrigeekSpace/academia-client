@@ -5,52 +5,51 @@ import "bootstrap-cosmo";
 import "bootstrap";
 import "simplemde-css";
 
-//Root component
+import {inject_route_ctx} from "academia/util";
 import Root from "academia/views/root.vue";
 
+//[ Router ]
 //Use Vue router
 Vue.use(VueRouter);
 //Routes
 let routes = [
+    //Index page (Paper search)
     {name: "index", path: "/", component: require("academia/views/index.vue")},
-
+    //User actions
     {name: "login", path: "/users/login", component: require("academia/views/users/login.vue")},
     {name: "register", path: "/users/register", component: require("academia/views/users/register.vue")},
     {name: "user_space", path: "/users/space", component: require("academia/views/users/space.vue")},
-
+    //Paper actions
     {name: "paper_detail", path: "/papers/detail", component: require("academia/views/papers/detail.vue")},
     {name: "paper_content", path: "/papers/content", component: require("academia/views/papers/content.vue")},
     {name: "paper_list", path: "/papers/list", component: require("academia/views/papers/list.vue")},
     {name: "upload_paper", path: "/papers/upload", component: require("academia/views/papers/upload.vue")},
-
+    //Note actions
     {name: "upload_note", path: "/notes/upload", component: require("academia/views/notes/upload.vue")},
-
-    {name: "transfer_tasks", path: "/misc/transfer", component: require("academia/views/misc/transfer.vue")}
+    //Other actions
+    {name: "transfer_tasks", path: "/local/transfer", component: require("academia/views/local/transfer.vue")}
 ];
 //Router
 let router = new VueRouter({routes});
+//Enable context injection
+router.beforeEach(inject_route_ctx(router));
 
-router.beforeEach((from, to, next) => {
-    //to.__test = new Date().toString();
-    next();
-});
-
-//Root view
+//[ Root View ]
 let root_view = new Vue({
     //Root level data
     data: {
         //Current user
         user: null,
-        //Current session token
-        token: null,
         //Show or hide sidebar
         show_side_bar: false,
-        //File transfer tasks
-        transfer_tasks: []
+        //File uploads
+        upload_tasks: [],
+        //File downloads
+        download_tasks: []
     },
     //Methods
     methods: {
-        //Toggle side bar
+        //Toggle sidebar
         toggle_sidebar()
         {   this.show_side_bar = !this.show_side_bar;
             if (this.show_side_bar) {
@@ -69,4 +68,4 @@ let root_view = new Vue({
     render: (resolve) => resolve(Root),
     router
 });
-window.router =  router
+window.root_view = root_view;

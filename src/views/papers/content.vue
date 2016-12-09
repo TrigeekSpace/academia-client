@@ -31,15 +31,9 @@ export default {
             }
         });
 
-        let notes = to_plain(paper.notes);
-        console.log(paper);
-        for (let i=0;i<notes.length;i++)
-            notes[i].author = to_plain(paper.notes[i].author);
-
-        this.paper = {
-            ...to_plain(paper),
-            notes
-        };
+        let p_paper = to_plain(paper, ["notes", "notes.author"]);
+        console.log(p_paper);
+        this.paper = p_paper;
     },
     //Data
     data()
