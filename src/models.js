@@ -4,7 +4,7 @@ import DSHttpAdapter from "js-data-http";
 import _ from "lodash";
 
 import {transform_query, transform_request_form_data, parse_resp, res_action} from "academia/util";
-import {ADAPTOR_NAME} from "academia/config"
+import {ADAPTOR_NAME, BKND_URL} from "academia/config"
 
 //[ Data store ]
 //Data store
@@ -12,7 +12,7 @@ export let store = new DS();
 //HTTP adaptor
 export let adaptor = new DSHttpAdapter({
     //Base path
-    basePath: "http://101.200.176.184:8080",
+    basePath: `${BKND_URL}`,
     //Deserialize
     deserialize: parse_resp,
     //Query transform
@@ -22,6 +22,7 @@ export let adaptor = new DSHttpAdapter({
         headers: {}
     }
 });
+window.adaptor = adaptor;
 
 //Request transformer (Cannot be added to adaptor settings)
 adaptor.http.defaults.transformRequest.unshift(transform_request_form_data);

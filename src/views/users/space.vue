@@ -1,7 +1,7 @@
 <!-- component template -->
 <template>
 <div>
-    <div class="row" v-if="this.$root.user != null">
+    <div class="row">
         <div class="col-sm-1 col-md-1 col-lg-1"></div>
         <div class="col-sm-10 col-md-10 col-lg-10">
             <div class="row">
@@ -9,7 +9,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-3 col-md-3 col-lg-3">
-                    <img class="portrait" :src="`${user.avatar}`" align="center"/>
+                    <img class="portrait" src="https://media.52poke.com/wiki/thumb/5/53/054Psyduck.png/240px-054Psyduck.png" align="center"/>
                     <p align="center">{{user.username}}</p>
                 </div>
                 <div class="col-sm-3 col-md-3 col-lg-3">
@@ -19,7 +19,7 @@
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-6">
                      <h4>个人简介</h4>
-                     <p>{{ user.self_introduction }}</p>
+                     <p>Lorem ipsum dolor sit amet, ligula suspendisse nulla pretium, rhoncus tempor fermentum, enim integer ad vestibulum volutpat. Nisl rhoncus turpis est, vel elit, congue wisi enim nunc ultricies sit, magna tincidunt. Maecenas aliquam maecenas ligula nostra, accumsan taciti. Sociis mauris in integer, a dolor netus non dui aliquet, sagittis felis sodales, dolor sociis mauris, vel eu libero cras</p>
                 </div>
             </div>
             <hr />
@@ -36,7 +36,7 @@
                 <div class="col-sm-1 col-md-1 col-lg-1"></div>
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     <ul class="list-group">
-                        <li class="list-group-item" v-for="paper in this.papers">
+                        <li class="list-group-item" v-for="paper of user.collect_papers">
                             <p><router-link :to="`academia/papers/detail?paper_id=${paper.id}`"><strong>{{paper.title}}</strong></router-link></p>
                             <p>作者：{{paper.authors}}</p>
                             <p>会议：{{paper.conference}}</p>
@@ -48,62 +48,42 @@
         </div>
         <div class="col-sm-1 col-md-1 col-lg-1"></div>
     </div>
-    <div class="row" v-else>
-        <div class="well center" align="center">
-            <h4>你还没有登录</h4>
-            <button class="btn btn-primary btn-front" @click="to_register()">注册</button>
-            <br>
-            <p>or</p>
-            <button class="btn btn-primary btn-front" @click="to_login()">登录</button>
-        </div>
-    </div>
 </div>
 </template>
 <!-- script -->
 <script>
+import {User} from "academia/models";
+import {to_plain, on_change, pre_route, login_required} from "academia/util";
+
 export default {
     data()
     {
         return {
             user: {
-                id: 123,
-                username: "可达鸭",
-                email: "aa@bb.cc",
-                job: "学生",
-                self_introduction: "Lorem ipsum dolor sit amet, ligula suspendisse nulla pretium, rhoncus tempor fermentum, enim integer ad vestibulum volutpat. Nisl rhoncus turpis est, vel elit, congue wisi enim nunc ultricies sit, magna tincidunt. Maecenas aliquam maecenas ligula nostra, accumsan taciti. Sociis mauris in integer, a dolor netus non dui aliquet, sagittis felis sodales, dolor sociis mauris, vel eu libero cras",
-                avatar: "https://media.52poke.com/wiki/thumb/5/53/054Psyduck.png/240px-054Psyduck.png",
-                contribution: "233"
-            },
-            papers: [
-                {
-                    id: 233,
-                    title: "Benchmarking Data Curation Systems",
-                    authors: "Patricia C. Arocena, Boris Glavic, Giansalvatore Mecca",
-                    conference: "IEEE Special Issue 2016",
-                    publish_date: null
-                }, {
-                    id: 234,
-                    title: "Data Anamnesis: Admitting Raw Data into an Organization",
-                    authors: "Sebastian Kruse, Thorsten Papenbrock, Hazar Harmouch, and Felix Naumann",
-                    conference: "IEEE Special Issue 2016",
-                    publish_date: null
-                }, {
-                    id: 235,
-                    title: "Data Quality for Temporal Streams",
-                    authors: "Tamraparni Dasu, Rong Duan, Divesh Srivastava",
-                    conference: "IEEE Special Issue 2016",
-                    publish_date: null
-                }
-            ]
+                id: null,
+                username: null,
+                email: null,
+                job: null,
+                contribution: null,
+                collect_papers: []
+            }
         }
     },
+    beforeRouteEnter: pre_route(login_required),
     methods: {
-        to_register() {
-            this.$router.push("register");
-        },
-        to_login() {
-            this.$router.push("login");
+        async init()
+        {   console.log("233");
+            let user_id = this.$route.query.user_id||this.$root.user.id;
+            let user = await User.find(user_id, {
+                params: {
+                    with: ["collect_papers"]
+                }
+            });
+            this.user = to_plain(user, ["collect_papers"]);
         }
+    },
+    watch: {
+        $route: on_change
     }
 };
 </script>

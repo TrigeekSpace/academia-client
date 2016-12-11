@@ -411,7 +411,7 @@ export function login_required(to, from, next)
     else
     {   //Next route parameters
         let next_params = {path: to.path, query: to.query, params: to.params};
-        next_params = encodeURIComponent(JSON.stringify(next_params));
+        next_params = urlsafe_b64encode(JSON.stringify(next_params));
         //Go to log-in page
         next({name: "login", query: {next: next_params}});
     }

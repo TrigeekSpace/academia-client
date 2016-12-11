@@ -11,15 +11,15 @@
                 <th width="30%">上传进度</th>
                 <th width="20%"></th>
             </tr>
-            <tr>
-                <td>abcde</td>
-                <td>论文</td>
+            <tr v-for="task of $root.upload_tasks">
+                <td>{{task.name}}</td>
+                <td>{{task.type}}</td>
                 <td>
                     <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width:50%;">70%</div>
+                        <div class="progress-bar" role="progressbar" :style="{width: `${task.progress}%`}">{{task.progress}}</div>
                     </div>
                 </td>
-                <td>70% (7MB / 10MB)</td>
+                <td>{{task.progress}}% ({{task.transfered}} / {{task.total}})</td>
             </tr>
         </thead>
         <tbody></tbody>

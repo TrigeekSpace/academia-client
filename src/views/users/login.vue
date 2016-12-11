@@ -5,8 +5,12 @@
         <div class="col-sm-3 col-md-4 col-lg-4"></div>
         <div class="col-sm-6 col-md-4 col-lg-4">
             <div class="well" align="center">
-                <h1>Login</h1>
+                <h1>登录</h1>
                 <hr />
+                <!-- Log-in first prompt -->
+                <div class="alert alert-warning" v-if="$route.query.next">
+                    要使用此功能，请先登录。
+                </div>
                 <div class="alert alert-info">
                     Haven't got an account?
                     <router-link to="/users/register" class="alert-link">Register here</router-link>.
@@ -32,7 +36,7 @@
 <!-- Script -->
 <script>
 import {User, adaptor} from "academia/models";
-import {to_plain} from "academia/util";
+import {to_plain, urlsafe_b64decode} from "academia/util";
 import {AUTH_TOKEN_HEADER} from "academia/config";
 
 export default {
@@ -53,13 +57,16 @@ export default {
                 let data = resp.data;
 
                 //Set user and token
-                let token = this.$root.token = data.token;
                 this.$root.user = data.user;
                 //Set token header
-                adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = token;
+                adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = data.token;
 
+                //Next page
+                let next = "/";
+                if (this.$route.query.next)
+                    next = JSON.parse(urlsafe_b64decode(this.$route.query.next));
                 //Jump to index page
-                this.$router.push("/");
+                this.$router.push(next);
             }, (e) => {
                 alert(JSON.stringify(e));
             });

@@ -1,8 +1,10 @@
 //Index.js: Entry point of Academia client
 import Vue from "vue";
 import VueRouter from "vue-router";
-import "bootstrap-cosmo";
+import _ from "lodash";
 import "bootstrap";
+
+import "bootstrap-cosmo";
 import "simplemde-css";
 
 import {inject_route_ctx} from "academia/util";
@@ -42,9 +44,8 @@ let root_view = new Vue({
         user: null,
         //Show or hide sidebar
         show_side_bar: false,
-        //File uploads
+        //File uploads & downloads
         upload_tasks: [],
-        //File downloads
         download_tasks: []
     },
     //Methods
@@ -62,6 +63,33 @@ let root_view = new Vue({
                     left: "-200px"
                 }, 100);
             }
+        },
+        //Create file transfer task
+        create_transfer_task(name, type, transfer_type)
+        {   let new_task = {
+                name,
+                type,
+                transfer_type,
+                transfered: 0,
+                total: 1,
+                get progress()
+                {   return Math.round(this.transfered/this.total*100);
+                }
+            };
+            this[transfer_type+"_tasks"].push(new_task);
+
+            let progress_handler = (event) => {
+                console.log(event);
+                console.log(new_task);
+                new_task.transfered = event.loaded;
+                new_task.total = event.total;
+            };
+
+            return [new_task, progress_handler];
+        },
+        //Complete a file transfer task
+        complete_transfer_task(task)
+        {   _.pull(this[task.transfer_type+"_tasks"], task);
         }
     },
     el: "body",

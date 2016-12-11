@@ -7939,7 +7939,9 @@ function validateFileURL(file) {
     // start accepting URLs from foreign origin -- CORS headers on the remote
     // server must be properly configured.
     if (fileOrigin !== viewerOrigin) {
-      throw new Error('file origin does not match viewer\'s');
+      // Electron allows any CORS requests in file origin
+      // so this check makes no sense.
+      //throw new Error('file origin does not match viewer\'s');
     }
   } catch (e) {
     var message = e && e.message;

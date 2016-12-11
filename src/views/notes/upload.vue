@@ -1,6 +1,8 @@
 <!-- Component template -->
 <template>
 <div>
+    <!-- Editor.md CSS -->
+    <link href="./dist/editor.md/css/editormd.min.css" rel="stylesheet" />
     <div class="row">
         <div class="col-sm-1 col-md-1 col-lg-1"></div>
         <div class="col-sm-10 col-md-10 col-lg-10">
@@ -15,7 +17,7 @@
                         <input disabled="disable" type="text" class="form-control" placeholder="对应论文" v-model="related_paper" />
                     </div>
                     <div class="form-group">
-                        <textarea id="note_content"></textarea>
+                        <textarea id="note-content"></textarea>
                     </div>
                     <div class="form-group">
                         <input type="file" id="file-selector" placeholder="笔记内容" />
@@ -33,10 +35,11 @@
 </template>
 <!-- Script -->
 <script>
-import SimpleMDE from "simplemde";
 import $ from "jquery";
+import SimpleMDE from "simplemde";
+
 import {Paper, Note, adaptor} from "academia/models";
-import {to_plain} from "academia/util";
+import {to_plain, pre_route, login_required, on_change} from "academia/util";
 import {AUTH_TOKEN_HEADER} from "academia/config";
 
 export default {
@@ -49,41 +52,43 @@ export default {
             paper: null,
         };
     },
-    mounted()
-    {
-      let p_id = this.$route.query.paper_id
-      let n_id = this.$route.query.note_id
-      console.log(p_id)
-      this.paper = Paper.get(p_id)
-      if (n_id) {
-        Note.find(n_id).then((x)=>{
-          this.note_title = x.title
-          this.note_content = x.content
-          this.note = x
-        })
-      }
-
-      if (this.paper == null) {
-        Paper.find(p_id).then((x)=>{
-          this.paper = x
-          this.related_paper = this.paper.title
-          if (this.note && this.note.paper != p_id) {
-            this.error_visit = true
-            alert("错误的访问");
-            return;
-          }
-        })
-      } else {
-        this.related_paper = this.paper.title
-      }
-      //Editor
-      this.query_arg = decodeURIComponent(this.$route.query.note_id)
-      this.editor = new SimpleMDE({
-          elements: $("#note_content")
-      });
-    },
+    beforeRouteEnter: pre_route(login_required),
     //Methods
     methods: {
+        init()
+        {
+          let p_id = this.$route.query.paper_id
+          let n_id = this.$route.query.note_id
+          console.log(p_id)
+          this.paper = Paper.get(p_id)
+          if (n_id) {
+            Note.find(n_id).then((x)=>{
+              this.note_title = x.title
+              this.note_content = x.content
+              this.note = x
+            })
+          }
+
+          if (this.paper == null) {
+            Paper.find(p_id).then((x)=>{
+              this.paper = x
+              this.related_paper = this.paper.title
+              if (this.note && this.note.paper != p_id) {
+                this.error_visit = true
+                alert("错误的访问");
+                return;
+              }
+            })
+          } else {
+            this.related_paper = this.paper.title
+          }
+          //Editor
+          this.query_arg = decodeURIComponent(this.$route.query.note_id)
+          this.editor = new SimpleMDE({
+              element: $("note-content")[0],
+              spellChecker: false
+          });
+        },
         create_or_modify_note(event) {
           if (this.error_visit) {
               alert("错误的访问");
@@ -98,14 +103,23 @@ export default {
             return;
           }
           if (this.$route.query.note_id === undefined) {
+            let [task, progress_handler] = this.$root.create_transfer_task(
+                this.note_title,
+                "心得",
+                "upload"
+            );
+            console.log(progress_handler);
             Note.create({
               title: this.note_title,
               content: this.note_content,
               annotation_file: $("#file-selector")[0].files[0],
               paper: this.paper.id,
-            }).then((resp) => {
+          }, {
+              onUploadProgress: progress_handler
+          }).then((resp) => {
+              this.$root.complete_transfer_task(task);
               //Jump to index page
-              this.$router.go(-1)
+              this.$router.go({name: "paper_detail", query: {paper_id: this.paper.id}});
             }, (e) => {
               alert(JSON.stringify(e));
             });
@@ -117,7 +131,9 @@ export default {
           return this.note_title !== "" && this.related_paper !== "" && this.note_content !== "" && this.paper !== null;
         }
       },
-
+    watch: {
+        $route: on_change
+    },
     //Computed properties
     computed: {
         note_content: {

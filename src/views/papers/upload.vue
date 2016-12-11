@@ -79,6 +79,9 @@
 
 <script>
 import $ from "jquery";
+
+import {pre_route, login_required, on_change} from "academia/util";
+
 export default {
     data() {
         return {
@@ -90,15 +93,16 @@ export default {
             month: "选择月份"
         }
     },
-    mounted() {
-        let sel = $("#year_select");
-        const year_start = 2016;
-        for (let i = 0; i < 50; i++) {
-            sel.append(`<option>${year_start - i}</option>`);
-        }
-        console.log("added");
-    },
+    beforeRouteEnter: pre_route(login_required),
     methods: {
+        init() {
+            let sel = $("#year_select");
+            const year_start = 2016;
+            for (let i = 0; i < 50; i++) {
+                sel.append(`<option>${year_start - i}</option>`);
+            }
+            console.log("added");
+        },
         upload() {
 
             console.log(`${this.title}, ${this.authors}`);
@@ -132,6 +136,9 @@ export default {
         check_input() {
             return this.title.length > 0 && this.authors.length > 0;
         }
+    },
+    watch: {
+        $route: on_change
     }
 };
 </script>

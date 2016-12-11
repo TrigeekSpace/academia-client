@@ -14,8 +14,8 @@ module.exports = {
             "bootstrap-cosmo",
             "bootstrap",
             "lodash",
-            "simplemde",
-            "simplemde-css"
+            "simplemde-css",
+            "marked"
         ],
     },
     output: {
