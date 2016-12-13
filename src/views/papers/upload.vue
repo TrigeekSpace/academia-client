@@ -80,7 +80,7 @@
 <script>
 import $ from "jquery";
 
-import {pre_route, login_required, on_change} from "academia/util";
+import {pre_route, login_required, on_route_change} from "academia/util/route";
 
 export default {
     data() {
@@ -138,7 +138,7 @@ export default {
         }
     },
     watch: {
-        $route: on_change
+        $route: on_route_change
     }
 };
 </script>

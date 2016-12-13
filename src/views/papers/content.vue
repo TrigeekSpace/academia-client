@@ -28,8 +28,9 @@
 import marked from "marked";
 
 import {Paper} from "academia/models";
-import {to_plain, pre_route, on_change} from "academia/util";
 import {BKND_URL} from "academia/config";
+import {to_plain} from "academia/util/api";
+import {pre_route, on_route_change} from "academia/util/route";
 
 export default {
     beforeRouteEnter: pre_route(),
@@ -67,7 +68,7 @@ export default {
         };
     },
     watch: {
-        $route: on_change
+        $route: on_route_change
     }
 }
 </script>

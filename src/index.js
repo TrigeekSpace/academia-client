@@ -7,8 +7,9 @@ import "bootstrap";
 import "bootstrap-cosmo";
 import "simplemde-css";
 
-import {inject_route_ctx} from "academia/util";
+import {inject_route_ctx} from "academia/util/route";
 import Root from "academia/views/root.vue";
+import "academia/common.css";
 
 //[ Router ]
 //Use Vue router
@@ -17,19 +18,20 @@ Vue.use(VueRouter);
 let routes = [
     //Index page (Paper search)
     {name: "index", path: "/", component: require("academia/views/index.vue")},
-    //User actions
+    //User pages
     {name: "login", path: "/users/login", component: require("academia/views/users/login.vue")},
     {name: "register", path: "/users/register", component: require("academia/views/users/register.vue")},
     {name: "user_space", path: "/users/space", component: require("academia/views/users/space.vue")},
-    //Paper actions
+    //Paper pages
     {name: "paper_detail", path: "/papers/detail", component: require("academia/views/papers/detail.vue")},
     {name: "paper_content", path: "/papers/content", component: require("academia/views/papers/content.vue")},
     {name: "paper_list", path: "/papers/list", component: require("academia/views/papers/list.vue")},
     {name: "upload_paper", path: "/papers/upload", component: require("academia/views/papers/upload.vue")},
-    //Note actions
+    //Note pages
     {name: "upload_note", path: "/notes/upload", component: require("academia/views/notes/upload.vue")},
-    //Other actions
-    {name: "transfer_tasks", path: "/local/transfer", component: require("academia/views/local/transfer.vue")}
+    //Local pages
+    {name: "transfer_tasks", path: "/local/transfer", component: require("academia/views/local/transfer.vue")},
+    {name: "offline", path: "/local/offline", component: require("academia/views/local/offline.vue")}
 ];
 //Router
 let router = new VueRouter({routes});

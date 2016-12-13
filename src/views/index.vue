@@ -40,13 +40,3 @@ export default {
     }
 };
 </script>
-
-<style>
-
-.center-vertical {
-    display: block;
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-}
-</style>

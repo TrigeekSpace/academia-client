@@ -1,5 +1,5 @@
 //User.js: User-related test
-const assert = window.require("assert");
+import assert from "assert";
 
 describe("test example", function()
 {   it("should appear", function()

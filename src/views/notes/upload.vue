@@ -39,8 +39,8 @@ import $ from "jquery";
 import SimpleMDE from "simplemde";
 
 import {Paper, Note, adaptor} from "academia/models";
-import {to_plain, pre_route, login_required, on_change} from "academia/util";
-import {AUTH_TOKEN_HEADER} from "academia/config";
+import {to_plain} from "academia/util/api";
+import {pre_route, login_required, on_route_change} from "academia/util/route";
 
 export default {
     //View data
@@ -108,7 +108,6 @@ export default {
                 "心得",
                 "upload"
             );
-            console.log(progress_handler);
             Note.create({
               title: this.note_title,
               content: this.note_content,
@@ -132,7 +131,7 @@ export default {
         }
       },
     watch: {
-        $route: on_change
+        $route: on_route_change
     },
     //Computed properties
     computed: {

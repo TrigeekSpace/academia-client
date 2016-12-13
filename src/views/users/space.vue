@@ -53,7 +53,8 @@
 <!-- script -->
 <script>
 import {User} from "academia/models";
-import {to_plain, on_change, pre_route, login_required} from "academia/util";
+import {to_plain} from "academia/util/api";
+import {on_route_change, pre_route, login_required} from "academia/util/route";
 
 export default {
     data()
@@ -72,8 +73,7 @@ export default {
     beforeRouteEnter: pre_route(login_required),
     methods: {
         async init()
-        {   console.log("233");
-            let user_id = this.$route.query.user_id||this.$root.user.id;
+        {   let user_id = this.$route.query.user_id||this.$root.user.id;
             let user = await User.find(user_id, {
                 params: {
                     with: ["collect_papers"]
@@ -83,7 +83,7 @@ export default {
         }
     },
     watch: {
-        $route: on_change
+        $route: on_route_change
     }
 };
 </script>

@@ -1,0 +1,13 @@
+/* Form group in well */
+.form-group-well
+{   padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Vertical center */
+.center-vertical
+{   display: block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}

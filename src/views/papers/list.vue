@@ -46,7 +46,8 @@
 <!-- Script -->
 <script>
 import {Paper, adaptor} from "academia/models";
-import {to_plain, contains, pre_route, on_reload} from "academia/util";
+import {to_plain, contains} from "academia/util/api";
+import {pre_route, on_route_reload} from "academia/util/route";
 import {AUTH_TOKEN_HEADER} from "academia/config";
 
 export default {
@@ -101,7 +102,7 @@ export default {
       },
   },
   watch: {
-      $route: on_reload
+      $route: on_route_reload
   }
 };
 </script>

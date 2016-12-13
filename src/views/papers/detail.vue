@@ -24,7 +24,7 @@
 
 <script>
 import {Paper} from "academia/models";
-import {to_plain} from "academia/util";
+import {to_plain} from "academia/util/api";
 
 export default {
     //Data

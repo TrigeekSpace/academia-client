@@ -5,26 +5,31 @@
         <div class="col-sm-3 col-md-4 col-lg-4"></div>
         <div class="col-sm-6 col-md-4 col-lg-4">
             <div class="well" align="center">
-                <h1>登录</h1>
+                <h2>登录</h2>
                 <hr />
                 <!-- Log-in first prompt -->
                 <div class="alert alert-warning" v-if="$route.query.next">
                     要使用此功能，请先登录。
                 </div>
+                <!-- Register prompt -->
                 <div class="alert alert-info">
-                    Haven't got an account?
-                    <router-link to="/users/register" class="alert-link">Register here</router-link>.
+                    还没有Academia账户？
+                    <router-link to="/users/register" class="alert-link">点此注册</router-link>。
                 </div>
+                <!-- Log-in form -->
                 <form class="form-horizontal" @submit.prevent>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Username" v-model="username" />
+                    <!-- Username -->
+                    <div class="form-group form-group-well">
+                        <input type="text" class="form-control" placeholder="用户名" v-model="username" />
                     </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control" placeholder="Password" v-model="password" />
+                    <!-- Password -->
+                    <div class="form-group form-group-well">
+                        <input type="password" class="form-control" placeholder="密码" v-model="password" />
                     </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary" @click="login()">Log In</button>&nbsp;
-                        <button class="btn btn-default">I Forget Password</button>
+                    <!-- Operations -->
+                    <div class="form-group form-group-well">
+                        <button class="btn btn-primary" @click="login()">登录</button>&nbsp;&nbsp;
+                        <button class="btn btn-default">忘记密码</button>
                     </div>
                 </form>
             </div>
@@ -36,8 +41,10 @@
 <!-- Script -->
 <script>
 import {User, adaptor} from "academia/models";
-import {to_plain, urlsafe_b64decode} from "academia/util";
 import {AUTH_TOKEN_HEADER} from "academia/config";
+import {urlsafe_b64decode, msgbox} from "academia/util/core";
+import {to_plain} from "academia/util/api";
+import {unify_error} from "academia/util/error";
 
 export default {
     //View data
@@ -49,27 +56,36 @@ export default {
     },
     //Methods
     methods: {
-        login()
-        {   User.login({
-                username: this.username,
-                password: this.password
-            }).then((resp) => {
+        //Log-in
+        async login()
+        {   try
+            {   //Try to log-in
+                let resp = await User.login({
+                    username: this.username,
+                    password: this.password
+                });
                 let data = resp.data;
 
-                //Set user and token
+                //Set user
                 this.$root.user = data.user;
                 //Set token header
                 adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = data.token;
 
-                //Next page
-                let next = "/";
-                if (this.$route.query.next)
-                    next = JSON.parse(urlsafe_b64decode(this.$route.query.next));
-                //Jump to index page
+                //Next page; fallback to index page
+                let next = this.$route.query.next;
+                next = next?JSON.parse(urlsafe_b64decode(next)):"/";
+                //Jump to given page
                 this.$router.push(next);
-            }, (e) => {
-                alert(JSON.stringify(e));
-            });
+            }
+            catch (e)
+            {   e = unify_error(e);
+                //Prompt error
+                msgbox({
+                    type: "error",
+                    title: "登录失败",
+                    message: e.toString()
+                });
+            }
         }
     }
 };

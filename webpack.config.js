@@ -53,8 +53,14 @@ module.exports = {
         ]
     },
     plugins: [
+        //Vendor chunk
         new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.js"),
-        new webpack.ProvidePlugin({"$": "jquery", "jQuery": "jquery"})
+        //Global variables
+        new webpack.ProvidePlugin({"$": "jquery", "jQuery": "jquery"}),
+        //External modules
+        new webpack.ExternalsPlugin("commonjs", [
+            "fs"
+        ])
     ],
     resolve: {
         alias: {
@@ -63,27 +69,33 @@ module.exports = {
             "simplemde-css": path.resolve(__dirname, "./vendor/simplemde.min.css")
         }
     },
-    target: "electron-renderer",
-    externals: [
-        {
-            "mocha": true
-        }
-    ]
+    target: "electron-renderer"
 };
 
 //Release
 if (process.env.NODE_ENV=="production")
-{   module.exports.plugins = (module.exports.plugins||[]).concat([
+{   //Plugins
+    module.exports.plugins = (module.exports.plugins||[]).concat([
         //Production mode
         new webpack.DefinePlugin({
             "process.env": {NODE_ENV: "\"production\""}
         })
     ]);
 }
-//Debug or test
+//Test
+else if (process.env.NODE_ENV=="test")
+{   //Test bundle
+    module.exports.entry["test"] = "./src/tests/entry.js";
+    //Plugins
+    module.exports.plugins = (module.exports.plugins||[]).concat([
+        //External modules
+        new webpack.ExternalsPlugin("commonjs", [
+            "assert"
+        ])
+    ]);
+}
+//Debug
 else
 {   //Source map
     module.exports.devtool = "source-map";
-    //Test bundle
-    module.exports.entry["test"] = "./src/tests/entry.js";
 }

@@ -3,8 +3,8 @@ import {DS} from "js-data";
 import DSHttpAdapter from "js-data-http";
 import _ from "lodash";
 
-import {transform_query, transform_request_form_data, parse_resp, res_action} from "academia/util";
 import {ADAPTOR_NAME, BKND_URL} from "academia/config"
+import {transform_query, transform_request_form_data, transform_response, res_action} from "academia/util/api";
 
 //[ Data store ]
 //Data store
@@ -14,7 +14,7 @@ export let adaptor = new DSHttpAdapter({
     //Base path
     basePath: `${BKND_URL}`,
     //Deserialize
-    deserialize: parse_resp,
+    deserialize: transform_response,
     //Query transform
     queryTransform: transform_query,
     //HTTP default configuration

@@ -5,24 +5,34 @@
         <div class="col-sm-3 col-md-4 col-lg-4"></div>
         <div class="col-sm-6 col-md-4 col-lg-4">
             <div class="well" align="center">
-                <h1>Register</h1>
+                <h2>注册</h2>
                 <hr />
+                <!-- Log-in prompt -->
                 <div class="alert alert-info">
-                    Already have an account?
-                    <router-link to="/users/login" class="alert-link">Log-in here</router-link>.
+                    已经拥有Academia账户？
+                    <router-link to="/users/login" class="alert-link">点此登录</router-link>。
                 </div>
+                <!-- Register form -->
                 <form class="form-horizontal" @submit.prevent>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Username" v-model="username" />
+                    <!-- Username -->
+                    <div class="form-group form-group-well">
+                        <input type="text" class="form-control" placeholder="用户名" v-model="username" />
                     </div>
-                    <div class="form-group">
-                        <input type="email" class="form-control" placeholder="E-Mail" v-model="email" />
+                    <!-- E-mail -->
+                    <div class="form-group form-group-well">
+                        <input type="email" class="form-control" placeholder="邮箱" v-model="email" />
                     </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control" placeholder="Password" v-model="password" />
+                    <!-- Password -->
+                    <div class="form-group form-group-well">
+                        <input type="password" class="form-control" placeholder="密码" v-model="password" />
                     </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary" @click="register_user()">Register</button>
+                    <!-- Password again -->
+                    <div class="form-group form-group-well">
+                        <input type="password" class="form-control" placeholder="再次输入密码" v-model="password2" />
+                    </div>
+                    <!-- Operations -->
+                    <div class="form-group form-group-well">
+                        <button class="btn btn-primary" @click="register_user()">注册</button>&nbsp;&nbsp;
                     </div>
                 </form>
             </div>
@@ -34,6 +44,7 @@
 <!-- Script -->
 <script>
 import {User} from "academia/models";
+import {unify_error} from "academia/util/error";
 
 export default {
     //View model data
@@ -41,22 +52,36 @@ export default {
     {   return {
             username: null,
             email: null,
-            password: null
+            password: null,
+            password2: null
         };
     },
     //Methods
     methods: {
         //User register
-        register_user() {
-          User.create({
-              username: this.username,
-              email: this.email,
-              password: this.password
-          }).then((user) => {
-              this.$router.push("login");
-          }, (e) => {
-              alert(JSON.stringify(e));
-          });
+        async register_user()
+        {   try
+            {   //Check passwords
+                if (this.password!=this.password2)
+                    throw "确认密码有误，请重新输入。";
+                //Create user
+                let user = await User.create({
+                    username: this.username,
+                    email: this.email,
+                    password: this.password
+                });
+                //Jump to log-in page
+                this.$router.push({name: "login"});
+            }
+            catch (e)
+            {   e = unify_error(e);
+                //Prompt error
+                alert({
+                    type: "error",
+                    title: "登录失败",
+                    message: error_text(e.data)
+                });
+            }
         }
     }
 };
