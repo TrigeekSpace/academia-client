@@ -1,24 +1,28 @@
 <template>
-<div>
-    <h1>{{paper.title}}</h1>
-    <hr />
-    <p>Author: {{paper.authors}}</p>
-    <p>Conference: {{paper.conference}}</p>
-    <p>Time: {{paper.publish_date}}</p>
-    <br />
-    <p>{{paper.abstract}}</p>
-    <!-- Paper operations -->
-    <div align="right">
-        <button class="btn btn-primary">下载论文</button>
-        <router-link class="btn btn-success" :to="`/notes/upload?paper_id=${paper.id}`">撰写笔记</router-link>
-        <router-link class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">在线查看</router-link>
+<div class="row">
+    <div class="hidden-xs hidden-sm hidden-md col-lg-1"></div>
+    <div class="col-lg-10">
+        <h1>{{paper.title}}</h1>
+        <hr />
+        <p>Author: {{paper.authors}}</p>
+        <p>Conference: {{paper.conference}}</p>
+        <p>Time: {{paper.publish_date}}</p>
+        <br />
+        <p>{{paper.abstract}}</p>
+        <!-- Paper operations -->
+        <div align="right">
+            <button class="btn btn-primary">下载论文</button>
+            <router-link class="btn btn-success" :to="`/notes/upload?paper_id=${paper.id}`">撰写笔记</router-link>
+            <router-link class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">在线查看</router-link>
+        </div>
+        <!-- Questions -->
+        <h2>热门问答</h2>
+        <hr />
+        <!-- Notes -->
+        <h2>推荐笔记</h2>
+        <hr />
     </div>
-    <!-- Questions -->
-    <h2>热门问答</h2>
-    <hr />
-    <!-- Notes -->
-    <h2>推荐笔记</h2>
-    <hr />
+    <div class="hidden-xs hidden-sm hidden-md col-lg-1"></div>
 </div>
 </template>
 

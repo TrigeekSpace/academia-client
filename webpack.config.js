@@ -4,7 +4,7 @@ var webpack = require("webpack");
 
 module.exports = {
     entry: {
-        "app": "./src/index.js",
+        "app": ["./src/index.js"],
         "vendor": [
             "vue",
             "vue-router",
@@ -86,7 +86,7 @@ if (process.env.NODE_ENV=="production")
 //Test
 else if (process.env.NODE_ENV=="test")
 {   //Test bundle
-    module.exports.entry["test"] = "./src/tests/entry.js";
+    module.exports.entry["test"] = ["./src/tests/entry.js"];
     //Plugins
     module.exports.plugins = (module.exports.plugins||[]).concat([
         //External modules

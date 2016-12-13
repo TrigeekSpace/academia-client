@@ -40,7 +40,7 @@ router.beforeEach(inject_route_ctx(router));
 
 //[ Root View ]
 //Root view
-let root_view = new Vue({
+export let root_view = new Vue({
     //Root level data
     data: {
         //Current user
@@ -106,8 +106,6 @@ if (process.env.NODE_ENV=="test")
         .appendTo("body");
     //Mount root node
     root_view.$mount(test_root[0]);
-    //Expose to global
-    window.root_view = root_view;
 }
 //Debug or release mode
 else
