@@ -1,3 +1,4 @@
+<!-- Component Template -->
 <template>
 <div>
     <div class="col-sm-9 col-md-9 col-lg-9">
@@ -23,7 +24,7 @@
     </div>
 </div>
 </template>
-
+<!-- Script -->
 <script>
 import marked from "marked";
 
@@ -72,7 +73,7 @@ export default {
     }
 }
 </script>
-
+<!-- Stylesheet -->
 <style>
 .show-area
 {   width: 100%;

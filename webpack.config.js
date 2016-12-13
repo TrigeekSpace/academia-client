@@ -66,7 +66,8 @@ module.exports = {
         alias: {
             "academia": path.resolve(__dirname, "./src"),
             "bootstrap-cosmo": path.resolve(__dirname, "./vendor/bootstrap/css/bootstrap.min.css"),
-            "simplemde-css": path.resolve(__dirname, "./vendor/simplemde.min.css")
+            "simplemde-css": path.resolve(__dirname, "./vendor/simplemde.min.css"),
+            "js-data-http": path.resolve(__dirname, "./vendor/js-data-http.js")
         }
     },
     target: "electron-renderer"
