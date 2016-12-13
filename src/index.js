@@ -39,6 +39,7 @@ let router = new VueRouter({routes});
 router.beforeEach(inject_route_ctx(router));
 
 //[ Root View ]
+//Root view
 let root_view = new Vue({
     //Root level data
     data: {
@@ -94,8 +95,13 @@ let root_view = new Vue({
         {   _.pull(this[task.transfer_type+"_tasks"], task);
         }
     },
-    el: "body",
     render: (resolve) => resolve(Root),
     router
 });
-window.root_view = root_view;
+
+//Test mode
+if (process.env.NODE_ENV=="test")
+    root_view.$mount($("<div />")[0]);
+//Debug or release mode
+else
+    root_view.$mount("body");
