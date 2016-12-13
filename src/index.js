@@ -101,7 +101,11 @@ let root_view = new Vue({
 
 //Test mode
 if (process.env.NODE_ENV=="test")
-    root_view.$mount($("<div />")[0]);
+{   let test_root = $("<div />")
+        .style("display", "none")
+        .appendTo("body");
+    root_view.$mount(test_root[0]);
+}
 //Debug or release mode
 else
     root_view.$mount("body");
