@@ -104,7 +104,10 @@ if (process.env.NODE_ENV=="test")
 {   let test_root = $("<div />")
         .style("display", "none")
         .appendTo("body");
+    //Mount root node
     root_view.$mount(test_root[0]);
+    //Expose to global
+    window.root_view = root_view;
 }
 //Debug or release mode
 else
