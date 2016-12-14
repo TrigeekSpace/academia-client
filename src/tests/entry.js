@@ -5,7 +5,15 @@ import $ from "jquery";
 const MOCHA_PKG_DIR = "./node_modules/mocha";
 //Test modules
 const TEST_MODULES = [
-    "user"
+    "index_test",
+    "login_test",
+    "note_upload_test",
+    // "paper_content_test",
+    // "paper_detail_test",
+    // "paper_upload_test",
+    "paper_list_test",
+    "register_test",
+    "userspace_test"
 ];
 
 //Mocha CSS
@@ -18,8 +26,11 @@ $("<div />")
     .attr("id", "mocha")
     .appendTo("body");
 
+
 //Load mocha and run tests
 $.getScript(`${MOCHA_PKG_DIR}/mocha.js`).then(() => {
+  console.log("fuck");
+
     //Set up test environment
     mocha.setup("bdd");
     //Load tests
@@ -27,4 +38,5 @@ $.getScript(`${MOCHA_PKG_DIR}/mocha.js`).then(() => {
         require("./"+module);
     //Run tests
     mocha.run();
+
 });

@@ -96,6 +96,7 @@ else if (process.env.NODE_ENV=="test")
             "assert"
         ])
     ]);
+    module.exports.devtool = "source-map";
 }
 //Debug
 else

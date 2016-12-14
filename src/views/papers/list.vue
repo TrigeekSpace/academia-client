@@ -23,7 +23,7 @@
     </div>
     <div class="row result-container" v-for="item in papers_list" >
         <div class="col-sm-1 col-md-1 col-lg-1"></div>
-        <div class="col-sm-10 col-md-10 col-lg-10 result-div" @click="detail(item.id)">
+        <div :id="`paper_id_${paper.id}`"  class="col-sm-10 col-md-10 col-lg-10 result-div" @click="detail(item.id)">
             <div>
                 <h5>{{item.title}}</h5>
                 <h6>{{item.authors}}</h5>
@@ -62,7 +62,10 @@ export default {
     //Methods
     methods: {
         init() {
-          this.query_arg = decodeURIComponent(this.$route.query.query)
+          this.query_arg = decodeURIComponent(this.$route.query.query);
+          console.log("----------------------------")
+          console.log(this.query_arg);
+          console.log("----------------------------")
           this.current_num = 0
           this.each_load = 10
           Paper.findAll({

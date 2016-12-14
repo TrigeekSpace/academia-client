@@ -28,11 +28,17 @@
                         <label>批注论文</label>
                         <input type="file" id="file-selector" />
                     </div>
+<<<<<<< HEAD
                     <!-- Note operations -->
                     <div class="form-group" align="right">
                         <button class="btn btn-primary" @click="update_note()" v-if="update_mode">保存</button>&nbsp;
                         <button class="btn btn-primary" @click="create_note()" v-if="!update_mode">发布</button>&nbsp;
                         <button class="btn btn-default" @click="$router.back()">取消</button>
+=======
+                    <div class="form-group">
+                        <button id="note_upload" class="btn btn-primary" @click="create_or_modify_note()">发布</button>&nbsp;
+                        <button id="note_save" class="btn btn-primary" @click="create_note()">暂存</button>&nbsp;
+>>>>>>> 6af555f9cb6f444b05659343024c55f9155fb8e3
                     </div>
                 </form>
             </div>
