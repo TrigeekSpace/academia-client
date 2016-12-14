@@ -102,11 +102,13 @@ export let root_view = new Vue({
 //Test mode
 if (process.env.NODE_ENV=="test")
 {   let test_root = $("<div />")
-        .style("display", "none")
-        .appendTo("body");
+        .appendTo($("<div />")
+            .css("display", "none")
+            .appendTo("body"));
     //Mount root node
     root_view.$mount(test_root[0]);
 }
 //Debug or release mode
 else
     root_view.$mount("body");
+$(window).data("root_view", root_view);

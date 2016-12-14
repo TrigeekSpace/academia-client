@@ -2,6 +2,7 @@
 import {DS} from "js-data";
 import DSHttpAdapter from "js-data-http";
 import _ from "lodash";
+import {to_plain} from "academia/util/api";
 
 import {ADAPTOR_NAME, BKND_URL} from "academia/config"
 import {
@@ -68,6 +69,7 @@ export let Note = store.defineResource("notes");
 window.User = User
 window.Paper = Paper
 window.Note = Note
+window.to_plain = to_plain
 
 //[ Resource Actions & Data ]
 //User model

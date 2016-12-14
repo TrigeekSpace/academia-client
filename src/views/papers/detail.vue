@@ -42,9 +42,10 @@ export default {
     beforeRouteEnter: pre_route(),
     //Data
     data()
-    {   return {
+    {
+      return {
             paper: {
-                id: 0,
+                id: 1,
                 title: null,
                 authors: null,
                 conference: null,

@@ -21,8 +21,8 @@
                         <input type="file" id="file-selector" placeholder="笔记内容" />
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary" @click="create_or_modify_note()">发布</button>&nbsp;
-                        <button class="btn btn-primary" @click="create_note()">暂存</button>&nbsp;
+                        <button id="note_upload" class="btn btn-primary" @click="create_or_modify_note()">发布</button>&nbsp;
+                        <button id="note_save" class="btn btn-primary" @click="create_note()">暂存</button>&nbsp;
                     </div>
                 </form>
             </div>
@@ -106,6 +106,7 @@ export default {
                 "心得",
                 "upload"
             );
+            console.log(this.annotation_file);
             Note.create({
               title: this.note_title,
               content: this.note_content,
@@ -116,7 +117,7 @@ export default {
           }).then((resp) => {
               this.$root.complete_transfer_task(task);
               //Jump to index page
-              this.$router.go({name: "paper_detail", query: {paper_id: this.paper.id}});
+              this.$router.go({path: "papers/detail", query: {paper_id: this.paper.id}});
             }, (e) => {
               alert(JSON.stringify(e));
             });

@@ -37,7 +37,7 @@
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     <ul class="list-group">
                         <li class="list-group-item" v-for="paper of user.collect_papers">
-                            <p><router-link :to="`academia/papers/detail?paper_id=${paper.id}`"><strong>{{paper.title}}</strong></router-link></p>
+                            <p><router-link :id="`paper_title_${paper.id}`" :to="`/papers/detail?paper_id=${paper.id}`"><strong>{{paper.title}}</strong></router-link></p>
                             <p>作者：{{paper.authors}}</p>
                             <p>会议：{{paper.conference}}</p>
                         </li>
@@ -80,6 +80,15 @@ export default {
                 }
             });
             this.user = to_plain(user, ["collect_papers"]);
+            this.user.collect_papers = [
+              {
+                id: 1,
+                title: "aaa",
+                authors: "bbb",
+                conference: "ccc"
+              }
+            ]
+            console.log(to_plain(user, ["collect_papers"]));
         }
     },
     watch: {

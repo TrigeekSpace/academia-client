@@ -31,8 +31,13 @@
                         <input type="password" class="form-control" placeholder="再次输入密码" v-model="password2" />
                     </div>
                     <!-- Operations -->
+<<<<<<< Updated upstream
                     <div class="form-group form-group-padding-fixes">
                         <button class="btn btn-primary" @click="register_user()">注册</button>&nbsp;&nbsp;
+=======
+                    <div class="form-group form-group-well">
+                        <button id="register_btn"class="btn btn-primary" @click="register_user()">注册</button>&nbsp;&nbsp;
+>>>>>>> Stashed changes
                     </div>
                 </form>
             </div>
