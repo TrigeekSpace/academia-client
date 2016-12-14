@@ -85,7 +85,9 @@ if (process.env.NODE_ENV=="production")
 }
 //Test
 else if (process.env.NODE_ENV=="test")
-{   //Test bundle
+{   //Source map
+    module.exports.devtool = "source-map";
+    //Test bundle
     module.exports.entry["test"] = ["./src/tests/entry.js"];
     //Plugins
     module.exports.plugins = (module.exports.plugins||[]).concat([

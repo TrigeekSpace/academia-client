@@ -13,11 +13,11 @@
             </li>
         </ul>
         <!-- Note operations -->
-        <div class="pull-right" v-if="$root.user&&(active_view=='note')">
-            <button class="btn btn-primary" v-if="note_collected" @click="toggle_collect_status()">收藏笔记</button>
-            <button class="btn btn-primary" v-if="!note_collected" @click="toggle_collect_status()">取消收藏</button>
-            <router-link class="btn btn-success" v-if="$root.user.id==current_note.author.id" :to="`/notes/upload/?note_id=${current_note.id}`">编辑笔记</router-link>
-            <button class="btn btn-danger" v-if="$root.user.id==current_note.author.id" @click="delete_note()">删除笔记</button>
+        <div align="right" v-if="$root.user&&(active_view=='note')">
+            <button class="btn btn-primary" v-if="!note_collected" @click="toggle_collect_status()">收藏笔记</button>
+            <button class="btn btn-primary" v-if="note_collected" @click="toggle_collect_status()">取消收藏</button>
+            <router-link class="btn btn-success" v-if="$root.user.id==current_note.author" :to="`/notes/upload?paper_id=${paper.id}&note_id=${current_note.id}`">编辑笔记</router-link>
+            <button class="btn btn-danger" v-if="$root.user.id==current_note.author" @click="delete_note()">删除笔记</button>
         </div>
         <!-- PDF view -->
         <iframe class="show-area" v-if="active_view=='pdf'" :src="`./dist/pdf.js/web/viewer.html?file=${pdf_url}`"></iframe>
@@ -31,9 +31,9 @@
             <li class="list-group-item" @click="show_paper()">
                 <b>原版论文</b>
             </li>
-            <li class="list-group-item" v-for="note of paper.notes" @click="show_note(note)">
+            <li class="list-group-item" v-for="note in paper.notes" @click="show_note(note.id)">
                 <b>{{note.title}}</b><br />
-                <span class="glyphicon glyphicon-user"></span> {{note.author.username}}
+                <span class="glyphicon glyphicon-user"></span> {{note.$author.username}}
             </li>
         </ul>
     </div>
@@ -72,56 +72,82 @@ export default {
     methods: {
         async init()
         {   //Paper ID
-            let paper_id = this.$route.query.paper_id;
+            let paper_id = parseInt(this.$route.query.paper_id);
+            //Display mode
+            this.display_mode = this.$route.query.note_id?"note":"paper";
 
             //Fetch paper metadata from remote
-            let paper = await Paper.find(paper_id, {
+            this._paper = await Paper.find(paper_id, {
                 params: {
                     with: ["notes", "notes.author"]
                 }
             });
-            this.paper = to_plain(paper, ["notes", "notes.author"]);
-            //Show paper
-            this.show_paper();
-        },
-        //Show note
-        show_note(note)
-        {   //Set current note
-            this.current_note = note;
+            //Show on page
+            console.log(this._paper);
+            this.paper = to_plain(this._paper, ["notes", "notes.$author"]);
 
-            //PDF URL
-            this.pdf_url = `${BKND_URL}/depot/${note.annotation_file}`;
-            //Display control variables
-            this.display_mode = "note";
-            this.active_view = "pdf";
-        },
-        //Show paper
-        show_paper()
-        {   //Set PDF URL and then display paper
-            this.pdf_url = `${BKND_URL}/depot/${this.paper.paper_file}`;
-            //Display control variables
-            this.display_mode = "paper";
-            this.active_view = "pdf";
+            //Show paper
+            if (this.display_mode=="paper")
+            {   //Set PDF URL
+                this.pdf_url = `${BKND_URL}/depot/${this.paper.paper_file}`;
+                //Show PDF file
+                this.active_view = "pdf";
+            }
+            //Show note
+            else
+            {   let note_id = parseInt(this.$route.query.note_id);
+                //Fetch note
+                let note = this._note = await Note.find(note_id);
+                this.current_note = to_plain(note);
+
+                //Set PDF URL
+                this.pdf_url = `${BKND_URL}/depot/${note.annotation_file}`;
+                //Show PDF file
+                this.active_view = "pdf";
+                //Note collected
+                let user = this.$root.user;
+                if (user)
+                    this.note_collected = _.includes(note.collectors, user.id);
+            }
         },
         //Delete note
         async delete_note()
-        {   let note = this.current_note;
-            //Remove note with given ID
-            await Note.destroy(note.id);
-            //Remove note from notes list
-            _.pull(this.paper.notes, note);
-
-            //Shoe paper
-            this.show_paper();
+        {   //Remove note
+            await this._note.DSDestroy();
+            //Show paper
+            this.$router.go({path: "/papers/content", query: {paper_id: this.paper.id}})
+        },
+        //Toggle collect status
+        async toggle_collect_status()
+        {   let resp = await this._note.toggle_collect_status();
+            this.collected = resp.data.collected;
+        },
+        //Show paper
+        show_paper()
+        {   this.$router.push({
+                path: "/papers/content",
+                query: {
+                    paper_id: this.paper.id
+                }
+            });
+        },
+        //Show note
+        show_note(note_id)
+        {   console.log(note_id);
+            this.$router.push({
+                path: "/papers/content",
+                query: {
+                    paper_id: this.paper.id,
+                    note_id
+                }
+            });
         }
     },
     //Computed properties
     computed: {
         //Note HTML
         note_html()
-        {   return this.current_note?
-                marked(this.current_note.content):
-                null;
+        {   return this.current_note?marked(this.current_note.content):null;
         },
     },
     watch: {

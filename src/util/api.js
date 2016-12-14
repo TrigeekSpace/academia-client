@@ -8,8 +8,8 @@ import {urlsafe_b64encode} from "academia/util/core";
 /**
  * Query transformer.
  *
- * @param config JS-Data model.
- * @param params Parameters to be transformed.
+ * @param config - JS-Data model.
+ * @param params - Parameters to be transformed.
  */
 export function transform_query(config, params)
 {   if (!(_.isEmpty(params)))
@@ -43,7 +43,7 @@ export function transform_response(config, resp)
 /**
  * Transform request to FormData, if data contains File or Blob instance.
  *
- * @param data Data to be transformed.
+ * @param data - Data to be transformed.
  * @return FormData object if blobs or files are found, the same data object otherwise.
  */
 export function transform_request_form_data(data)
@@ -167,16 +167,6 @@ export function res_data(model, name, default_http_opts={})
 }
 
 /**
- * Get model prototype. Used for defining instance action and data.
- *
- * @param model - Model project.
- * @return Model class prototype.
- */
-export function model_proto(model)
-{   return model[model.class].prototype;
-}
-
-/**
  * Define instance action.
  *
  * @param model - Model object.
@@ -242,3 +232,14 @@ export let and = _.bind(Array, null, "and"),
     in_ = _.bind(Array, null, "in"),
     nin = _.bind(Array, null, "nin"),
     contains = _.bind(Array, null, "contains");
+
+//[ Misc ]
+/**
+ * Get model prototype. Used for defining instance action and data.
+ *
+ * @param model - Model project.
+ * @return Model class prototype.
+ */
+export function model_proto(model)
+{   return model[model.class].prototype;
+}

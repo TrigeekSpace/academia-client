@@ -4,6 +4,7 @@ import DSHttpAdapter from "js-data-http";
 import _ from "lodash";
 
 import {ADAPTOR_NAME, BKND_URL} from "academia/config"
+import {mock_transport} from "academia/util/test";
 import {
     transform_query,
     transform_request_form_data,
@@ -25,14 +26,17 @@ export let adaptor = new DSHttpAdapter({
     //Query transform
     queryTransform: transform_query,
     //HTTP default configuration
-    httpConfig: {
-        headers: {}
-    }
+    httpConfig: {headers: {}}
 });
 window.adaptor = adaptor;
 
-//Request transformer (Cannot be added to adaptor settings)
-adaptor.http.defaults.transformRequest.unshift(transform_request_form_data);
+//Test mode; use mock HTTP backend
+if (process.env.NODE_ENV=="test")
+    adaptor.http = mock_transport();
+else
+    //Request transformer (Cannot be added to adaptor settings)
+    adaptor.http.defaults.transformRequest.unshift(transform_request_form_data);
+
 //Register adaptor
 store.registerAdapter(ADAPTOR_NAME, adaptor, {default: true});
 
@@ -46,24 +50,23 @@ export let Paper = store.defineResource({
         hasMany: {
             notes: {
                 localField: "notes",
-                foreignKey: "id"
+                foreignKey: "paper"
             }
         }
     }
 });
 
-export let Note = store.defineResource("notes");
-/*export let Note = store.defineResource({
+export let Note = store.defineResource({
     name: "notes",
     relations: {
         belongsTo: {
             users: {
-                localField: "",
-                foreignKey: "id"
+                localField: "$author",
+                localKey: "author"
             }
         }
     }
-});*/
+});
 
 window.User = User
 window.Paper = Paper
@@ -79,4 +82,9 @@ _.merge(User, {
 //Paper model
 _.extend(model_proto(Paper), {
     toggle_collect_status: inst_action(Paper, "toggle_collect_status")
+});
+
+//Note model
+_.extend(model_proto(Note), {
+    toggle_collect_status: inst_action(Note, "toggle_collect_status")
 });

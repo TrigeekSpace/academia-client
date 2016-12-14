@@ -40,12 +40,10 @@ router.beforeEach(inject_route_ctx(router));
 
 //[ Root View ]
 //Root node
-let root_node = $("<div />");
-//Test mode
-if (process.env.NODE_ENV=="test")
-    root_node.css("display", "none");
-//Append to body
-root_node.appendTo("body");
+export let root_node = $("<div />");
+//Do not show UI in test mode
+if (process.env.NODE_ENV!="test")
+    root_node.appendTo("body");
 
 //Root view
 export let root_view = new Vue({
