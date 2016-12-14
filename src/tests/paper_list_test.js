@@ -12,18 +12,18 @@ describe("Search Result Page", function() {
     await delay(100);
     let c_view = get_current_view(root_view);
     let a = $("#paper_id_1", root_view.$el);
-    $("#paper_id_1", root_view.$el)[0].click();
+    $("#paper_id_1", root_view.$el).click();
     await delay(100);
     assert.equal(location.hash, "#/papers/detail?paper_id=1");
     mock_logout();
   });
-  it("should be able to re-search user's notes", function(){
+  it("should be able to re-search user's notes", async function(){
     location.hash = "#/papers/list?query=k";
     await delay(100);
     let c_view = get_current_view(root_view);
     c_view.query_arg = "c"
     let a = $("#paper_id_1", root_view.$el);
-    $("#paper_id_1", root_view.$el)[0].click();
+    $("#paper_id_1", root_view.$el).click();
     await delay(100);
     assert.equal(location.hash, "#/papers/detail?paper_id=1");
     mock_logout();
