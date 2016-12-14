@@ -95,20 +95,10 @@ export let root_view = new Vue({
         {   _.pull(this[task.transfer_type+"_tasks"], task);
         }
     },
+    el: $("<div />")[0],
     render: (resolve) => resolve(Root),
     router
 });
-
-//Test mode
-if (process.env.NODE_ENV=="test")
-{   let test_root = $("<div />")
-        .appendTo($("<div />")
-            .css("display", "none")
-            .appendTo("body"));
-    //Mount root node
-    root_view.$mount(test_root[0]);
-}
-//Debug or release mode
-else
-    root_view.$mount("body");
-$(window).data("root_view", root_view);
+//Append element to body
+if (process.env.NODE_ENV!="test")
+    $("body").append(root_view.$el);

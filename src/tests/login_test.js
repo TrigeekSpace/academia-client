@@ -10,7 +10,7 @@ describe("Login Page", function() {
     let c_view = get_current_view(root_view);
     c_view.username = "user12";
     c_view.password = "asdf1234";
-    $("#login_btn").click();
+    $("#login_btn", root_view.$el).click();
     mock_login()
     await delay(200);
     assert.equal(location.hash, "#/users/space");
@@ -21,7 +21,7 @@ describe("Login Page", function() {
     let c_view = get_current_view(root_view);
     c_view.username = "dkosahndhjiflfhsvjilz";
     c_view.password = "asdf1234";
-    $(".btn-primary").click();
+    $(".btn-primary", root_view.$el).click();
     await delay(200);
     assert.notEqual(location.hash, "#/users/login");
   });

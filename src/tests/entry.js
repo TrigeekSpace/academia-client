@@ -11,6 +11,7 @@ const TEST_MODULES = [
     // "paper_content_test",
     // "paper_detail_test",
     // "paper_upload_test",
+    "paper_list_test",
     "register_test",
     "userspace_test"
 ];

@@ -12,7 +12,8 @@ describe("Userspace Page", function() {
     location.hash = "#/users/space";
     await delay(100);
     let c_view = get_current_view(root_view);
-    $("#").click();
+    let a = $("#paper_title_1", root_view.$el);
+    $("#paper_title_1", root_view.$el)[0].click();
     await delay(100);
     assert.equal(location.hash, "#/papers/detail?paper_id=1");
     mock_logout();

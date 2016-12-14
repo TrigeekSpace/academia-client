@@ -14,7 +14,7 @@ describe("Note Upload Page", function() {
     c_view.note_title = "user12_test_title";
     c_view.note_content = "test_content";
     c_view.note_content = "";
-    $("#note_upload").click();
+    $("#note_upload", root_view.$el).click();
     await delay(300);
     assert.equal(1,1);
     assert.equal(location.hash, "#/papers/detail?paper_id=1");
@@ -27,7 +27,7 @@ describe("Note Upload Page", function() {
     c_view.note_title = "";
     c_view.related_paper = "paper_1_name";
     c_view.note_content = "";
-    paper = {
+    c_view.paper = {
       abstract: "wkeudhweiud",
       authors: "bbb",
       collectors: [],
@@ -39,7 +39,7 @@ describe("Note Upload Page", function() {
       publish_date:"2016-12-10T07:29:27.567482+00:00",
       title:"aaaaa"
     }
-    $("#note_upload").click();
+    $("#note_upload", root_view.$el).click();
     assert.equal(location.hash, "#/notes/upload?paper_id=1");
   });
 });

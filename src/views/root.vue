@@ -1,6 +1,6 @@
 <!-- Component template -->
 <template>
-<body>
+<div>
     <!-- Navigation bar -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container-fluid">
@@ -51,7 +51,7 @@
             <h6>Copyright &copy; Trigeek 2016. Released under BSD license.</h6>
         </div>
     </div>
-</body>
+</div>
 </template>
 <!-- Script -->
 <script>
