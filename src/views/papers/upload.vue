@@ -1,33 +1,30 @@
 <template>
 <div>
     <div class="row">
-        <div class="col-sm-1 col-md-1 col-lg-1"></div>
-        <div class="col-sm-10 col-md-10 col-lg-10">
+        <div class="hidden-sm hidden-md col-lg-1"></div>
+        <div class="col-sm-12 col-md-12 col-lg-10">
             <h1>上传论文</h1>
             <hr />
             <form class="form-horizontal" role="form" @submit.prevent>
-                <div class="control-group">
-                    <div class="col-sm-10">
-                        <label for="paper_title">论文标题</label>
-                        <input type="text" class="form-control" id="paper_title" placeholder="Title of the paper" v-model="title">
-                    </div>
+                <!-- Paper title -->
+                <div class="form-group form-group-padding-fixes">
+                    <label>论文标题</label>
+                    <input type="text" class="form-control" id="paper_title" placeholder="论文标题" v-model="title">
                 </div>
-                <div class="control-group">
-                    <div class="col-sm-10">
-                        <label for="paper_author">论文作者</label>
-                        <input type="text" class="form-control" id="paper_author" placeholder="Authors of the paper" v-model="authors">
-                    </div>
+                <!-- Paper authors -->
+                <div class="form-group form-group-padding-fixes">
+                    <label>论文作者</label>
+                    <input type="text" class="form-control" id="paper_author" placeholder="论文作者" v-model="authors">
                 </div>
-                <div class="control-group">
-                    <div class="col-sm-10">
-                        <label for="paper_conf">发表会议</label>
-                        <input type="text" class="form-control" id="paper_conf" placeholder="Conference this paper was originally published on" v-model="conference">
-                    </div>
+                <!-- Paper conferences -->
+                <div class="form-group form-group-padding-fixes">
+                    <label>发布会议</label>
+                    <input type="text" class="form-control" id="paper_conf" placeholder="发布会议" v-model="conference">
                 </div>
-                <div class="control-group">
-                    <div class="col-sm-10">
-                        <label>发表时间</label>
-                        <div class="form-inline">
+                <!-- Publish time -->
+                <div class="form-group form-group-padding-fixes">
+                    <label>发表时间</label>
+                    <div class="form-inline">
                         <select class="form-control" id="year_select" v-model="year">
                             <option>选择年份</option>
                         </select>
@@ -48,31 +45,27 @@
                             <option>12</option>
                         </select>
                         月
-                        </div>
                     </div>
                 </div>
-                <div class="control-group">
-                    <div class="col-sm-10">
-                        <label>论文摘要</label>
-                        <div class="textarea">
-                            <textarea type="" class="col-sm-12 form-control" v-model="abstract"></textarea>
-                        </div>
+                <!-- Abstract -->
+                <div class="form-group form-group-padding-fixes">
+                    <label>论文摘要</label>
+                    <div class="textarea">
+                        <textarea type="" class="col-sm-12 form-control" v-model="abstract"></textarea>
                     </div>
                 </div>
-                <div class="control-group">
-                    <div class="col-sm-10">
-                        <label>选择文件</label>
-                        <input class="input-file" type="file" id="file_selector">
-                    </div>
+                <!-- Paper PDF file -->
+                <div class="form-group form-group-padding-fixes">
+                    <label>选择文件</label>
+                    <input class="input-file" type="file" id="file_selector">
                 </div>
-                <div class="control-group">
-                    <div class="controls col-sm-10">
-                        <button class="btn btn-default" @click="upload()">提交</button>
-                    </div>
+                <!-- Submit paper -->
+                <div class="form-group form-group-padding-fixes">
+                    <button class="btn btn-default" @click="upload()">提交</button>
                 </div>
             </form>
         </div>
-        <div class="col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="hidden-sm hidden-md col-lg-1"></div>
     </div>
 </div>
 </template>

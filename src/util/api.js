@@ -167,6 +167,16 @@ export function res_data(model, name, default_http_opts={})
 }
 
 /**
+ * Get model prototype. Used for defining instance action and data.
+ *
+ * @param model - Model project.
+ * @return Model class prototype.
+ */
+export function model_proto(model)
+{   return model[model.class].prototype;
+}
+
+/**
  * Define instance action.
  *
  * @param model - Model object.
@@ -175,13 +185,13 @@ export function res_data(model, name, default_http_opts={})
  * @return A function corresponding with given instance action API endpoint.
  */
 export function inst_action(model, name, default_http_opts={})
-{   //Path
-    let path = `${get_res_path(model)}/${this.id}/${name}`;
-    //Adaptor and transport
+{   //Adaptor and transport
     let adaptor = model.getAdapter(ADAPTOR_NAME);
 
     return function(params=null, http_opts={})
-    {   //HTTP options
+    {   //Path
+        let path = `${get_res_path(model)}/${this.id}/${name}`;
+        //HTTP options
         let final_opts = _.merge(
             {url: path, data: params, method: "POST"},
             default_http_opts,
@@ -201,13 +211,13 @@ export function inst_action(model, name, default_http_opts={})
  * @return A function corresponding with given instance data API endpoint.
  */
 export function inst_data(model, name, default_http_opts={})
-{   //Path
-    let path = `${get_res_path(model)}/${this.id}/${name}`;
-    //Adaptor and transport
+{   //Adaptor and transport
     let adaptor = model.getAdapter(ADAPTOR_NAME);
 
     return function(params=null, http_opts={})
-    {   //HTTP options
+    {   //Path
+        let path = `${get_res_path(model)}/${this.id}/${name}`;
+        //HTTP options
         let final_opts = _.merge(
             {url: path, params: params, method: "GET"},
             default_http_opts,

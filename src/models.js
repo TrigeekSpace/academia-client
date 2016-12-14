@@ -4,7 +4,14 @@ import DSHttpAdapter from "js-data-http";
 import _ from "lodash";
 
 import {ADAPTOR_NAME, BKND_URL} from "academia/config"
-import {transform_query, transform_request_form_data, transform_response, res_action} from "academia/util/api";
+import {
+    transform_query,
+    transform_request_form_data,
+    transform_response,
+    res_action,
+    inst_action,
+    model_proto
+} from "academia/util/api";
 
 //[ Data store ]
 //Data store
@@ -64,7 +71,12 @@ window.Note = Note
 
 //[ Resource Actions & Data ]
 //User model
-_.extend(User, {
+_.merge(User, {
     login: res_action(User, "login"),
     logout: res_action(User, "logout")
+});
+
+//Paper model
+_.extend(model_proto(Paper), {
+    toggle_collect_status: inst_action(Paper, "toggle_collect_status")
 });
