@@ -20,8 +20,6 @@ import {
 export let store = new DS();
 //HTTP adaptor
 export let adaptor = new DSHttpAdapter({
-    //Base path
-    basePath: `${BKND_URL}`,
     //Deserialize
     deserialize: transform_response,
     //Query transform
@@ -35,8 +33,11 @@ window.adaptor = adaptor;
 if (process.env.NODE_ENV=="test")
     adaptor.http = mock_transport();
 else
+{   //Backend base path
+    adaptor.defaults.basePath = BKND_URL;
     //Request transformer (Cannot be added to adaptor settings)
     adaptor.http.defaults.transformRequest.unshift(transform_request_form_data);
+}
 
 //Register adaptor
 store.registerAdapter(ADAPTOR_NAME, adaptor, {default: true});
@@ -50,7 +51,7 @@ export let Paper = store.defineResource({
     relations: {
         hasMany: {
             notes: {
-                localField: "notes",
+                localField: "$notes",
                 foreignKey: "paper"
             }
         }
@@ -60,7 +61,7 @@ export let Paper = store.defineResource({
 export let Note = store.defineResource({
     name: "notes",
     relations: {
-        belongsTo: {
+        hasOne: {
             users: {
                 localField: "$author",
                 localKey: "author"

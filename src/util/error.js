@@ -38,7 +38,8 @@ export class APIError extends Error
 {   //Constructor
     constructor(resp)
     {   //Copy response data to error
-        _.extend(this, resp.data);
+        for (let key in resp.data)
+            this[key] = resp.data[key];
 
         //Get handler and error message
         let handler = error_handler_mapping[this.type];

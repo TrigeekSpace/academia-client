@@ -76,12 +76,9 @@ export default {
             //Display mode
             this.display_mode = this.$route.query.note_id?"note":"paper";
 
-            //Fetch paper metadata from remote
-            this._paper = await Paper.find(paper_id, {
-                params: {
-                    with: ["notes", "notes.author"]
-                }
-            });
+            //Fetch paper and related data from remote
+            this._paper = await Paper.find(paper_id);
+            await Paper.loadRelations(this._paper, ["notes", "users"]);
             //Show on page
             console.log(this._paper);
             this.paper = to_plain(this._paper, ["notes", "notes.$author"]);

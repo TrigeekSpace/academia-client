@@ -2,6 +2,8 @@
 import _ from "lodash";
 import {root_view} from "academia/index";
 
+import {delay as _delay} from "academia/util/core";
+
 //[ API Test ]
 /**
  * Create a mock API handler for given path.
@@ -145,17 +147,22 @@ if (process.env.NODE_ENV=="test")
         {   this.__length = length;
         }
     });
-
-//[ Legacy / Compat ]
-export function get_current_view(root_view) {
-  console.log(root_view);
-  for (let c of root_view.$children[0].$children) {
-    if (c.$el instanceof HTMLDivElement){
-      return c;
-    }
-  }
 }
 
+/**
+ * Get current Vue view instance.
+ *
+ * @param root_view Root view component.
+ * @return Current Vue view instance.
+ */
+export function get_current_view(root_view)
+{   for (let c of root_view.$children[0].$children)
+    {   if (c.$el instanceof HTMLDivElement)
+            return c;
+    }
+}
+
+//[ Legacy / Compat ]
 export function mock_login() {
   root_view.$root.user = {
     "active":false,
@@ -186,12 +193,9 @@ export function mock_login() {
     "username":"user111"
   }
 }
+
 export function mock_logout() {
   root_view.$root.user = undefined;
 }
 
-export function delay(time) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, time);
-  });
-}
+export let delay = _delay;
