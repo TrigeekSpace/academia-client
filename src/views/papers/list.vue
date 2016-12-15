@@ -12,7 +12,7 @@
                     </span>
                     <input id="query_arg" type="text" class="form-control" placeholder="在Academia上搜索论文" v-model="query_arg"  data-container="body" data-toggle="popover" data-placement="bottom" data-content="你至少需要一个关键词"/>
                     <span class="input-group-btn">
-                      <button class="btn btn-default" @click="search()">Search!</button>&nbsp;
+                      <button id="search_btn" class="btn btn-default" @click="search()">Search!</button>&nbsp;
                     </span>
                   </div>
                 </form>
