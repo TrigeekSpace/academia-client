@@ -10,6 +10,8 @@
             <!-- Menu -->
             <ul class="nav navbar-nav">
                 <li class="active" href="javascript:void(0)" @click="$root.toggle_sidebar()" id="menu-button"><a href="#"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Menu</a></li>
+                <li id="back-button"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+                <li id="forward-button"><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
             </ul>
             <!-- Anonymous user -->
             <ul class="nav navbar-nav navbar-right" v-if="!$root.user">
@@ -82,6 +84,12 @@ export default {
         $("#menu-button").mouseleave((e) => {
             if (e.pageY <= $("#menu-button").offset().top + $("#menu-button").outerHeight())
             this.$root.close_sidebar();
+        });
+        $("#back-button").click(() => {
+            this.$router.back();
+        });
+        $("#forward-button").click(() => {
+            this.$router.forward();
         });
     }
 };
