@@ -10,24 +10,15 @@ describe("Index Page", function() {
   it("should be able to visit the collection's detail page", async function(){
     root_view.$router.push({name: "index"});
     await delay(100)
-    console.log(root_view);
     let c_view = get_current_view(root_view);
     c_view.search_text = "new"
-
-    console.log(location.hash);
-
-    $("#search_btn", root_view.$el).click();
-    await delay(100)
+    $("#search-btn", root_view.$el).click();
     assert.equal(location.hash, "#/papers/list?query=new");
   });
 
   it("should be able to visit the register page", async function(){
     root_view.$router.push({name: "index"});
-    //let a = $("[href='#/users/register']", root_view.$el)[0];
-    let a = $("a:contains('Register')", root_view.$el)[0];
-    console.log(a);
-    a.click();
-    await delay(100)
+    $("a:contains('Register')", root_view.$el)[0].click();
     assert.equal(location.hash, "#/users/register");
   });
 

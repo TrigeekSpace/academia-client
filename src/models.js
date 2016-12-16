@@ -39,7 +39,9 @@ window.adaptor = adaptor;
 
 //Test mode; use mock HTTP backend
 if (process.env.NODE_ENV=="test")
+{   adaptor.defaults.basePath = "/";
     adaptor.http = mock_transport();
+}
 else
 {   //Backend base path
     adaptor.defaults.basePath = BKND_URL;
