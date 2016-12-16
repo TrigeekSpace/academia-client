@@ -77,11 +77,11 @@ export default {
     },
     mounted(){
         $("#root-side-bar").mouseleave(() => {
-            this.$root.toggle_sidebar();
+            this.$root.close_sidebar();
         });
         $("#menu-button").mouseleave((e) => {
             if (e.pageY <= $("#menu-button").offset().top + $("#menu-button").outerHeight())
-            this.$root.toggle_sidebar();
+            this.$root.close_sidebar();
         });
     }
 };

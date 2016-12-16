@@ -63,16 +63,34 @@ export let root_view = new Vue({
     methods: {
         //Toggle sidebar
         toggle_sidebar()
-        {   this.show_side_bar = !this.show_side_bar;
-            if (this.show_side_bar) {
-                $("#root-side-bar").animate({
-                    left: 0
-                }, 100);
+        {   if (!this.show_side_bar) {
+                this.show_side_bar = !this.show_side_bar;
+                if (this.show_side_bar) {
+                    $("#root-side-bar").animate({
+                        left: 0
+                    }, 100);
+                }
+                else {
+                    $("#root-side-bar").animate({
+                        left: "-200px"
+                    }, 100);
+                }
             }
-            else {
-                $("#root-side-bar").animate({
-                    left: "-200px"
-                }, 100);
+        },
+        //close sidebar
+        close_sidebar()
+        {   if (this.show_side_bar) {
+                this.show_side_bar = !this.show_side_bar;
+                if (this.show_side_bar) {
+                    $("#root-side-bar").animate({
+                        left: 0
+                    }, 100);
+                }
+                else {
+                    $("#root-side-bar").animate({
+                        left: "-200px"
+                    }, 100);
+                }
             }
         },
         //Create file transfer task
