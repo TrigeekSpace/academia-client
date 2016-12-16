@@ -5,11 +5,11 @@
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="javascript:void(0)" @click="$root.toggle_sidebar()">Academia</a>
+                <a class="navbar-brand" href="#">Academia</a>
             </div>
             <!-- Menu -->
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">test</a></li>
+                <li class="active" href="javascript:void(0)" @click="$root.toggle_sidebar()"><a href="#"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Menu</a></li>
             </ul>
             <!-- Anonymous user -->
             <ul class="nav navbar-nav navbar-right" v-if="!$root.user">
