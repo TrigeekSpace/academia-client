@@ -31,13 +31,9 @@
                         <input type="password" class="form-control" placeholder="再次输入密码" v-model="password2" />
                     </div>
                     <!-- Operations -->
-<<<<<<< Updated upstream
-                    <div class="form-group form-group-padding-fixes">
-                        <button class="btn btn-primary" @click="register_user()">注册</button>&nbsp;&nbsp;
-=======
+
                     <div class="form-group form-group-well">
-                        <button id="register_btn"class="btn btn-primary" @click="register_user()">注册</button>&nbsp;&nbsp;
->>>>>>> Stashed changes
+                        <button id="register-btn" class="btn btn-primary" @click="register_user()">注册</button>&nbsp;&nbsp;
                     </div>
                 </form>
             </div>
@@ -83,7 +79,7 @@ export default {
                 //Prompt error
                 alert({
                     type: "error",
-                    title: "登录失败",
+                    title: "注册失败",
                     message: error_text(e.data)
                 });
             }

@@ -1,45 +1,44 @@
 import Vue from 'vue';
 import assert from "assert";
-import {get_current_view, mock_login, mock_logout, delay} from "academia/util/test";
-import "academia/index";
+import {get_current_view, delay, mock_login} from "academia/util/test";
 import {root_view} from "academia/index";
-
+import {adaptor} from "academia/models"
+import "academia/index";
+import $ from "jquery";
+import {USER_DATA, PAPER_DATA, NOTE_DATA} from "academia/tests/data";
+import {append} from "academia/util/core"
 
 describe("Note Upload Page", function() {
 
   it("should be able to successfully upload note", async function(){
-    mock_login()
-    location.hash = "#/notes/upload?paper_id=1";
+    adaptor.http.mock("/papers/1", PAPER_DATA)
+    adaptor.http.mock("/notes", NOTE_DATA)
+    root_view.user = USER_DATA;
+    root_view.$router.push({path: "/notes/upload", query: {paper_id: 1}});
+    //console.log(location.hash);
+    await delay(100);
     let c_view = get_current_view(root_view);
     c_view.note_title = "user12_test_title";
     c_view.note_content = "test_content";
-    c_view.note_content = "";
+    let file_selector = $("#file-selector", root_view.$el)[0];
+    console.log(file_selector.files);
+    append(file_selector.files, "file_placeholder");
     $("#note_upload", root_view.$el).click();
-    await delay(300);
-    assert.equal(1,1);
-    assert.equal(location.hash, "#/papers/detail?paper_id=1");
+    await delay(100);
+    assert.equal(root_view.$route.path, "/");
   });
 
-  it("should be able to refuse empty value", function(){
-    mock_login()
-    location.hash = "#/notes/upload?paper_id=1";
+  it("should be able to successfully upload note", async function(){
+    root_view.$router.push({path: "/notes/upload", query: {paper_id: 1}});
+    await delay(100);
     let c_view = get_current_view(root_view);
     c_view.note_title = "";
-    c_view.related_paper = "paper_1_name";
     c_view.note_content = "";
-    c_view.paper = {
-      abstract: "wkeudhweiud",
-      authors: "bbb",
-      collectors: [],
-      conference: "ccc",
-      id: 1,
-      owners: [],
-      owngroup: [],
-      paper_file: "default/61c83864-beaa-11e6-a8e0-0242c0a81003",
-      publish_date:"2016-12-10T07:29:27.567482+00:00",
-      title:"aaaaa"
-    }
+    let file_selector = $("#file-selector", root_view.$el)[0];
+    append(file_selector.files, "file_placeholder");
     $("#note_upload", root_view.$el).click();
-    assert.equal(location.hash, "#/notes/upload?paper_id=1");
+    await delay(100);
+    assert.notEqual(root_view.$route.path, "/");
   });
+
 });

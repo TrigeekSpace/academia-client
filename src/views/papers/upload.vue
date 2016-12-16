@@ -57,11 +57,11 @@
                 <!-- Paper PDF file -->
                 <div class="form-group form-group-padding-fixes">
                     <label>选择文件</label>
-                    <input class="input-file" type="file" id="file_selector">
+                    <input class="file-selector" type="file" id="file-selector">
                 </div>
                 <!-- Submit paper -->
                 <div class="form-group form-group-padding-fixes">
-                    <button class="btn btn-default" @click="upload()">提交</button>
+                    <button id="paper-upload" class="btn btn-default" @click="upload()">提交</button>
                 </div>
             </form>
         </div>
@@ -74,6 +74,10 @@
 import $ from "jquery";
 
 import {pre_route, login_required, on_route_change} from "academia/util/route";
+import {Paper, Note, adaptor} from "academia/models";
+import {to_plain} from "academia/util/api";
+import {unify_error} from "academia/util/error";
+import {msgbox} from "academia/util/core";
 
 export default {
     data() {
@@ -101,15 +105,25 @@ export default {
             console.log(`${this.title}, ${this.authors}`);
 
             if (!this.check_input()) {
-                alert("有一些必填项没有填写");
+              msgbox({
+                      type: "error",
+                      title: "无法上传论文",
+                      message: "您尚未填写笔记标题或内容。"
+                  });
                 return;
             }
 
-            let sel = $("#file_selector")[0];
+            let sel = $("#file-selector", this.$root.$el)[0];
+            console.log(sel);
             if (sel && sel.files.length > 0) {
                 this.upload_file = sel.files[0];
             } else {
-                alert("你需要选择上传的文件");
+              console.log("bbb");
+              msgbox({
+                      type: "error",
+                      title: "无法上传论文",
+                      message: "你需要选择上传的文件"
+                  });
                 return;
             }
             Paper.create({

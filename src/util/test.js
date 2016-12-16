@@ -3,6 +3,7 @@ import _ from "lodash";
 import {root_view} from "academia/index";
 
 import {delay as _delay} from "academia/util/core";
+import {TEST_USER} from "academia/tests/data";
 
 //[ API Test ]
 /**
@@ -163,39 +164,13 @@ export function get_current_view(root_view)
 }
 
 //[ Legacy / Compat ]
-export function mock_login() {
-  root_view.$root.user = {
-    "active":false,
-    "collect_notes":[],
-    "collect_papers":[
-      {
-        id: 1,
-        title: "aaa",
-        authors: "bbb",
-        conference: "ccc"
-      }
-    ],
-    "comments":[],
-    "contribution":0,
-    "email":"aa@bbb.ccc",
-    "groups":[],"id":1,
-    "job":null,
-    "join_date":"2016-12-10T07:23:56.270261+00:00",
-    "notes":[1,2,3,4,5,6,8],
-    "papers":[],
-    "questions_asked":[],
-    "questions_downvote":[],
-    "questions_upvote":[],
-    "replies":[],
-    "replies_downvote":[],
-    "replies_upvote":[],
-    "self_introduction":null,
-    "username":"user111"
-  }
+export function mock_login(input_view) {
+  input_view.user = TEST_USER;
+  console.log(root_view)
 }
 
 export function mock_logout() {
-  root_view.$root.user = undefined;
+  root_view.user = undefined;
 }
 
 export let delay = _delay;

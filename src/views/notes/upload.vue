@@ -28,17 +28,11 @@
                         <label>批注论文</label>
                         <input type="file" id="file-selector" />
                     </div>
-<<<<<<< HEAD
                     <!-- Note operations -->
                     <div class="form-group" align="right">
                         <button class="btn btn-primary" @click="update_note()" v-if="update_mode">保存</button>&nbsp;
-                        <button class="btn btn-primary" @click="create_note()" v-if="!update_mode">发布</button>&nbsp;
+                        <button id="note_upload" class="btn btn-primary" @click="create_note()" v-if="!update_mode">发布</button>&nbsp;
                         <button class="btn btn-default" @click="$router.back()">取消</button>
-=======
-                    <div class="form-group">
-                        <button id="note_upload" class="btn btn-primary" @click="create_or_modify_note()">发布</button>&nbsp;
-                        <button id="note_save" class="btn btn-primary" @click="create_note()">暂存</button>&nbsp;
->>>>>>> 6af555f9cb6f444b05659343024c55f9155fb8e3
                     </div>
                 </form>
             </div>
@@ -94,7 +88,7 @@ export default {
 
             //Editor
             this.editor = new SimpleMDE({
-                element: $("note-content")[0],
+                element: $("#note-content", this.$root.$el)[0],
                 spellChecker: false
             });
         },
@@ -108,7 +102,7 @@ export default {
                     content: this.note_content
                 };
                 //Update annotation file
-                let file_selector = $("#file-selector")[0];
+                let file_selector = $("#file-selector", this.$root.$el)[0];
                 if (file_selector.files.length>0)
                     update_data.annotation_file = file_selector.files[0];
 
@@ -135,7 +129,7 @@ export default {
         },
         //Create note
         async create_note()
-        {   if ((!this.note_title)&&(!this.note_content))
+        {   if ((!this.note_title) || (!this.note_content))
             {   msgbox({
                     type: "error",
                     title: "无法上传笔记",
@@ -144,7 +138,7 @@ export default {
                 return;
             }
 
-            let file_selector = $("#file-selector")[0];
+            let file_selector = $("#file-selector", this.$root.$el)[0];
             //Must select a file
             if (file_selector.files.length<1)
             {   msgbox({
@@ -165,7 +159,7 @@ export default {
                 });
                 //Go to note detail page
                 this.$router.push({
-                    name: "paper_content",
+                    name: "index",
                     query: {
                         paper_id: this._paper.id,
                         note_id: note.id
