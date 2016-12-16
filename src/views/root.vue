@@ -32,7 +32,7 @@
         </div>
     </nav>
     <!-- Sidebar -->
-    <div class="sidebar" :class="$root.sidebar_classes" id="root-side-bar">
+    <div class="sidebar" id="root-side-bar">
         <ul class="nav sidebar-group">
             <li><router-link to="/"><span class="glyphicon glyphicon-search"></span> 论文搜索</router-link></li>
             <li><router-link to="/users/space"><span class="glyphicon glyphicon-globe"></span> 我的空间</router-link></li>
@@ -48,7 +48,7 @@
         <!-- Page bottom -->
         <div align="center">
             <hr />
-            <h6>Copyright &copy; Trigeek 2016. Released under BSD license.</h6>
+            <h6 v-if="$root.show_copyright">Copyright &copy; Trigeek 2016. Released under BSD license.</h6>
         </div>
     </div>
 </body>

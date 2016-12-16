@@ -38,6 +38,7 @@ let router = new VueRouter({routes});
 //Enable context injection
 router.beforeEach(inject_route_ctx(router));
 
+
 //[ Root View ]
 //Root view
 let root_view = new Vue({
@@ -49,7 +50,10 @@ let root_view = new Vue({
         show_side_bar: false,
         //File uploads & downloads
         upload_tasks: [],
-        download_tasks: []
+        download_tasks: [],
+        show_copyright: false,
+        histroy_url: ['/'],
+        current_url: 0,
     },
     //Methods
     methods: {
@@ -97,6 +101,17 @@ let root_view = new Vue({
     },
     render: (resolve) => resolve(Root),
     router
+});
+
+router.beforeEach((to, from, next)=>{
+    let $root = root_view;
+    $root.histroy_url.push(to.path);
+    $root.current_url += 1;
+    if (to.path == '/')
+        $root.show_copyright = false;
+    else
+        $root.show_copyright = true;
+    next();
 });
 
 //Test mode
