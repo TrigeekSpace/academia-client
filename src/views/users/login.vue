@@ -24,7 +24,7 @@
                     </div>
                     <!-- Password -->
                     <div class="form-group form-group-padding-fixes">
-                        <input type="password" class="form-control" placeholder="密码" v-model="password" />
+                        <input type="password" class="form-control" placeholder="密码" v-model="password" data-trigger="manual" v-on:keyup.enter="login()"/>
                     </div>
                     <!-- Operations -->
                     <div class="form-group form-group-well">
