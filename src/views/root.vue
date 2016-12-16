@@ -9,7 +9,7 @@
             </div>
             <!-- Menu -->
             <ul class="nav navbar-nav">
-                <li class="active" href="javascript:void(0)" @click="$root.toggle_sidebar()"><a href="#"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Menu</a></li>
+                <li class="active" href="javascript:void(0)" @click="$root.toggle_sidebar()" id="menu-button"><a href="#"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Menu</a></li>
             </ul>
             <!-- Anonymous user -->
             <ul class="nav navbar-nav navbar-right" v-if="!$root.user">
@@ -77,6 +77,10 @@ export default {
     },
     mounted(){
         $("#root-side-bar").mouseleave(() => {
+            this.$root.toggle_sidebar();
+        });
+        $("#menu-button").mouseleave((e) => {
+            if (e.pageY <= $("#menu-button").offset().top + $("#menu-button").outerHeight())
             this.$root.toggle_sidebar();
         });
     }
