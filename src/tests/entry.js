@@ -1,11 +1,24 @@
 //Entry.js: Entrypoint of Academia frontend tests
 import $ from "jquery";
 
+import {root_view} from "academia/index";
+import {delay} from "academia/util/core";
+
 //Mocha package directory
 const MOCHA_PKG_DIR = "./node_modules/mocha";
 //Test modules
 const TEST_MODULES = [
-    "user"
+    // "userspace_test",
+    // "index_test",
+    // "login_test",
+    // "note_upload_test",
+    // // "paper_content_test",
+    // // "paper_detail_test", //todo
+    // "paper_upload_test",
+    //
+    // "register_test",
+    "paper_list_test" //todo
+
 ];
 
 //Mocha CSS
@@ -18,8 +31,13 @@ $("<div />")
     .attr("id", "mocha")
     .appendTo("body");
 
+
 //Load mocha and run tests
-$.getScript(`${MOCHA_PKG_DIR}/mocha.js`).then(() => {
+$.getScript(`${MOCHA_PKG_DIR}/mocha.js`).then(async () => {
+    //Jump to index page
+    root_view.$router.push("/");
+    await delay(100);
+
     //Set up test environment
     mocha.setup("bdd");
     //Load tests
@@ -27,4 +45,5 @@ $.getScript(`${MOCHA_PKG_DIR}/mocha.js`).then(() => {
         require("./"+module);
     //Run tests
     mocha.run();
+
 });

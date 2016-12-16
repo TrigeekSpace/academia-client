@@ -2,32 +2,42 @@
 <template>
 <div>
     <div class="row">
-        <div class="col-sm-1 col-md-1 col-lg-1"></div>
-        <div class="col-sm-10 col-md-10 col-lg-10">
+        <div class="hidden-sm hidden-md col-lg-1"></div>
+        <div class="col-sm-12 col-md-12 col-lg-10">
             <div>
                 <h1>上传笔记</h1>
                 <hr />
-                <form class="form-horizontal" @submit.prevent>
+                <form @submit.prevent>
+                    <!-- Note title -->
                     <div class="form-group">
+                        <label>笔记名称</label>
                         <input type="text" class="form-control" placeholder="笔记名称" v-model="note_title" />
                     </div>
+                    <!-- Related paper title -->
                     <div class="form-group">
-                        <input disabled="disable" type="text" class="form-control" placeholder="对应论文" v-model="related_paper" />
+                        <label>相关论文</label>
+                        <input disabled="disable" type="text" class="form-control" placeholder="相关论文" v-model="paper_title" />
                     </div>
+                    <!-- Note content -->
                     <div class="form-group">
+                        <label>笔记内容</label>
                         <textarea id="note-content"></textarea>
                     </div>
+                    <!-- Annotation file -->
                     <div class="form-group">
-                        <input type="file" id="file-selector" placeholder="笔记内容" />
+                        <label>批注论文</label>
+                        <input type="file" id="file-selector" />
                     </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary" @click="create_or_modify_note()">发布</button>&nbsp;
-                        <button class="btn btn-primary" @click="create_note()">暂存</button>&nbsp;
+                    <!-- Note operations -->
+                    <div class="form-group" align="right">
+                        <button class="btn btn-primary" @click="update_note()" v-if="update_mode">保存</button>&nbsp;
+                        <button id="note_upload" class="btn btn-primary" @click="create_note()" v-if="!update_mode">发布</button>&nbsp;
+                        <button class="btn btn-default" @click="$router.back()">取消</button>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="hidden-sm hidden-md col-lg-1"></div>
     </div>
 </div>
 </template>
@@ -39,110 +49,146 @@ import SimpleMDE from "simplemde";
 import {Paper, Note, adaptor} from "academia/models";
 import {to_plain} from "academia/util/api";
 import {pre_route, login_required, on_route_change} from "academia/util/route";
+import {unify_error} from "academia/util/error";
+import {msgbox} from "academia/util/core";
 
 export default {
     //View data
     data()
     {   return {
+            //Note data
             note_title: "",
-            related_paper: "",
-            note_content: "",
-            paper: null,
+            paper_title: "",
+            //Update mode
+            update_mode: false
         };
     },
     beforeRouteEnter: pre_route(login_required),
     //Methods
     methods: {
-        init()
-        {
-          let p_id = this.$route.query.paper_id
-          let n_id = this.$route.query.note_id
-          console.log(p_id)
-          this.paper = Paper.get(p_id)
-          if (n_id) {
-            Note.find(n_id).then((x)=>{
-              this.note_title = x.title
-              this.note_content = x.content
-              this.note = x
-            })
-          }
+        async init()
+        {   //Note and paper ID
+            let paper_id = parseInt(this.$route.query.paper_id);
+            let note_id = parseInt(this.$route.query.note_id);
+            //Update mode
+            this.update_mode = !isNaN(note_id);
 
-          if (this.paper == null) {
-            Paper.find(p_id).then((x)=>{
-              this.paper = x
-              this.related_paper = this.paper.title
-              if (this.note && this.note.paper != p_id) {
-                this.error_visit = true
-                alert("错误的访问");
-                return;
-              }
-            })
-          } else {
-            this.related_paper = this.paper.title
-          }
-          //Editor
-          this.query_arg = decodeURIComponent(this.$route.query.note_id)
-          this.editor = new SimpleMDE({
-              element: $("note-content")[0],
-              spellChecker: false
-          });
-        },
-        create_or_modify_note(event) {
-          if (this.error_visit) {
-              alert("错误的访问");
-              return;
-          }
-          if (!this.check_input()) {
-              alert("有一些必填项没有填写");
-              return;
-          }
-          if ($("#file-selector")[0].files.length == 0) {
-            alert("至少上传一份注释文件！")
-            return;
-          }
-          if (this.$route.query.note_id === undefined) {
-            let [task, progress_handler] = this.$root.create_transfer_task(
-                this.note_title,
-                "心得",
-                "upload"
-            );
-            Note.create({
-              title: this.note_title,
-              content: this.note_content,
-              annotation_file: $("#file-selector")[0].files[0],
-              paper: this.paper.id,
-          }, {
-              onUploadProgress: progress_handler
-          }).then((resp) => {
-              this.$root.complete_transfer_task(task);
-              //Jump to index page
-              this.$router.go({name: "paper_detail", query: {paper_id: this.paper.id}});
-            }, (e) => {
-              alert(JSON.stringify(e));
+            //Paper
+            this._paper = await Paper.find(paper_id);
+            //Paper title
+            this.paper_title = this._paper.title;
+
+            //Fetch note in update mode
+            if (this.update_mode)
+            {   let note = this._note = await Note.find(note_id);
+                //Set note title and content
+                this.note_title = note.title;
+                this.note_content = note.content;
+            }
+
+            //Editor
+            this.editor = new SimpleMDE({
+                element: $("#note-content", this.$root.$el)[0],
+                spellChecker: false
             });
-          } else {
-
-          }
         },
-        check_input() {
-          return this.note_title !== "" && this.related_paper !== "" && this.note_content !== "" && this.paper !== null;
+        //Update note
+        async update_note()
+        {   try
+            {   //Update data
+                let update_data = {
+                    paper: this._paper.id,
+                    title: this.note_title,
+                    content: this.note_content
+                };
+                //Update annotation file
+                let file_selector = $("#file-selector", this.$root.$el)[0];
+                if (file_selector.files.length>0)
+                    update_data.annotation_file = file_selector.files[0];
+
+                //Do update
+                await this._note.DSUpdate(update_data, {method: "PATCH"});
+                //Go to note detail page
+                this.$router.go({
+                    name: "paper_content",
+                    query: {
+                        paper_id: this._paper.id,
+                        note_id: this._note.id
+                    }
+                });
+            }
+            catch (e)
+            {   e = unify_error(e);
+                //Prompt error
+                msgbox({
+                    type: "error",
+                    title: "无法上传笔记",
+                    message: e.toString()
+                });
+            }
+        },
+        //Create note
+        async create_note()
+        {   if ((!this.note_title) || (!this.note_content))
+            {   msgbox({
+                    type: "error",
+                    title: "无法上传笔记",
+                    message: "您尚未填写笔记标题或内容。"
+                });
+                return;
+            }
+
+            let file_selector = $("#file-selector", this.$root.$el)[0];
+            //Must select a file
+            if (file_selector.files.length<1)
+            {   msgbox({
+                    type: "error",
+                    title: "无法上传笔记",
+                    message: "您尚未选择批注论文文件。"
+                });
+                return;
+            }
+
+            try
+            {   //Create note
+                let note = await Note.create({
+                    paper: this._paper.id,
+                    title: this.note_title,
+                    content: this.note_content,
+                    annotation_file: file_selector.files[0]
+                });
+                //Go to note detail page
+                this.$router.push({
+                    name: "index",
+                    query: {
+                        paper_id: this._paper.id,
+                        note_id: note.id
+                    }
+                });
+            }
+            catch (e)
+            {   e = unify_error(e);
+                //Prompt error
+                msgbox({
+                    type: "error",
+                    title: "无法上传笔记",
+                    message: e.toString()
+                });
+            }
         }
-      },
+    },
     watch: {
         $route: on_route_change
     },
     //Computed properties
     computed: {
         note_content: {
-            get() {
-              if (this.editor)
-                return this.editor.value();
-              else
-                return null;
+            get()
+            {   return this.editor?this.editor.value():null;
             },
-            set(markdown){
-              if (this.editor)
-              this.editor.value(markdown);
+            set(markdown)
+            {   if (this.editor)
+                    this.editor.value(markdown);
             }
         }
     }

@@ -15,24 +15,25 @@
                 <!-- Register form -->
                 <form class="form-horizontal" @submit.prevent>
                     <!-- Username -->
-                    <div class="form-group form-group-well">
+                    <div class="form-group form-group-padding-fixes">
                         <input type="text" class="form-control" placeholder="用户名" v-model="username" />
                     </div>
                     <!-- E-mail -->
-                    <div class="form-group form-group-well">
+                    <div class="form-group form-group-padding-fixes">
                         <input type="email" class="form-control" placeholder="邮箱" v-model="email" />
                     </div>
                     <!-- Password -->
-                    <div class="form-group form-group-well">
+                    <div class="form-group form-group-padding-fixes">
                         <input type="password" class="form-control" placeholder="密码" v-model="password" />
                     </div>
                     <!-- Password again -->
-                    <div class="form-group form-group-well">
+                    <div class="form-group form-group-padding-fixes">
                         <input type="password" class="form-control" placeholder="再次输入密码" v-model="password2" />
                     </div>
                     <!-- Operations -->
+
                     <div class="form-group form-group-well">
-                        <button class="btn btn-primary" @click="register_user()">注册</button>&nbsp;&nbsp;
+                        <button id="register-btn" class="btn btn-primary" @click="register_user()">注册</button>&nbsp;&nbsp;
                     </div>
                 </form>
             </div>
@@ -78,7 +79,7 @@ export default {
                 //Prompt error
                 alert({
                     type: "error",
-                    title: "登录失败",
+                    title: "注册失败",
                     message: error_text(e.data)
                 });
             }

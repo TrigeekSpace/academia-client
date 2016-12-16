@@ -8,8 +8,8 @@ import {urlsafe_b64encode} from "academia/util/core";
 /**
  * Query transformer.
  *
- * @param config JS-Data model.
- * @param params Parameters to be transformed.
+ * @param config - JS-Data model.
+ * @param params - Parameters to be transformed.
  */
 export function transform_query(config, params)
 {   if (!(_.isEmpty(params)))
@@ -20,11 +20,11 @@ export function transform_query(config, params)
 /**
  * Parse response data.
  *
- * @param config - JS-Data model configuration.
+ * @param model - Resource model.
  * @param resp - HTTP response object.
  * @return Response data.
  */
-export function transform_response(config, resp)
+export function transform_response(model, resp)
 {   //Response
     if (!resp)
         return null;
@@ -43,7 +43,7 @@ export function transform_response(config, resp)
 /**
  * Transform request to FormData, if data contains File or Blob instance.
  *
- * @param data Data to be transformed.
+ * @param data - Data to be transformed.
  * @return FormData object if blobs or files are found, the same data object otherwise.
  */
 export function transform_request_form_data(data)
@@ -175,13 +175,13 @@ export function res_data(model, name, default_http_opts={})
  * @return A function corresponding with given instance action API endpoint.
  */
 export function inst_action(model, name, default_http_opts={})
-{   //Path
-    let path = `${get_res_path(model)}/${this.id}/${name}`;
-    //Adaptor and transport
+{   //Adaptor and transport
     let adaptor = model.getAdapter(ADAPTOR_NAME);
 
     return function(params=null, http_opts={})
-    {   //HTTP options
+    {   //Path
+        let path = `${get_res_path(model)}/${this.id}/${name}`;
+        //HTTP options
         let final_opts = _.merge(
             {url: path, data: params, method: "POST"},
             default_http_opts,
@@ -201,13 +201,13 @@ export function inst_action(model, name, default_http_opts={})
  * @return A function corresponding with given instance data API endpoint.
  */
 export function inst_data(model, name, default_http_opts={})
-{   //Path
-    let path = `${get_res_path(model)}/${this.id}/${name}`;
-    //Adaptor and transport
+{   //Adaptor and transport
     let adaptor = model.getAdapter(ADAPTOR_NAME);
 
     return function(params=null, http_opts={})
-    {   //HTTP options
+    {   //Path
+        let path = `${get_res_path(model)}/${this.id}/${name}`;
+        //HTTP options
         let final_opts = _.merge(
             {url: path, params: params, method: "GET"},
             default_http_opts,
@@ -232,3 +232,14 @@ export let and = _.bind(Array, null, "and"),
     in_ = _.bind(Array, null, "in"),
     nin = _.bind(Array, null, "nin"),
     contains = _.bind(Array, null, "contains");
+
+//[ Model-related ]
+/**
+ * Get model prototype. Used for defining instance action and data.
+ *
+ * @param model - Resource model.
+ * @return Model class prototype.
+ */
+export function model_proto(model)
+{   return model[model.class].prototype;
+}

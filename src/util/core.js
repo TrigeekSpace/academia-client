@@ -2,6 +2,8 @@
 import {remote} from "electron";
 import os from "os";
 
+import {test_log} from "academia/util/test";
+
 //[ Encoding ]
 //Encode unicode string to byte string
 export function encode(unicode_str, encoding="utf-8")
@@ -49,6 +51,12 @@ export function msgbox(options)
 {   //Mix default options
     options = {buttons: [], ...options};
 
+    //Test mode
+    if (process.env.NODE_ENV=="test")
+    {   test_log("msgbox", options);
+        return;
+    }
+
     let platform = os.platform()
     //macOS special behavior
     if (platform=="darwin")
@@ -60,4 +68,28 @@ export function msgbox(options)
     }
 
     return remote.dialog.showMessageBox(options);
+}
+
+//[ Async Operations ]
+/**
+ * Delay execution of program.
+ *
+ * @param time Time in milliseconds.
+ * @return A promise that will be resolved after given time.
+ */
+export function delay(time)
+{   return new Promise((resolve) => {
+        setTimeout(resolve, time);
+    });
+}
+
+//[ Array-like Operations ]
+/**
+ * Append to array-like object.
+ *
+ * @param array_like Array-like object.
+ * @return obj Object to be added.
+ */
+export function append(array_like, obj)
+{   return Array.prototype.push.call(array_like, obj);
 }

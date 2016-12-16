@@ -40,8 +40,14 @@ router.beforeEach(inject_route_ctx(router));
 
 
 //[ Root View ]
+//Root node
+export let root_node = $("<div />");
+//Do not show UI in test mode
+if (process.env.NODE_ENV!="test")
+    root_node.appendTo("body");
+
 //Root view
-let root_view = new Vue({
+export let root_view = new Vue({
     //Root level data
     data: {
         //Current user
@@ -52,8 +58,6 @@ let root_view = new Vue({
         upload_tasks: [],
         download_tasks: [],
         show_copyright: false,
-        histroy_url: ['/'],
-        current_url: 0,
     },
     //Methods
     methods: {
@@ -99,28 +103,16 @@ let root_view = new Vue({
         {   _.pull(this[task.transfer_type+"_tasks"], task);
         }
     },
+    el: root_node[0],
     render: (resolve) => resolve(Root),
     router
 });
 
 router.beforeEach((to, from, next)=>{
     let $root = root_view;
-    $root.histroy_url.push(to.path);
-    $root.current_url += 1;
     if (to.path == '/')
         $root.show_copyright = false;
     else
         $root.show_copyright = true;
     next();
 });
-
-//Test mode
-if (process.env.NODE_ENV=="test")
-{   let test_root = $("<div />")
-        .style("display", "none")
-        .appendTo("body");
-    root_view.$mount(test_root[0]);
-}
-//Debug or release mode
-else
-    root_view.$mount("body");

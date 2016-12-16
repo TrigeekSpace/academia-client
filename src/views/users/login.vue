@@ -19,17 +19,17 @@
                 <!-- Log-in form -->
                 <form class="form-horizontal" @submit.prevent>
                     <!-- Username -->
-                    <div class="form-group form-group-well">
+                    <div class="form-group form-group-padding-fixes">
                         <input type="text" class="form-control" placeholder="用户名" v-model="username" />
                     </div>
                     <!-- Password -->
-                    <div class="form-group form-group-well">
+                    <div class="form-group form-group-padding-fixes">
                         <input type="password" class="form-control" placeholder="密码" v-model="password" />
                     </div>
                     <!-- Operations -->
                     <div class="form-group form-group-well">
-                        <button class="btn btn-primary" @click="login()">登录</button>&nbsp;&nbsp;
-                        <button class="btn btn-default">忘记密码</button>
+                        <button id="login_btn" class="btn btn-primary" @click="login()">登录</button>&nbsp;&nbsp;
+                         <button class="btn btn-default">忘记密码</button>
                     </div>
                 </form>
             </div>
