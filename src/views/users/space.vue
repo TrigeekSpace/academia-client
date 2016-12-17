@@ -70,11 +70,13 @@
                 </div>
             </div>
             <!-- Display mode actions -->
-            <div class="row" align="right" v-if="!edit_mode">
+            <div class="row" v-if="!edit_mode">
+                <div class="col-sm-9 col-md-9 col-lg-9"></div>
                 <button class="btn btn-primary" @click="set_edit_mode(true)">编辑用户信息</button>
             </div>
             <!-- Edit mode actions -->
-            <div class="row" align="right" v-if="edit_mode">
+            <div class="row" v-if="edit_mode">
+                <div class="col-sm-9 col-md-9 col-lg-9"></div>
                 <button class="btn btn-primary" @click="update_user_info()">保存</button>
                 <button class="btn btn-default" @click="set_edit_mode(false)">取消</button>
             </div>
@@ -83,23 +85,15 @@
                 <h2>我收藏的论文</h2>
             </div>
             <div class="row">
-                <!-- <div class="col-sm-1 col-md-1 col-lg-1" v-for="paper in this.papers">
-                    <div class="well paper_item" align="center">
-                        aaa
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="list-group">
+                        <router-link :id="`paper_title_${paper.id}`" :to="`/papers/detail?paper_id=${paper.id}`" class="list-group-item" v-for="paper of user.collect_papers">
+                            <h2 class="list-group-item-heading">{{paper.title}}</h2>
+                            <p class="list-group-item-text">作者：{{paper.authors}}</p>
+                            <p class="list-group-item-text">会议：{{paper.conference}}</p>
+                        </router-link>
                     </div>
-                </div> -->
-
-                <div class="col-sm-1 col-md-1 col-lg-1"></div>
-                <div class="col-sm-10 col-md-10 col-lg-10">
-                    <ul class="list-group">
-                        <li class="list-group-item" v-for="paper of user.collect_papers">
-                            <p><router-link :id="`paper_title_${paper.id}`" :to="`/papers/detail?paper_id=${paper.id}`"><strong>{{paper.title}}</strong></router-link></p>
-                            <p>作者：{{paper.authors}}</p>
-                            <p>会议：{{paper.conference}}</p>
-                        </li>
-                    </ul>
                 </div>
-                <div class="col-sm-1 col-md-1 col-lg-1"></div>
             </div>
             <!-- Collected notes -->
             <div class="row">
