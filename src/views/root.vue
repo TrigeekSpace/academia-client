@@ -5,11 +5,13 @@
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="javascript:void(0)" @click="$root.toggle_sidebar()">Academia</a>
+                <a class="navbar-brand" href="#">Academia</a>
             </div>
             <!-- Menu -->
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">test</a></li>
+                <li class="active" href="javascript:void(0)" @click="$root.toggle_sidebar()" id="menu-button"><a href="#"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Menu</a></li>
+                <li id="back-button"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+                <li id="forward-button"><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
             </ul>
             <!-- Anonymous user -->
             <ul class="nav navbar-nav navbar-right" v-if="!$root.user">
@@ -32,7 +34,7 @@
         </div>
     </nav>
     <!-- Sidebar -->
-    <div class="sidebar" :class="$root.sidebar_classes" id="root-side-bar">
+    <div class="sidebar" id="root-side-bar">
         <ul class="nav sidebar-group">
             <li><router-link to="/"><span class="glyphicon glyphicon-search"></span> 论文搜索</router-link></li>
             <li><router-link to="/users/space"><span class="glyphicon glyphicon-globe"></span> 我的空间</router-link></li>
@@ -48,7 +50,7 @@
         <!-- Page bottom -->
         <div align="center">
             <hr />
-            <h6>Copyright &copy; Trigeek 2016. Released under BSD license.</h6>
+            <h6 v-if="$root.show_copyright">Copyright &copy; Trigeek 2016. Released under BSD license.</h6>
         </div>
     </div>
 </div>
@@ -85,7 +87,17 @@ export default {
         }
 
         $("#root-side-bar").mouseleave(() => {
-            this.$root.toggle_sidebar();
+            this.$root.close_sidebar();
+        });
+        $("#menu-button").mouseleave((e) => {
+            if (e.pageY <= $("#menu-button").offset().top + $("#menu-button").outerHeight())
+            this.$root.close_sidebar();
+        });
+        $("#back-button").click(() => {
+            this.$router.back();
+        });
+        $("#forward-button").click(() => {
+            this.$router.forward();
         });
     }
 };

@@ -38,6 +38,7 @@ let router = new VueRouter({routes});
 //Enable context injection
 router.beforeEach(inject_route_ctx(router));
 
+
 //[ Root View ]
 //Root node
 export let root_node = $("<div />");
@@ -55,22 +56,41 @@ export let root_view = new Vue({
         show_side_bar: false,
         //File uploads & downloads
         upload_tasks: [],
-        download_tasks: []
+        download_tasks: [],
+        show_copyright: false,
     },
     //Methods
     methods: {
         //Toggle sidebar
         toggle_sidebar()
-        {   this.show_side_bar = !this.show_side_bar;
-            if (this.show_side_bar) {
-                $("#root-side-bar").animate({
-                    left: 0
-                }, 100);
+        {   if (!this.show_side_bar) {
+                this.show_side_bar = !this.show_side_bar;
+                if (this.show_side_bar) {
+                    $("#root-side-bar").animate({
+                        left: 0
+                    }, 100);
+                }
+                else {
+                    $("#root-side-bar").animate({
+                        left: "-200px"
+                    }, 100);
+                }
             }
-            else {
-                $("#root-side-bar").animate({
-                    left: "-200px"
-                }, 100);
+        },
+        //close sidebar
+        close_sidebar()
+        {   if (this.show_side_bar) {
+                this.show_side_bar = !this.show_side_bar;
+                if (this.show_side_bar) {
+                    $("#root-side-bar").animate({
+                        left: 0
+                    }, 100);
+                }
+                else {
+                    $("#root-side-bar").animate({
+                        left: "-200px"
+                    }, 100);
+                }
             }
         },
         //Create file transfer task
@@ -104,4 +124,13 @@ export let root_view = new Vue({
     el: root_node[0],
     render: (resolve) => resolve(Root),
     router
+});
+
+router.beforeEach((to, from, next)=>{
+    let $root = root_view;
+    if (to.path == '/')
+        $root.show_copyright = false;
+    else
+        $root.show_copyright = true;
+    next();
 });

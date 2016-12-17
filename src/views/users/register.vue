@@ -28,7 +28,7 @@
                     </div>
                     <!-- Password again -->
                     <div class="form-group form-group-padding-fixes">
-                        <input type="password" class="form-control" placeholder="再次输入密码" v-model="password2" />
+                        <input type="password" class="form-control" placeholder="再次输入密码" v-model="password2" data-trigger="manual" v-on:keyup.enter="register_user()"/>
                     </div>
                     <!-- Operations -->
 
