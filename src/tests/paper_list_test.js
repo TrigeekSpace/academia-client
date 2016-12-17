@@ -24,7 +24,7 @@ describe("Search Result Page", function() {
   it("should be able to add more paper", async function(){
     adaptor.http.oneshot("/papers", [PAPER_DATA])
     root_view.$router.push({path: "/papers/list", query: {query: "k"}});
-
+    await delay(100); 
     let a = $("#more-paper-div", root_view.$el);
     console.log(a);
     adaptor.http.oneshot("/papers", [{...PAPER_DATA, id: 2}])

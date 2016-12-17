@@ -14,11 +14,11 @@
         <blockquote class="blockquote">{{paper.abstract}}</blockquote>
         <!-- Paper operations -->
         <div align="right">
-            <button class="btn btn-default">下载论文</button>
-            <button class="btn btn-primary" v-if="$root.user&&(!collected)" @click="toggle_collect_status()">收藏论文</button>
-            <button class="btn btn-primary" v-if="$root.user&&collected" @click="toggle_collect_status()">取消收藏</button>
-            <router-link class="btn btn-success" :to="`/notes/upload?paper_id=${paper.id}`">撰写笔记</router-link>
-            <router-link class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">在线查看</router-link>
+            <button id="download-paper" class="btn btn-default">下载论文</button>
+            <button id="collect-paper" class="btn btn-primary" v-if="$root.user&&(!collected)" @click="toggle_collect_status()">收藏论文</button>
+            <button id="decollect-paper" class="btn btn-primary" v-if="$root.user&&collected" @click="toggle_collect_status()">取消收藏</button>
+            <router-link id="upload-note" class="btn btn-success" :to="`/notes/upload?paper_id=${paper.id}`">撰写笔记</router-link>
+            <router-link id="view-paper-content" class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">在线查看</router-link>
         </div>
         <!-- Questions -->
         <h2>热门问答</h2>

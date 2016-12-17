@@ -70,11 +70,11 @@
             </div>
             <!-- Display mode actions -->
             <div class="row" align="right" v-if="!edit_mode">
-                <button class="btn btn-primary" @click="set_edit_mode(true)">编辑用户信息</button>
+                <button id="modify-user-info-btn" class="btn btn-primary" @click="set_edit_mode(true)">编辑用户信息</button>
             </div>
             <!-- Edit mode actions -->
             <div class="row" align="right" v-if="edit_mode">
-                <button class="btn btn-primary" @click="update_user_info()">保存</button>
+                <button id="save-modify-info" class="btn btn-primary" @click="update_user_info()">保存</button>
                 <button class="btn btn-default" @click="set_edit_mode(false)">取消</button>
             </div>
             <!-- Collected papers -->
@@ -92,7 +92,7 @@
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     <ul class="list-group">
                         <li class="list-group-item" v-for="paper of user.collect_papers">
-                            <p><router-link :id="`paper_title_${paper.id}`" :to="`/papers/detail?paper_id=${paper.id}`"><strong>{{paper.title}}</strong></router-link></p>
+                            <p><router-link :id="`paper-title-${paper.id}`" :to="`/papers/detail?paper_id=${paper.id}`"><strong>{{paper.title}}</strong></router-link></p>
                             <p>作者：{{paper.authors}}</p>
                             <p>会议：{{paper.conference}}</p>
                         </li>

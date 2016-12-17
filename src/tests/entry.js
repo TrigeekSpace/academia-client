@@ -8,16 +8,15 @@ import {delay} from "academia/util/core";
 const MOCHA_PKG_DIR = "./node_modules/mocha";
 //Test modules
 const TEST_MODULES = [
-    // "userspace_test",
-    // "index_test",
-    // "login_test",
-    // "note_upload_test",
-    // // "paper_content_test",
-    // // "paper_detail_test", //todo
-    // "paper_upload_test",
-    //
-    // "register_test",
-    "paper_list_test" //todo
+    "userspace_test",
+    "index_test",
+    "login_test",
+    "note_upload_test",
+    // "paper_content_test",
+    "paper_detail_test", //todo
+    "paper_upload_test",
+    "register_test",
+    "paper_list_test" //something need to be fixed
 
 ];
 
