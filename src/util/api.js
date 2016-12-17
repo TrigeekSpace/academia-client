@@ -20,11 +20,11 @@ export function transform_query(config, params)
 /**
  * Parse response data.
  *
- * @param config - JS-Data model configuration.
+ * @param model - Resource model.
  * @param resp - HTTP response object.
  * @return Response data.
  */
-export function transform_response(config, resp)
+export function transform_response(model, resp)
 {   //Response
     if (!resp)
         return null;
@@ -233,11 +233,11 @@ export let and = _.bind(Array, null, "and"),
     nin = _.bind(Array, null, "nin"),
     contains = _.bind(Array, null, "contains");
 
-//[ Misc ]
+//[ Model-related ]
 /**
  * Get model prototype. Used for defining instance action and data.
  *
- * @param model - Model project.
+ * @param model - Resource model.
  * @return Model class prototype.
  */
 export function model_proto(model)

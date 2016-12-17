@@ -28,7 +28,7 @@
                     </div>
                     <!-- Password again -->
                     <div class="form-group form-group-padding-fixes">
-                        <input type="password" class="form-control" placeholder="再次输入密码" v-model="password2" />
+                        <input type="password" class="form-control" placeholder="再次输入密码" v-model="password2" data-trigger="manual" v-on:keyup.enter="register_user()"/>
                     </div>
                     <!-- Operations -->
 
@@ -45,6 +45,7 @@
 <!-- Script -->
 <script>
 import {User} from "academia/models";
+import {msgbox} from "academia/util/core";
 import {unify_error} from "academia/util/error";
 
 export default {
@@ -77,10 +78,10 @@ export default {
             catch (e)
             {   e = unify_error(e);
                 //Prompt error
-                alert({
+                msgbox({
                     type: "error",
                     title: "注册失败",
-                    message: error_text(e.data)
+                    message: e.message
                 });
             }
         }

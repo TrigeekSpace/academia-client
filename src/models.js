@@ -20,13 +20,21 @@ import {
 export let store = new DS();
 //HTTP adaptor
 export let adaptor = new DSHttpAdapter({
-    //Deserialize
-    deserialize: transform_response,
+    //Deserialize process
+    deserialize: (model, data) => {
+        //Transform response
+        data = transform_response(model, data);
+        //Inject related objects
+        //data = inject_related(model, data);
+
+        return data
+    },
     //Query transform
     queryTransform: transform_query,
     //HTTP default configuration
     httpConfig: {headers: {}}
 });
+window.store = store;
 window.adaptor = adaptor;
 
 //Test mode; use mock HTTP backend
@@ -47,39 +55,18 @@ store.registerAdapter(ADAPTOR_NAME, adaptor, {default: true});
 //[ Models ]
 //User model
 export let User = store.defineResource("users");
+//Paper model
+export let Paper = store.defineResource("papers");
+//Note model
+export let Note = store.defineResource("notes");
 
-export let Paper = store.defineResource({
-    name: "papers",
-    relations: {
-        hasMany: {
-            notes: {
-                localField: "$notes",
-                foreignKey: "paper"
-            }
-        }
-    }
-});
-
-export let Note = store.defineResource({
-    name: "notes",
-    relations: {
-        hasOne: {
-            users: {
-                localField: "$author",
-                localKey: "author"
-            }
-        }
-    }
-});
-
-window.User = User
-window.Paper = Paper
-window.Note = Note
-window.to_plain = to_plain
+window.User = User;
+window.Paper = Paper;
+window.Note = Note;
 
 //[ Resource Actions & Data ]
-//User model
-_.merge(User, {
+//User model actions
+_.extend(User, {
     login: res_action(User, "login"),
     logout: res_action(User, "logout")
 });

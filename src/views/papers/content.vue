@@ -16,8 +16,8 @@
         <div align="right" v-if="$root.user&&(active_view=='note')">
             <button class="btn btn-primary" v-if="!note_collected" @click="toggle_collect_status()">收藏笔记</button>
             <button class="btn btn-primary" v-if="note_collected" @click="toggle_collect_status()">取消收藏</button>
-            <router-link class="btn btn-success" v-if="$root.user.id==current_note.author" :to="`/notes/upload?paper_id=${paper.id}&note_id=${current_note.id}`">编辑笔记</router-link>
-            <button class="btn btn-danger" v-if="$root.user.id==current_note.author" @click="delete_note()">删除笔记</button>
+            <router-link class="btn btn-success" v-if="$root.user.id==current_note.author.id" :to="`/notes/upload?paper_id=${paper.id}&note_id=${current_note.id}`">编辑笔记</router-link>
+            <button class="btn btn-danger" v-if="$root.user.id==current_note.author.id" @click="delete_note()">删除笔记</button>
         </div>
         <!-- PDF view -->
         <iframe class="show-area" v-if="active_view=='pdf'" :src="`./dist/pdf.js/web/viewer.html?file=${pdf_url}`"></iframe>
@@ -33,7 +33,7 @@
             </li>
             <li class="list-group-item" v-for="note in paper.notes" @click="show_note(note.id)">
                 <b>{{note.title}}</b><br />
-                <span class="glyphicon glyphicon-user"></span> {{note.$author.username}}
+                <span class="glyphicon glyphicon-user"></span> {{note.author.username}}
             </li>
         </ul>
     </div>
@@ -77,11 +77,12 @@ export default {
             this.display_mode = this.$route.query.note_id?"note":"paper";
 
             //Fetch paper and related data from remote
-            this._paper = await Paper.find(paper_id);
-            await Paper.loadRelations(this._paper, ["notes", "users"]);
+            let paper = await Paper.find(paper_id, {
+                params: {with: ["notes", "notes.author"]},
+                bypassCache: true
+            });
             //Show on page
-            console.log(this._paper);
-            this.paper = to_plain(this._paper, ["notes", "notes.$author"]);
+            this.paper = to_plain(paper, ["notes", "notes.author"]);
 
             //Show paper
             if (this.display_mode=="paper")
@@ -94,8 +95,11 @@ export default {
             else
             {   let note_id = parseInt(this.$route.query.note_id);
                 //Fetch note
-                let note = this._note = await Note.find(note_id);
-                this.current_note = to_plain(note);
+                let note = this._note = await Note.find(note_id, {
+                    params: {with: ["author"]},
+                    bypassCache: true
+                });
+                this.current_note = to_plain(note, ["author"]);
 
                 //Set PDF URL
                 this.pdf_url = `${BKND_URL}/depot/${note.annotation_file}`;
@@ -112,12 +116,15 @@ export default {
         {   //Remove note
             await this._note.DSDestroy();
             //Show paper
-            this.$router.go({path: "/papers/content", query: {paper_id: this.paper.id}})
+            this.$router.push({
+                path: "/papers/content",
+                query: {paper_id: this.paper.id}
+            });
         },
         //Toggle collect status
         async toggle_collect_status()
         {   let resp = await this._note.toggle_collect_status();
-            this.collected = resp.data.collected;
+            this.note_collected = resp.data.collected;
         },
         //Show paper
         show_paper()
@@ -130,8 +137,7 @@ export default {
         },
         //Show note
         show_note(note_id)
-        {   console.log(note_id);
-            this.$router.push({
+        {   this.$router.push({
                 path: "/papers/content",
                 query: {
                     paper_id: this.paper.id,

@@ -24,7 +24,7 @@
                     </div>
                     <!-- Password -->
                     <div class="form-group form-group-padding-fixes">
-                        <input type="password" class="form-control" placeholder="密码" v-model="password" />
+                        <input type="password" class="form-control" placeholder="密码" v-model="password" data-trigger="manual" v-on:keyup.enter="login()"/>
                     </div>
                     <!-- Operations -->
                     <div class="form-group form-group-well">
@@ -71,6 +71,11 @@ export default {
                 //Set token header
                 adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = data.token;
 
+                localStorage.setItem("login", JSON.stringify({
+                    user: data.user,
+                    token: data.token
+                }));
+
                 //Next page; fallback to index page
                 let next = this.$route.query.next;
                 next = next?JSON.parse(urlsafe_b64decode(next)):"/";
@@ -83,7 +88,7 @@ export default {
                 msgbox({
                     type: "error",
                     title: "登录失败",
-                    message: e.toString()
+                    message: e.message
                 });
             }
         }
