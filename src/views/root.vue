@@ -9,7 +9,7 @@
             </div>
             <!-- Menu -->
             <ul class="nav navbar-nav">
-                <li class="active" href="javascript:void(0)" @click="$root.toggle_sidebar()" id="menu-button"><a><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Menu</a></li>
+                <li class="active" href="javascript:void(0)" @click="$root.toggle_sidebar()" id="menu-button"><a href="javascript:void(0)"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Menu</a></li>
                 <li id="back-button"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
                 <li id="forward-button"><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
             </ul>
@@ -39,6 +39,7 @@
             <li><router-link to="/"><span class="glyphicon glyphicon-search"></span> 论文搜索</router-link></li>
             <li><router-link to="/users/space"><span class="glyphicon glyphicon-globe"></span> 我的空间</router-link></li>
             <li><router-link to="/papers/upload"><span class="glyphicon glyphicon-upload"></span> 上传论文</router-link></li>
+            <li><router-link to="/setting"><span class="glyphicon glyphicon-cog"></span> 偏好设置</router-link></li>
         </ul>
         <ul class="nav sidebar-group">
             <li><router-link to="/local/transfer"><span class="glyphicon glyphicon-transfer"></span> 传输任务</router-link></li>
