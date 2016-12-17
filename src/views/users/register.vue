@@ -45,6 +45,7 @@
 <!-- Script -->
 <script>
 import {User} from "academia/models";
+import {msgbox} from "academia/util/core";
 import {unify_error} from "academia/util/error";
 
 export default {
@@ -77,10 +78,10 @@ export default {
             catch (e)
             {   e = unify_error(e);
                 //Prompt error
-                alert({
+                msgbox({
                     type: "error",
                     title: "注册失败",
-                    message: error_text(e.data)
+                    message: e.message
                 });
             }
         }

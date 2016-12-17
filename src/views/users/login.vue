@@ -71,6 +71,11 @@ export default {
                 //Set token header
                 adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = data.token;
 
+                localStorage.setItem("login", JSON.stringify({
+                    user: data.user,
+                    token: data.token
+                }));
+
                 //Next page; fallback to index page
                 let next = this.$route.query.next;
                 next = next?JSON.parse(urlsafe_b64decode(next)):"/";
@@ -83,7 +88,7 @@ export default {
                 msgbox({
                     type: "error",
                     title: "登录失败",
-                    message: e.toString()
+                    message: e.message
                 });
             }
         }

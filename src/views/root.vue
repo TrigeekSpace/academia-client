@@ -71,11 +71,19 @@ export default {
             //Reset user
             this.$root.user = null;
 
+            localStorage.removeItem("login");
+
             //Go to index page
             this.$router.push("/");
         }
     },
     mounted(){
+        let login_data = JSON.parse(localStorage.getItem("login"));
+        if (login_data)
+        {   this.$root.user = login_data.user;
+            adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = login_data.token;
+        }
+
         $("#root-side-bar").mouseleave(() => {
             this.$root.toggle_sidebar();
         });

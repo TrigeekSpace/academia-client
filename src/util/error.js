@@ -30,6 +30,10 @@ let error_handler_mapping = {
     //Incorrect credential
     incorrect_credential(data)
     {   return INCORRECT_CREDENTIAL_PROMPT;
+    },
+    //Unique violation
+    unique_violation(data)
+    {   return `${data.key}为${data.value}的数据已经存在。`;
     }
 };
 
@@ -37,15 +41,15 @@ let error_handler_mapping = {
 export class APIError extends Error
 {   //Constructor
     constructor(resp)
-    {   //Copy response data to error
-        for (let key in resp.data)
-            this[key] = resp.data[key];
-
+    {   let data = resp.data;
         //Get handler and error message
-        let handler = error_handler_mapping[this.type];
-        let error_msg = handler?handler(this):UNKNOWN_ERROR_PROMPT;
+        let handler = error_handler_mapping[data.type];
+        let error_msg = handler?handler(data):UNKNOWN_ERROR_PROMPT;
+
         //Call super class constructor
         super(error_msg);
+        //Copy error data
+        _.extend(this, data);
     }
 
     //Error description

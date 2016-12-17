@@ -24,11 +24,10 @@ describe("Search Result Page", function() {
   it("should be able to add more paper", async function(){
     adaptor.http.oneshot("/papers", [PAPER_DATA])
     root_view.$router.push({path: "/papers/list", query: {query: "k"}});
+    await delay(100);
 
-    let a = $("#more-paper-div", root_view.$el);
-    console.log(a);
     adaptor.http.oneshot("/papers", [{...PAPER_DATA, id: 2}])
-    $("#more-paper-div", root_view.$el).click();
+    $("#more-paper-div", root_view.$el)[0].click();
     await delay(100);
 
     let c_view = get_current_view(root_view);

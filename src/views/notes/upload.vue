@@ -78,6 +78,12 @@ export default {
             //Paper title
             this.paper_title = this._paper.title;
 
+            //Editor
+            this.editor = new SimpleMDE({
+                element: $("#note-content", this.$root.$el)[0],
+                spellChecker: false
+            });
+
             //Fetch note in update mode
             if (this.update_mode)
             {   let note = this._note = await Note.find(note_id);
@@ -85,12 +91,6 @@ export default {
                 this.note_title = note.title;
                 this.note_content = note.content;
             }
-
-            //Editor
-            this.editor = new SimpleMDE({
-                element: $("#note-content", this.$root.$el)[0],
-                spellChecker: false
-            });
         },
         //Update note
         async update_note()
@@ -109,7 +109,7 @@ export default {
                 //Do update
                 await this._note.DSUpdate(update_data, {method: "PATCH"});
                 //Go to note detail page
-                this.$router.go({
+                this.$router.push({
                     name: "paper_content",
                     query: {
                         paper_id: this._paper.id,
@@ -123,7 +123,7 @@ export default {
                 msgbox({
                     type: "error",
                     title: "无法上传笔记",
-                    message: e.toString()
+                    message: e.message
                 });
             }
         },
