@@ -14,12 +14,13 @@
                 <div class="col-sm-3 col-md-3 col-lg-3">
                     <img class="portrait" src="https://media.52poke.com/wiki/thumb/5/53/054Psyduck.png/240px-054Psyduck.png" />
                 </div>
-                <div class="col-sm-3 col-md-3 col-lg-3">
-                    <p><strong>邮箱：</strong>{{user.email}}</p>
-                    <p><strong>职业：</strong>{{user.job}}</p>
-                    <p><strong>贡献值：</strong>{{user.contribution}}</p>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <p><strong>用户名：</strong><br/>{{user.username}}</p>
+                    <p><strong>邮箱：</strong><br/>{{user.email}}</p>
+                    <p><strong>职业：</strong><br/>{{user.job}}</p>
+                    <p><strong>贡献值：</strong><br />{{user.contribution}}</p>
                 </div>
-                <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="col-sm-5 col-md-5 col-lg-5">
                     <div class="form-group">
                         <label>个人简介</label>
                         <p v-if="!user.self_introduction">这个用户太懒了，什么都没写。</p>
@@ -40,28 +41,28 @@
                     </div>
                 </div>
                 <!-- User information -->
-                <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
-                        <label>用户名</label>
+                        <label>用户名：</label>
                         <br />
                         {{user.username}}
                     </div>
                     <div class="form-group">
-                        <label>邮箱</label>
+                        <label>邮箱：</label>
                         <input type="text" class="form-control" v-model="update_info.email" />
                     </div>
                     <div class="form-group">
-                        <label>职业</label>
+                        <label>职业：</label>
                         <input type="text" class="form-control" v-model="update_info.job" />
                     </div>
                     <div class="form-group">
-                        <label>贡献值</label>
+                        <label>贡献值：</label>
                         <br />
                         {{user.contribution}}
                     </div>
                 </div>
                 <!-- Introduction -->
-                <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="col-sm-5 col-md-5 col-lg-5">
                     <div class="form-group">
                         <label>个人简介</label>
                         <textarea class="form-control" v-model="update_info.self_introduction"></textarea>
@@ -69,11 +70,13 @@
                 </div>
             </div>
             <!-- Display mode actions -->
-            <div class="row" align="right" v-if="!edit_mode">
+            <div class="row" v-if="!edit_mode">
+                <div class="col-sm-9 col-md-9 col-lg-9"></div>
                 <button id="modify-user-info-btn" class="btn btn-primary" @click="set_edit_mode(true)">编辑用户信息</button>
             </div>
             <!-- Edit mode actions -->
-            <div class="row" align="right" v-if="edit_mode">
+            <div class="row" v-if="edit_mode">
+                <div class="col-sm-9 col-md-9 col-lg-9"></div>
                 <button id="save-modify-info" class="btn btn-primary" @click="update_user_info()">保存</button>
                 <button class="btn btn-default" @click="set_edit_mode(false)">取消</button>
             </div>
@@ -82,10 +85,15 @@
                 <h2>我收藏的论文</h2>
             </div>
             <div class="row">
-                <!-- <div class="col-sm-1 col-md-1 col-lg-1" v-for="paper in this.papers">
-                    <div class="well paper_item" align="center">
-                        aaa
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="list-group">
+                        <router-link :id="`paper_title_${paper.id}`" :to="`/papers/detail?paper_id=${paper.id}`" class="list-group-item" v-for="paper of user.collect_papers">
+                            <h2 class="list-group-item-heading">{{paper.title}}</h2>
+                            <p class="list-group-item-text">作者：{{paper.authors}}</p>
+                            <p class="list-group-item-text">会议：{{paper.conference}}</p>
+                        </router-link>
                     </div>
+<<<<<<< HEAD
                 </div> -->
 
                 <div class="col-sm-1 col-md-1 col-lg-1"></div>
@@ -97,8 +105,9 @@
                             <p>会议：{{paper.conference}}</p>
                         </li>
                     </ul>
+=======
+>>>>>>> ff6f366255e2eccaccc59ec92f548da8a0c95632
                 </div>
-                <div class="col-sm-1 col-md-1 col-lg-1"></div>
             </div>
             <!-- Collected notes -->
             <div class="row">

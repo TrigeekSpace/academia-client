@@ -18,6 +18,8 @@ Vue.use(VueRouter);
 let routes = [
     //Index page (Paper search)
     {name: "index", path: "/", component: require("academia/views/index.vue")},
+    //Index page (Paper search)
+    {name: "setting", path: "/setting", component: require("academia/views/setting.vue")},
     //User pages
     {name: "login", path: "/users/login", component: require("academia/views/users/login.vue")},
     {name: "register", path: "/users/register", component: require("academia/views/users/register.vue")},
