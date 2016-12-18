@@ -60,6 +60,9 @@ export let root_view = new Vue({
         upload_tasks: [],
         download_tasks: [],
         show_copyright: false,
+        settings: {
+            'lang': '#langCN'
+        },
     },
     //Methods
     methods: {
