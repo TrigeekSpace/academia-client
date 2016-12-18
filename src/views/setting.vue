@@ -5,7 +5,7 @@
         <div class="col-sm-1 col-md-1 col-lg-1"></div>
         <div class="col-sm-10 col-md-10 col-lg-10">
             <div class="row">
-                <h1>偏好设置</h1>
+                <h1>{{language.preference}}</h1>
                 <hr />
             </div>
             <div class="row">
@@ -43,12 +43,23 @@ import {on_route_change, pre_route, login_required} from "academia/util/route";
 
 export default {
     beforeRouteEnter: pre_route(login_required),
+    data(){
+        return {
+            language: {
+                preference: ""
+            }
+        };
+    },
     methods: {
+        init() {
+            let lang = this.$root.settings.lang;
+            this.language.preference = lang == '#langCN' ? '偏好设置' : 'Preference';
+        },
         //Update user information
         update_settings()
         {
             let settings = {};
-            if ($('#langCN').checked) {
+            if ($('#langCN', this.$root.$el)[0].checked) {
                 settings['lang'] = '#langCN';
             } else {
                 settings['lang'] = '#langEN';
@@ -59,9 +70,7 @@ export default {
     mounted() {
         //Initialization
         let settings = this.$root.settings;
-        console.log(settings['lang']);
         $(settings['lang'], this.$root.$el)[0].checked = true;
-        alert( $(settings['lang'], this.$root.$el)[0].checked );
     },
     watch: {
         $route: on_route_change
