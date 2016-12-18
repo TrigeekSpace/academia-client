@@ -46,7 +46,7 @@ export default {
     methods: {
         //Update user information
         update_settings()
-        {   
+        {
             let settings = {};
             if ($('#langCN').checked) {
                 settings['lang'] = '#langCN';
@@ -60,8 +60,8 @@ export default {
         //Initialization
         let settings = this.$root.settings;
         console.log(settings['lang']);
-        $(settings['lang']).checked = true;
-        alert( $(settings['lang']).checked );
+        $(settings['lang'], this.$root.$el)[0].checked = true;
+        alert( $(settings['lang'], this.$root.$el)[0].checked );
     },
     watch: {
         $route: on_route_change
