@@ -85,14 +85,12 @@
                 <h2>我收藏的论文</h2>
             </div>
             <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <div class="list-group">
-                        <router-link :id="`paper_title_${paper.id}`" :to="`/papers/detail?paper_id=${paper.id}`" class="list-group-item" v-for="paper of user.collect_papers">
-                            <h2 class="list-group-item-heading">{{paper.title}}</h2>
-                            <p class="list-group-item-text">作者：{{paper.authors}}</p>
-                            <p class="list-group-item-text">会议：{{paper.conference}}</p>
-                        </router-link>
-                    </div>
+                <div class="list-group">
+                    <router-link :id="`paper_title_${paper.id}`" :to="`/papers/detail?paper_id=${paper.id}`" class="list-group-item paper-list" v-for="paper of user.collect_papers">
+                        <h2 class="list-group-item-heading">{{paper.title}}</h2>
+                        <p class="list-group-item-text">作者：{{paper.authors}}</p>
+                        <p class="list-group-item-text">会议：{{paper.conference}}</p>
+                    </router-link>
                 </div>
             </div>
             <!-- Collected notes -->
