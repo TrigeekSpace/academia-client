@@ -5,26 +5,26 @@
         <h1>{{paper.title}}</h1>
         <hr />
         <!-- Author -->
-        <p><b>作者</b>：{{paper.authors}}</p>
+        <p><b>{{language.author}}</b>：{{paper.authors}}</p>
         <!-- Conference -->
-        <p><b>会议</b>：{{paper.conference}}</p>
+        <p><b>{{language.conf}}</b>：{{paper.conference}}</p>
         <!-- Publish date -->
-        <p><b>发布日期</b>：{{paper.publish_date}}</p>
+        <p><b>{{language.date}}</b>：{{paper.publish_date}}</p>
         <!-- Abstract -->
         <blockquote class="blockquote">{{paper.abstract}}</blockquote>
         <!-- Paper operations -->
         <div align="right">
-            <button id="download-paper" class="btn btn-default">下载论文</button>
-            <button id="collect-paper" class="btn btn-primary" v-if="$root.user&&(!collected)" @click="toggle_collect_status()">收藏论文</button>
-            <button id="decollect-paper" class="btn btn-primary" v-if="$root.user&&collected" @click="toggle_collect_status()">取消收藏</button>
-            <router-link id="upload-note" class="btn btn-success" :to="`/notes/upload?paper_id=${paper.id}`">撰写笔记</router-link>
-            <router-link id="view-paper-content" class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">在线查看</router-link>
+            <button id="download-paper" class="btn btn-default">{{language.download}}</button>
+            <button id="collect-paper" class="btn btn-primary" v-if="$root.user&&(!collected)" @click="toggle_collect_status()">{{language.mark}}</button>
+            <button id="decollect-paper" class="btn btn-primary" v-if="$root.user&&collected" @click="toggle_collect_status()">{{language.undo}}</button>
+            <router-link id="upload-note" class="btn btn-success" :to="`/notes/upload?paper_id=${paper.id}`">{{language.write}}</router-link>
+            <router-link id="view-paper-content" class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">{{language.view}}</router-link>
         </div>
         <!-- Questions -->
-        <h2>热门问答</h2>
+        <h2>{{language.question}}</h2>
         <hr />
         <!-- Notes -->
-        <h2>推荐笔记</h2>
+        <h2>{{language.recom}}</h2>
         <hr />
     </div>
     <div class="hidden-sm hidden-md col-lg-1"></div>
@@ -70,7 +70,17 @@ export default {
             if (user)
                 this.collected = _.includes(_paper.collectors, user.id);
             //Setting language
-            
+            let lang = this.$root.settings.lang;
+            this.language.author = lang == '#langCN' ? '作者' : 'Author';
+            this.language.conf = lang == '#langCN' ? '会议' : 'Conference';
+            this.language.date = lang == '#langCN' ? '会议日期' : 'Date';
+            this.language.download = lang == '#langCN' ? '下载论文' : 'Download';
+            this.language.mark = lang == '#langCN' ? '收藏论文' : 'Mark';
+            this.language.undo = lang == '#langCN' ? '取消收藏' : 'Undo';
+            this.language.write = lang == '#langCN' ? '撰写笔记' : 'Write';
+            this.language.view = lang == '#langCN' ? '在线查看' : 'View';
+            this.language.question = lang == '#langCN' ? '热门问答' : 'Questions';
+            this.language.recom = lang == '#langCN' ? '推荐笔记' : 'Recommendations';
         },
         //Toggle collect status
         async toggle_collect_status()
