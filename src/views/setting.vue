@@ -10,7 +10,7 @@
             </div>
             <div class="row">
                 <div class="form-group">
-                    <label class="col-md-2 col-lg-2 control-label">语言：</label>
+                    <label class="col-md-2 col-lg-2 control-label">{{language.language}}</label>
                     <div class="radio">
                         <label>
                         <input type="radio" name="langOptions" id="langCN" value="option1" checked="">
@@ -46,7 +46,8 @@ export default {
     data(){
         return {
             language: {
-                preference: ""
+                preference: "",
+                language: ""
             }
         };
     },
@@ -54,6 +55,7 @@ export default {
         init() {
             let lang = this.$root.settings.lang;
             this.language.preference = lang == '#langCN' ? '偏好设置' : 'Preference';
+            this.language.language = lang == '#langCN' ? '语言：' : 'language:';
         },
         //Update user information
         update_settings()

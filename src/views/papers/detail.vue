@@ -52,7 +52,8 @@ export default {
                 publish_date: null,
                 abstract: null
             },
-            collected: false
+            collected: false,
+            language: {}
         };
     },
     //Methods
@@ -68,6 +69,8 @@ export default {
             let user = this.$root.user;
             if (user)
                 this.collected = _.includes(_paper.collectors, user.id);
+            //Setting language
+            
         },
         //Toggle collect status
         async toggle_collect_status()
