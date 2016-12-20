@@ -7,7 +7,7 @@
                     <h1 class="big-title">Academia Search</h1>
                     <br>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="search_input" placeholder="在Academia上搜索论文" v-model="search_text" data-toggle="popover" data-placement="bottom" data-content="你至少需要一个关键词" data-trigger="manual" v-on:keyup.enter="search()">
+                        <input type="text" class="form-control" id="search_input" :placeholder="language.search" v-model="search_text" data-toggle="popover" data-placement="bottom" :data-content="language.lack_of_word" data-trigger="manual" v-on:keyup.enter="search()">
                         <span class="input-group-btn">
                             <button id="search-btn" class="btn btn-default" @click="search()">
                                 Search!
@@ -25,10 +25,18 @@
 export default {
     data() {
         return {
-            search_text: ""
+            search_text: "",
+            //Language setting
+            language: {}
         };
     },
     methods: {
+        init() {
+            // Setting language
+            let lang = this.$root.settings.lang;
+            this.language.search = lang == '#langCN' ? '在Academia上搜索论文' : 'Search papers via Academia';
+            this.language.lack_of_word = lang == '#langCN' ? '你至少需要一个关键词': 'At least on keyword is required';
+        },
         search() {
             if (this.search_text.length == 0) {
                 $("#search_input").popover('show');

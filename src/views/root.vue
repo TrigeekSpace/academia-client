@@ -36,13 +36,13 @@
     <!-- Sidebar -->
     <div class="sidebar" id="root-side-bar">
         <ul class="nav sidebar-group">
-            <li><router-link to="/"><span class="glyphicon glyphicon-search"></span> 论文搜索</router-link></li>
-            <li><router-link to="/users/space"><span class="glyphicon glyphicon-globe"></span> 我的空间</router-link></li>
-            <li><router-link to="/papers/upload"><span class="glyphicon glyphicon-upload"></span> 上传论文</router-link></li>
-            <li><router-link to="/setting"><span class="glyphicon glyphicon-cog"></span> 偏好设置</router-link></li>
+            <li><router-link to="/"><span class="glyphicon glyphicon-search"></span> {{language.search}}</router-link></li>
+            <li><router-link to="/users/space"><span class="glyphicon glyphicon-globe"></span> {{language.space}}</router-link></li>
+            <li><router-link to="/papers/upload"><span class="glyphicon glyphicon-upload"></span> {{language.upload}}</router-link></li>
+            <li><router-link to="/setting"><span class="glyphicon glyphicon-cog"></span> {{language.setting}}</router-link></li>
         </ul>
         <ul class="nav sidebar-group">
-            <li><router-link to="/local/transfer"><span class="glyphicon glyphicon-transfer"></span> 传输任务</router-link></li>
+            <li><router-link to="/local/transfer"><span class="glyphicon glyphicon-transfer"></span> {{language.mission}}</router-link></li>
         </ul>
     </div>
     <!-- Content view -->
@@ -62,8 +62,22 @@ import {User, adaptor} from "academia/models";
 import {AUTH_TOKEN_HEADER} from "academia/config";
 
 export default {
+    data() {
+        return {
+            language: {}
+        };
+    },
     //Methods
     methods: {
+        init() {
+            // Setting language
+            let lang = this.$root.settings.lang;
+            this.language.search = lang == '#langCN' ? '论文搜索' : 'Search';
+            this.language.space = lang == '#langCN' ? '我的空间' : 'Space';
+            this.language.upload = lang == '#langCN' ? '上传论文' : 'Upload';
+            this.language.setting = lang == '#langCN' ? '偏好设置' : 'Setting';
+            this.language.setting = lang == '#langCN' ? '传输任务' : 'Mission';
+        },
         //Logout
         logout()
         {   //Log user out

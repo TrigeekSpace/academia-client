@@ -137,8 +137,8 @@ export default {
     beforeRouteEnter: pre_route(login_required),
     methods: {
         //Initialization
-        async init()
-        {   //User instance
+        async init() {   
+            //User instance
             let user_id = this.$route.query.user_id || this.$root.user.id;
 
             //User model instance
