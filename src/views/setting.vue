@@ -66,7 +66,7 @@ export default {
             } else {
                 settings['lang'] = '#langEN';
             }
-            this.$root.settings = settings;
+            this.$root.change_language(settings['lang']);
         },
     },
     mounted() {

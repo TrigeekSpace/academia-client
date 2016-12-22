@@ -61,11 +61,26 @@ export let root_view = new Vue({
         download_tasks: [],
         show_copyright: false,
         settings: {
-            'lang': '#langCN'
+            lang: '#langCN'
         },
+        side_bar_list: {
+            search: "",
+            space: "",
+            upload: "",
+            setting: "",
+            mission: ""
+        }
     },
     //Methods
     methods: {
+        change_language(lang) {
+            this.settings['lang'] = lang;
+            this.side_bar_list.search = lang == '#langCN' ? '论文搜索' : 'Search';
+            this.side_bar_list.space = lang == '#langCN' ? '我的空间' : 'Space';
+            this.side_bar_list.upload = lang == '#langCN' ? '上传论文' : 'Upload';
+            this.side_bar_list.setting = lang == '#langCN' ? '偏好设置' : 'Setting';
+            this.side_bar_list.mission = lang == '#langCN' ? '传输任务' : 'Mission';
+        },
         //Toggle sidebar
         toggle_sidebar()
         {   if (!this.show_side_bar) {

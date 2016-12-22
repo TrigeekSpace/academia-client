@@ -36,13 +36,13 @@
     <!-- Sidebar -->
     <div class="sidebar" id="root-side-bar">
         <ul class="nav sidebar-group">
-            <li><router-link to="/"><span class="glyphicon glyphicon-search"></span> {{language.search}}</router-link></li>
-            <li><router-link to="/users/space"><span class="glyphicon glyphicon-globe"></span> {{language.space}}</router-link></li>
-            <li><router-link to="/papers/upload"><span class="glyphicon glyphicon-upload"></span> {{language.upload}}</router-link></li>
-            <li><router-link to="/setting"><span class="glyphicon glyphicon-cog"></span> {{language.setting}}</router-link></li>
+            <li><router-link to="/"><span class="glyphicon glyphicon-search"></span> {{$root.side_bar_list.search}}</router-link></li>
+            <li><router-link to="/users/space"><span class="glyphicon glyphicon-globe"></span> {{$root.side_bar_list.space}}</router-link></li>
+            <li><router-link to="/papers/upload"><span class="glyphicon glyphicon-upload"></span> {{$root.side_bar_list.upload}}</router-link></li>
+            <li><router-link to="/setting"><span class="glyphicon glyphicon-cog"></span> {{$root.side_bar_list.setting}}</router-link></li>
         </ul>
         <ul class="nav sidebar-group">
-            <li><router-link to="/local/transfer"><span class="glyphicon glyphicon-transfer"></span> {{language.mission}}</router-link></li>
+            <li><router-link to="/local/transfer"><span class="glyphicon glyphicon-transfer"></span> {{$root.side_bar_list.mission}}</router-link></li>
         </ul>
     </div>
     <!-- Content view -->
@@ -63,17 +63,6 @@ import {AUTH_TOKEN_HEADER} from "academia/config";
 import {on_route_change, pre_route} from "academia/util/route";
 
 export default {
-    data() {
-        return {
-            language: {
-                search: "",
-                space: "",
-                upload: "",
-                setting: "",
-                mission: ""
-            }
-        };
-    },
     //Methods
     methods: {
         //Logout
@@ -112,14 +101,7 @@ export default {
         $("#forward-button").click(() => {
             this.$router.forward();
         });
-
-        // Setting language
-        let lang = this.$root.settings.lang;
-        this.language.search = lang == '#langCN' ? '论文搜索' : 'Search';
-        this.language.space = lang == '#langCN' ? '我的空间' : 'Space';
-        this.language.upload = lang == '#langCN' ? '上传论文' : 'Upload';
-        this.language.setting = lang == '#langCN' ? '偏好设置' : 'Setting';
-        this.language.mission = lang == '#langCN' ? '传输任务' : 'Mission';
+        this.$root.change_language(this.$root.settings.lang);
     }
 };
 </script>
