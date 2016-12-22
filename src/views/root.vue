@@ -60,24 +60,22 @@
 <script>
 import {User, adaptor} from "academia/models";
 import {AUTH_TOKEN_HEADER} from "academia/config";
+import {on_route_change, pre_route} from "academia/util/route";
 
 export default {
     data() {
         return {
-            language: {}
+            language: {
+                search: "",
+                space: "",
+                upload: "",
+                setting: "",
+                mission: ""
+            }
         };
     },
     //Methods
     methods: {
-        init() {
-            // Setting language
-            let lang = this.$root.settings.lang;
-            this.language.search = lang == '#langCN' ? '论文搜索' : 'Search';
-            this.language.space = lang == '#langCN' ? '我的空间' : 'Space';
-            this.language.upload = lang == '#langCN' ? '上传论文' : 'Upload';
-            this.language.setting = lang == '#langCN' ? '偏好设置' : 'Setting';
-            this.language.setting = lang == '#langCN' ? '传输任务' : 'Mission';
-        },
         //Logout
         logout()
         {   //Log user out
@@ -114,6 +112,14 @@ export default {
         $("#forward-button").click(() => {
             this.$router.forward();
         });
+
+        // Setting language
+        let lang = this.$root.settings.lang;
+        this.language.search = lang == '#langCN' ? '论文搜索' : 'Search';
+        this.language.space = lang == '#langCN' ? '我的空间' : 'Space';
+        this.language.upload = lang == '#langCN' ? '上传论文' : 'Upload';
+        this.language.setting = lang == '#langCN' ? '偏好设置' : 'Setting';
+        this.language.mission = lang == '#langCN' ? '传输任务' : 'Mission';
     }
 };
 </script>

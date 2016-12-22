@@ -22,14 +22,20 @@
 </template>
 
 <script>
+import {on_route_change, pre_route} from "academia/util/route";
+
 export default {
     data() {
         return {
             search_text: "",
             //Language setting
-            language: {}
+            language: {
+                search: "",
+                lack_of_word: ""
+            }
         };
     },
+    beforeRouteEnter: pre_route(),
     methods: {
         init() {
             // Setting language
