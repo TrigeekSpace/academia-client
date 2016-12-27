@@ -128,14 +128,20 @@ export default {
             //Remove download task
             _.pull(this.$root.download_tasks, new_download_task);
 
+            //Get paper data
+            let paper = await Paper.find(this.paper.id, {
+                params: {with: ["notes", "notes.author"]},
+                bypassCache: true
+            });
+
             let db = await local_db;
             //Insert paper data into local DB
             await db.papers.add({
-                item: to_plain(this._paper),
-                key: this._paper.id
+                item: to_plain(paper, ["notes", "notes.author"]),
+                key: paper.id
             });
             //Save paper file
-            let paper_fd = fs.openSync(data_path("papers", String(this._paper.id)), "w");
+            let paper_fd = fs.openSync(data_path("papers", String(paper.id)), "w");
             fs.writeFileSync(paper_fd, new Buffer(paper_file_resp.data));
             fs.closeSync(paper_fd);
         }
@@ -143,10 +149,6 @@ export default {
     watch: {
         $route: on_route_change
     }
-  },
-  watch: {
-    $route: on_route_change
-  }
 }
 </script>
 
