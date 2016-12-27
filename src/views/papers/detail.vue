@@ -17,14 +17,24 @@
             <button id="download-paper" class="btn btn-default" @click="download_paper()" :disabled="!$root.online">{{language.download}}</button>
             <button id="collect-paper" class="btn btn-primary" v-if="$root.user&&(!collected)" @click="toggle_collect_status()" :disabled="!$root.online">{{language.mark}}</button>
             <button id="decollect-paper" class="btn btn-primary" v-if="$root.user&&collected" @click="toggle_collect_status()" :disabled="!$root.online">{{language.undo}}</button>
-            <router-link id="upload-note" class="btn btn-success" :to="`/notes/upload?paper_id=${paper.id}`" :disabled="!$root.online">{{language.write}}</router-link>
-            <router-link id="view-paper-content" class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">{{language.view}}</router-link>
+            <router-link tag="button" id="upload-note" class="btn btn-success" :to="`/notes/upload?paper_id=${paper.id}`" :disabled="!$root.online">{{language.write}}</router-link>
+            <router-link tag="button" id="view-paper-content" class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">{{language.view}}</router-link>
         </div>
         <!-- Questions -->
-        <h2>{{language.question}}</h2>
-        <hr />
+        <!-- <h2>{{language.question}}</h2>
+        <hr /> -->
         <!-- Notes -->
         <h2>{{language.recom}}</h2>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="list-group">
+                <router-link :id="`note_title_${note.id}`" :to="`/papers/content?paper_id=${paper.id}&note_id=${note.id}`" class="list-group-item paper-list" v-for="note of paper.notes">
+                    <h2 class="list-group-item-heading">{{note.title}}</h2>
+                    <p class="list-group-item-text">{{language.author}}{{note.author.username}}</p>
+                </router-link>
+            </div>
+            </div>
+        </div>
         <hr />
     </div>
 <div class="hidden-sm hidden-md col-lg-1"></div>
@@ -68,8 +78,15 @@ export default {
 
             //Get paper information
             if (this.$root.online)
-            {   let _paper = this._paper = await Paper.find(paper_id);
-                this.paper = to_plain(this._paper);
+            {   let _paper = this._paper = await Paper.find(paper_id, {
+                  params: {
+                      with: ["notes", "notes.author"],
+                      // order: {
+                      //   collectors: False
+                      // }
+                  }
+                });
+                this.paper = to_plain(this._paper, ["notes"]);
             }
             else
             {   let paper = await db.papers.get(paper_id);
@@ -122,14 +139,20 @@ export default {
             //Remove download task
             _.pull(this.$root.download_tasks, new_download_task);
 
+            //Get paper data
+            let paper = await Paper.find(this.paper.id, {
+                params: {with: ["notes", "notes.author"]},
+                bypassCache: true
+            });
+
             let db = await local_db;
             //Insert paper data into local DB
             await db.papers.add({
-                item: to_plain(this._paper),
-                key: this._paper.id
+                item: to_plain(paper, ["notes", "notes.author"]),
+                key: paper.id
             });
             //Save paper file
-            let paper_fd = fs.openSync(data_path("papers", String(this._paper.id)), "w");
+            let paper_fd = fs.openSync(data_path("papers", String(paper.id)), "w");
             fs.writeFileSync(paper_fd, new Buffer(paper_file_resp.data));
             fs.closeSync(paper_fd);
         }
