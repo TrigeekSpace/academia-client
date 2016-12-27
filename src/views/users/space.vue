@@ -95,6 +95,20 @@
                 </div>
                 </div>
             </div>
+
+            <div class="row">
+                <h2>{{language.note_collect}}</h2>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="list-group">
+                    <router-link :id="`note_title_${note.id}`" :to="`/papers/detail?paper_id=${note.paper}&note_id=${note.id}`" class="list-group-item paper-list" v-for="note of user.collect_notes">
+                        <h2 class="list-group-item-heading">{{note.title}}</h2>
+                        <p class="list-group-item-text">{{language.author}}{{note.author.username}}</p>
+                    </router-link>
+                </div>
+                </div>
+            </div>
             <!-- Collected notes -->
             <!--
             <div class="row">
@@ -146,12 +160,12 @@ export default {
             //User model instance
             this._user = await User.find(user_id, {
                 params: {
-                    with: ["collect_papers"]
+                    with: ["collect_papers", "collect_notes", "collect_notes.author"]
                 }
             });
 
             //Vue user data
-            this.user = to_plain(this._user, ["collect_papers"]);
+            this.user = to_plain(this._user, ["collect_papers", "collect_notes"]);
             // Setting language
             let lang = this.$root.settings.lang;
             this.language.info = lang == '#langCN' ? '个人信息' : 'Personal';
