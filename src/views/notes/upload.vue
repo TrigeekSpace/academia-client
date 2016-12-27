@@ -47,7 +47,7 @@ import $ from "jquery";
 import SimpleMDE from "simplemde";
 
 import {Paper, Note, adaptor} from "academia/models";
-import {to_plain} from "academia/util/api";
+import {to_plain, progress_listener} from "academia/util/api";
 import {pre_route, login_required, on_route_change} from "academia/util/route";
 import {unify_error} from "academia/util/error";
 import {msgbox} from "academia/util/core";
@@ -106,14 +106,28 @@ export default {
                 if (file_selector.files.length>0)
                     update_data.annotation_file = file_selector.files[0];
 
+                //Create upload transfer task
+                let new_upload_task = {
+                    name: this.note_title,
+                    type: "笔记",
+                    progress: 0,
+                    transfered: 0,
+                    total: 1
+                }
+                this.$root.upload_tasks.push(new_upload_task);
+
                 //Do update
-                await this._note.DSUpdate(update_data, {method: "PATCH"});
+                this._note.DSUpdate(update_data, {
+                    method: "PATCH",
+                    onUploadProgress: progress_listener(new_upload_task)
+                }).then(() => {
+                    _.pull(this.$root.upload_tasks, new_upload_task);
+                });
                 //Go to note detail page
                 this.$router.push({
                     name: "paper_content",
                     query: {
-                        paper_id: this._paper.id,
-                        note_id: this._note.id
+                        paper_id: this._paper.id
                     }
                 });
             }
@@ -149,20 +163,35 @@ export default {
                 return;
             }
 
+            //Create upload transfer task
+            let new_upload_task = {
+                name: this.note_title,
+                type: "笔记",
+                progress: 0,
+                transfered: 0,
+                total: 1
+            }
+            this.$root.upload_tasks.push(new_upload_task);
+
             try
             {   //Create note
-                let note = await Note.create({
+                Note.create({
                     paper: this._paper.id,
                     title: this.note_title,
                     content: this.note_content,
                     annotation_file: file_selector.files[0]
+                }, {
+                    onUploadProgress: progress_listener(new_upload_task)
+                }).then(() => {
+                    //Remove upload task
+                    _.pull(this.$root.upload_tasks, new_upload_task);
                 });
+
                 //Go to note detail page
                 this.$router.push({
                     name: "index",
                     query: {
-                        paper_id: this._paper.id,
-                        note_id: note.id
+                        paper_id: this._paper.id
                     }
                 });
             }

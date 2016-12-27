@@ -243,3 +243,15 @@ export let and = _.bind(Array, null, "and"),
 export function model_proto(model)
 {   return model[model.class].prototype;
 }
+
+//[ Transfer task ]
+//Create progress event listener
+export function progress_listener(obj)
+{   return (event) => {
+        _.extend(obj, {
+            total: Math.round(event.total/1000)+" KB",
+            transfered: Math.round(event.loaded/1000)+" KB",
+            progress: Math.round(event.loaded/event.total*10000)/100
+        });
+    };
+}

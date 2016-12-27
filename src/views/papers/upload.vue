@@ -72,10 +72,11 @@
 
 <script>
 import $ from "jquery";
+import _ from "lodash";
 
 import {pre_route, login_required, on_route_change} from "academia/util/route";
 import {Paper, Note, adaptor} from "academia/models";
-import {to_plain} from "academia/util/api";
+import {to_plain, progress_listener} from "academia/util/api";
 import {unify_error} from "academia/util/error";
 import {msgbox} from "academia/util/core";
 
@@ -106,11 +107,11 @@ export default {
 
             if (!this.check_input()) {
               msgbox({
-                      type: "error",
-                      title: "无法上传论文",
-                      message: "您尚未填写笔记标题或内容。"
-                  });
-                return;
+                  type: "error",
+                  title: "无法上传论文",
+                  message: "您尚未填写笔记标题或内容。"
+              });
+              return;
             }
 
             let sel = $("#file-selector", this.$root.$el)[0];
@@ -126,6 +127,17 @@ export default {
                   });
                 return;
             }
+
+            //Create upload transfer task
+            let new_upload_task = {
+                name: this.title,
+                type: "论文",
+                progress: 0,
+                transfered: 0,
+                total: 1
+            }
+            this.$root.upload_tasks.push(new_upload_task);
+
             Paper.create({
                 title: this.title,
                 authors: this.authors,
@@ -133,9 +145,13 @@ export default {
                 conference: this.conference,
                 // publish_date: this.publish_date(),
                 paper_file: this.upload_file
+            }, {
+                onUploadProgress: progress_listener(new_upload_task)
             }).then((paper) => {
-                this.$router.push({path: "detail", query: {paper_id: paper.id}});
+                _.pull(this.$root.upload_tasks, new_upload_task);
             });
+
+            this.$router.push("/");
         },
         publish_date() {
             return `${this.year}-${this.month}`;
