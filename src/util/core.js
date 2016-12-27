@@ -1,6 +1,7 @@
 //Core.js: Core frontend utilities, usually enhanced version of built-in functions.
 import {remote} from "electron";
 import os from "os";
+import path from "path";
 
 import {test_log} from "academia/util/test";
 
@@ -92,4 +93,10 @@ export function delay(time)
  */
 export function append(array_like, obj)
 {   return Array.prototype.push.call(array_like, obj);
+}
+
+//[ Path Utilities ]
+//Get path from data root
+export function data_path(...paths)
+{   return path.join(remote.app.getPath("userData"), "data", ...paths);
 }

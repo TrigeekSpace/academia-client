@@ -1,24 +1,31 @@
 <template>
 <div class="row">
-  <div class="hidden-sm hidden-md col-lg-1"></div>
-  <div class="col-sm-12 col-md-12 col-lg-10">
-    <h1>{{paper.title}}</h1>
-    <hr />
-    <!-- Author -->
-    <p><b>{{language.author}}</b>：{{paper.authors}}</p>
-    <!-- Conference -->
-    <p><b>{{language.conf}}</b>：{{paper.conference}}</p>
-    <!-- Publish date -->
-    <p><b>{{language.date}}</b>：{{paper.publish_date}}</p>
-    <!-- Abstract -->
-    <blockquote class="blockquote">{{paper.abstract}}</blockquote>
-    <!-- Paper operations -->
-    <div align="right">
-      <button id="download-paper" class="btn btn-default">{{language.download}}</button>
-      <button id="collect-paper" class="btn btn-primary" v-if="$root.user&&(!collected)" @click="toggle_collect_status()">{{language.mark}}</button>
-      <button id="decollect-paper" class="btn btn-primary" v-if="$root.user&&collected" @click="toggle_collect_status()">{{language.undo}}</button>
-      <router-link id="upload-note" class="btn btn-success" :to="`/notes/upload?paper_id=${paper.id}`">{{language.write}}</router-link>
-      <router-link id="view-paper-content" class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">{{language.view}}</router-link>
+    <div class="hidden-sm hidden-md col-lg-1"></div>
+    <div class="col-sm-12 col-md-12 col-lg-10">
+        <h1>{{paper.title}}</h1>
+        <hr />
+        <!-- Author -->
+        <p><b>{{language.author}}</b>：{{paper.authors}}</p>
+        <!-- Conference -->
+        <p><b>{{language.conf}}</b>：{{paper.conference}}</p>
+        <!-- Publish date -->
+        <p><b>{{language.date}}</b>：{{paper.publish_date}}</p>
+        <!-- Abstract -->
+        <blockquote class="blockquote">{{paper.abstract}}</blockquote>
+        <!-- Paper operations -->
+        <div align="right">
+            <button id="download-paper" class="btn btn-default" @click="download_paper()" :disabled="!$root.online">{{language.download}}</button>
+            <button id="collect-paper" class="btn btn-primary" v-if="$root.user&&(!collected)" @click="toggle_collect_status()" :disabled="!$root.online">{{language.mark}}</button>
+            <button id="decollect-paper" class="btn btn-primary" v-if="$root.user&&collected" @click="toggle_collect_status()" :disabled="!$root.online">{{language.undo}}</button>
+            <router-link id="upload-note" class="btn btn-success" :to="`/notes/upload?paper_id=${paper.id}`" :disabled="!$root.online">{{language.write}}</router-link>
+            <router-link id="view-paper-content" class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">{{language.view}}</router-link>
+        </div>
+        <!-- Questions -->
+        <h2>{{language.question}}</h2>
+        <hr />
+        <!-- Notes -->
+        <h2>{{language.recom}}</h2>
+        <hr />
     </div>
     <!-- Questions -->
     <h2>{{language.question}}</h2>
@@ -33,59 +40,108 @@
 <!-- Script -->
 <script>
 import _ from "lodash";
+import fs from "fs";
 
-import {Paper} from "academia/models";
-import {to_plain} from "academia/util/api";
+import {Paper, adaptor, local_db} from "academia/models";
+import {to_plain, progress_listener} from "academia/util/api";
 import {pre_route, on_route_change} from "academia/util/route";
+import {data_path} from "academia/util/core";
+import {BKND_URL} from "academia/config";
 
 export default {
-  beforeRouteEnter: pre_route(),
-  //Data
-  data()
-  {
-    return {
-      paper: {
-        id: 1,
-        title: null,
-        authors: null,
-        conference: null,
-        publish_date: null,
-        abstract: null
-      },
-      collected: false,
-      language: {}
-    };
-  },
-  //Methods
-  methods: {
-    //Initialization
-    async init()
-    {   let paper_id = this.$route.query.paper_id;
-      //Get paper information
-      let _paper = this._paper = await Paper.find(paper_id);
-      console.log(this._paper);
-      this.paper = to_plain(this._paper);
-      //Collection status (Logged user only)
-      let user = this.$root.user;
-      if (user)
-        this.collected = _.includes(_paper.collectors, user.id);
-      //Setting language
-      let lang = this.$root.settings.lang;
-      this.language.author = lang == '#langCN' ? '作者' : 'Author';
-      this.language.conf = lang == '#langCN' ? '会议' : 'Conference';
-      this.language.date = lang == '#langCN' ? '会议日期' : 'Date';
-      this.language.download = lang == '#langCN' ? '下载论文' : 'Download';
-      this.language.mark = lang == '#langCN' ? '收藏论文' : 'Mark';
-      this.language.undo = lang == '#langCN' ? '取消收藏' : 'Undo';
-      this.language.write = lang == '#langCN' ? '撰写笔记' : 'Write';
-      this.language.view = lang == '#langCN' ? '在线查看' : 'View';
-      this.language.question = lang == '#langCN' ? '热门问答' : 'Questions';
-      this.language.recom = lang == '#langCN' ? '推荐笔记' : 'Recommendations';
+    beforeRouteEnter: pre_route(),
+    //Data
+    data()
+    {   return {
+            paper: {
+                id: 1,
+                title: null,
+                authors: null,
+                conference: null,
+                publish_date: null,
+                abstract: null
+            },
+            collected: false,
+            language: {}
+        };
     },
-    //Toggle collect status
-    async toggle_collect_status()
-    {   let resp = await this._paper.toggle_collect_status();
-      this.collected = resp.data.collected;
+    //Methods
+    methods: {
+        //Initialization
+        async init()
+        {   let paper_id = Number(this.$route.query.paper_id);
+            let db = await local_db;
+
+            //Get paper information
+            if (this.$root.online)
+            {   let _paper = this._paper = await Paper.find(paper_id);
+                this.paper = to_plain(this._paper);
+            }
+            else
+            {   let paper = await db.papers.get(paper_id);
+                this.paper = _.clone(paper);
+                this._paper = Paper.inject(paper);
+            }
+
+            //Collection status (Logged user only)
+            let user = this.$root.user;
+            if (user)
+                this.collected = _.includes(this._paper.collectors, user.id);
+
+            //Language settings
+            let lang = this.$root.settings.lang;
+            this.language.author = lang == '#langCN' ? '作者' : 'Author';
+            this.language.conf = lang == '#langCN' ? '会议' : 'Conference';
+            this.language.date = lang == '#langCN' ? '会议日期' : 'Date';
+            this.language.download = lang == '#langCN' ? '下载论文' : 'Download';
+            this.language.mark = lang == '#langCN' ? '收藏论文' : 'Mark';
+            this.language.undo = lang == '#langCN' ? '取消收藏' : 'Undo';
+            this.language.write = lang == '#langCN' ? '撰写笔记' : 'Write';
+            this.language.view = lang == '#langCN' ? '在线查看' : 'View';
+            this.language.question = lang == '#langCN' ? '热门问答' : 'Questions';
+            this.language.recom = lang == '#langCN' ? '推荐笔记' : 'Recommendations';
+        },
+        //Toggle collect status
+        async toggle_collect_status()
+        {   let resp = await this._paper.toggle_collect_status();
+            this.collected = resp.data.collected;
+        },
+        //Download current paper
+        async download_paper()
+        {   //Create new download task
+            let new_download_task = {
+                name: this.paper.title,
+                type: "论文",
+                progress: 0,
+                transfered: 0,
+                total: 1
+            };
+            //Add download task
+            this.$root.download_tasks.push(new_download_task);
+
+            //Begin downloading paper
+            let paper_file_resp = await adaptor.http({
+                url: `${BKND_URL}/depot/${this.paper.paper_file}`,
+                onDownloadProgress: progress_listener(new_download_task),
+                responseType: "arraybuffer"
+            });
+            //Remove download task
+            _.pull(this.$root.download_tasks, new_download_task);
+
+            let db = await local_db;
+            //Insert paper data into local DB
+            await db.papers.add({
+                item: to_plain(this._paper),
+                key: this._paper.id
+            });
+            //Save paper file
+            let paper_fd = fs.openSync(data_path("papers", String(this._paper.id)), "w");
+            fs.writeFileSync(paper_fd, new Buffer(paper_file_resp.data));
+            fs.closeSync(paper_fd);
+        }
+    },
+    watch: {
+        $route: on_route_change
     }
   },
   watch: {

@@ -3,6 +3,7 @@ import {DS} from "js-data";
 import DSHttpAdapter from "js-data-http";
 import _ from "lodash";
 import {to_plain} from "academia/util/api";
+import db from "db.js";
 
 import {ADAPTOR_NAME, BKND_URL} from "academia/config"
 import {mock_transport} from "academia/util/test";
@@ -79,4 +80,14 @@ _.extend(model_proto(Paper), {
 //Note model
 _.extend(model_proto(Note), {
     toggle_collect_status: inst_action(Note, "toggle_collect_status")
+});
+
+//[ Db.js Database ]
+export let local_db = db.open({
+    server: "academia",
+    version: 1,
+    schema: {
+        papers: {},
+        notes: {}
+    }
 });

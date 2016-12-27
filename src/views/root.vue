@@ -43,6 +43,7 @@
         </ul>
         <ul class="nav sidebar-group">
             <li><router-link to="/local/transfer"><span class="glyphicon glyphicon-transfer"></span> {{$root.side_bar_list.mission}}</router-link></li>
+            <li><router-link to="/local/files"><span class="glyphicon glyphicon-file"></span> 本地文件</router-link></li>
         </ul>
     </div>
     <!-- Content view -->
@@ -82,12 +83,6 @@ export default {
         }
     },
     mounted(){
-        let login_data = JSON.parse(localStorage.getItem("login"));
-        if (login_data)
-        {   this.$root.user = login_data.user;
-            adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = login_data.token;
-        }
-
         $("#root-side-bar").mouseleave(() => {
             this.$root.close_sidebar();
         });
