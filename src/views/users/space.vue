@@ -147,7 +147,6 @@ export default {
                     with: ["collect_papers"]
                 }
             });
-
             //Vue user data
             this.user = to_plain(this._user, ["collect_papers"]);
             // Setting language
