@@ -102,7 +102,7 @@
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12">
                 <div class="list-group">
-                    <router-link :id="`note_title_${note.id}`" :to="`/papers/detail?paper_id=${note.paper}&note_id=${note.id}`" class="list-group-item paper-list" v-for="note of user.collect_notes">
+                    <router-link :id="`note_title_${note.id}`" :to="`/papers/content?paper_id=${note.paper}&note_id=${note.id}`" class="list-group-item paper-list" v-for="note of user.collect_notes">
                         <h2 class="list-group-item-heading">{{note.title}}</h2>
                         <p class="list-group-item-text">{{language.author}}{{note.author.username}}</p>
                     </router-link>

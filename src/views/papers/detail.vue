@@ -21,10 +21,20 @@
             <router-link id="view-paper-content" class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">{{language.view}}</router-link>
         </div>
         <!-- Questions -->
-        <h2>{{language.question}}</h2>
-        <hr />
+        <!-- <h2>{{language.question}}</h2>
+        <hr /> -->
         <!-- Notes -->
         <h2>{{language.recom}}</h2>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="list-group">
+                <router-link :id="`note_title_${note.id}`" :to="`/papers/content?paper_id=${paper.id}&note_id=${note.id}`" class="list-group-item paper-list" v-for="note of paper.notes">
+                    <h2 class="list-group-item-heading">{{note.title}}</h2>
+                    <p class="list-group-item-text">{{language.author}}{{note.author.username}}</p>
+                </router-link>
+            </div>
+            </div>
+        </div>
         <hr />
     </div>
 <div class="hidden-sm hidden-md col-lg-1"></div>
@@ -68,8 +78,15 @@ export default {
 
             //Get paper information
             if (this.$root.online)
-            {   let _paper = this._paper = await Paper.find(paper_id);
-                this.paper = to_plain(this._paper);
+            {   let _paper = this._paper = await Paper.find(paper_id, {
+                  params: {
+                      with: ["notes", "notes.author"],
+                      // order: {
+                      //   collectors: False
+                      // }
+                  }
+                });
+                this.paper = to_plain(this._paper, ["notes"]);
             }
             else
             {   let paper = await db.papers.get(paper_id);
