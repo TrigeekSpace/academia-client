@@ -6,18 +6,18 @@
         <!-- Active view choice -->
         <ul class="nav nav-pills" v-if="display_mode=='note'">
             <li :class="{active: active_view=='pdf'}">
-                <a href="javascript:void(0)" @click="active_view = 'pdf'">论文批注</a>
+                <a href="javascript:void(0)" @click="active_view = 'pdf'">{{language.annotation}}</a>
             </li>
             <li :class="{active: active_view=='note'}">
-                <a href="javascript:void(0)" @click="active_view = 'note'">论文笔记</a>
+                <a href="javascript:void(0)" @click="active_view = 'note'">{{language.note}}</a>
             </li>
         </ul>
         <!-- Note operations -->
         <div align="right" v-if="$root.user&&(active_view=='note')">
-            <button class="btn btn-primary" v-if="!note_collected" @click="toggle_collect_status()">收藏笔记</button>
-            <button class="btn btn-primary" v-if="note_collected" @click="toggle_collect_status()">取消收藏</button>
-            <router-link class="btn btn-success" v-if="$root.user.id==current_note.author.id" :to="`/notes/upload?paper_id=${paper.id}&note_id=${current_note.id}`">编辑笔记</router-link>
-            <button class="btn btn-danger" v-if="$root.user.id==current_note.author.id" @click="delete_note()">删除笔记</button>
+            <button class="btn btn-primary" v-if="!note_collected" @click="toggle_collect_status()">{{language.collect}}</button>
+            <button class="btn btn-primary" v-if="note_collected" @click="toggle_collect_status()">{{language.decollect}}</button>
+            <router-link class="btn btn-success" v-if="$root.user.id==current_note.author.id" :to="`/notes/upload?paper_id=${paper.id}&note_id=${current_note.id}`">{{language.edit}}</router-link>
+            <button class="btn btn-danger" v-if="$root.user.id==current_note.author.id" @click="delete_note()">{{language.remove}}</button>
         </div>
         <!-- PDF view -->
         <iframe class="show-area" v-if="active_view=='pdf'" :src="`./dist/pdf.js/web/viewer.html?file=${pdf_url}`"></iframe>
@@ -26,10 +26,10 @@
     </div>
     <!-- Note area -->
     <div class="col-sm-3 col-md-3 col-lg-3">
-        <h2>热门版本</h2>
+        <h2>{{language.popular}}</h2>
         <ul class="list-group">
             <li class="list-group-item" @click="show_paper()">
-                <b>原版论文</b>
+                <b>{{language.origin}}</b>
             </li>
             <li class="list-group-item" v-for="note in paper.notes" @click="show_note(note.id)">
                 <b>{{note.title}}</b><br />
@@ -65,7 +65,8 @@ export default {
             //Current note
             current_note: null,
             //Note collected
-            note_collected: false
+            note_collected: false,
+            language: {}
         };
     },
     //Mount
@@ -110,6 +111,17 @@ export default {
                 if (user)
                     this.note_collected = _.includes(note.collectors, user.id);
             }
+
+            // Setting language
+            let lang = this.$root.settings.lang;
+            this.language.annotation = lang == '#langCN' ? '论文批注' : 'Annotation';
+            this.language.note = lang == '#langCN' ? '论文笔记' : 'Note:';
+            this.language.collect = lang == '#langCN' ? '收藏笔记' : 'Collect';
+            this.language.decollect = lang == '#langCN' ? '取消收藏' : 'Undo';
+            this.language.edit = lang == '#langCN' ? '编辑笔记' : 'Edit';
+            this.language.remove = lang == '#langCN' ? '删除笔记' : 'Remove';
+            this.language.popular = lang == '#langCN' ? '热门版本' : 'Popular';
+            this.language.origin = lang == '#langCN' ? '原版论文' : 'Origin';
         },
         //Delete note
         async delete_note()

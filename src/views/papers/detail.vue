@@ -1,5 +1,6 @@
 <template>
 <div class="row">
+<<<<<<< HEAD
     <div class="hidden-sm hidden-md col-lg-1"></div>
     <div class="col-sm-12 col-md-12 col-lg-10">
         <h1>{{paper.title}}</h1>
@@ -26,8 +27,36 @@
         <!-- Notes -->
         <h2>{{language.recom}}</h2>
         <hr />
+=======
+  <div class="hidden-sm hidden-md col-lg-1"></div>
+  <div class="col-sm-12 col-md-12 col-lg-10">
+    <h1>{{paper.title}}</h1>
+    <hr />
+    <!-- Author -->
+    <p><b>{{language.author}}</b>：{{paper.authors}}</p>
+    <!-- Conference -->
+    <p><b>{{language.conf}}</b>：{{paper.conference}}</p>
+    <!-- Publish date -->
+    <p><b>{{language.date}}</b>：{{paper.publish_date}}</p>
+    <!-- Abstract -->
+    <blockquote class="blockquote">{{paper.abstract}}</blockquote>
+    <!-- Paper operations -->
+    <div align="right">
+      <button id="download-paper" class="btn btn-default">{{language.download}}</button>
+      <button id="collect-paper" class="btn btn-primary" v-if="$root.user&&(!collected)" @click="toggle_collect_status()">{{language.mark}}</button>
+      <button id="decollect-paper" class="btn btn-primary" v-if="$root.user&&collected" @click="toggle_collect_status()">{{language.undo}}</button>
+      <router-link id="upload-note" class="btn btn-success" :to="`/notes/upload?paper_id=${paper.id}`">{{language.write}}</router-link>
+      <router-link id="view-paper-content" class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">{{language.view}}</router-link>
+>>>>>>> ba07eea1061c6f9cbfaaa35f5e09000b764e63a1
     </div>
-    <div class="hidden-sm hidden-md col-lg-1"></div>
+    <!-- Questions -->
+    <h2>{{language.question}}</h2>
+    <hr />
+    <!-- Notes -->
+    <h2>{{language.recom}}</h2>
+    <hr />
+  </div>
+  <div class="hidden-sm hidden-md col-lg-1"></div>
 </div>
 </template>
 <!-- Script -->
@@ -136,6 +165,10 @@ export default {
     watch: {
         $route: on_route_change
     }
+  },
+  watch: {
+    $route: on_route_change
+  }
 }
 </script>
 

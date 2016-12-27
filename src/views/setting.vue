@@ -40,6 +40,7 @@
 import {User} from "academia/models";
 import {to_plain} from "academia/util/api";
 import {on_route_change, pre_route, login_required} from "academia/util/route";
+import {msgbox} from "academia/util/core";
 
 export default {
     beforeRouteEnter: pre_route(login_required),
@@ -58,8 +59,7 @@ export default {
             this.language.language = lang == '#langCN' ? '语言：' : 'language:';
         },
         //Update user information
-        update_settings()
-        {
+        update_settings() {
             let settings = {};
             if ($('#langCN', this.$root.$el)[0].checked) {
                 settings['lang'] = '#langCN';
@@ -67,6 +67,7 @@ export default {
                 settings['lang'] = '#langEN';
             }
             this.$root.change_language(settings['lang']);
+            this.$router.push("/");
         },
     },
     mounted() {

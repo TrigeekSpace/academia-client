@@ -10,7 +10,7 @@
                     <span class="input-group-addon">
                       Academia
                     </span>
-                    <input id="query-arg" type="text" class="form-control" placeholder="在Academia上搜索论文" v-model="query_arg"  data-container="body" data-toggle="popover" data-placement="bottom" data-content="你至少需要一个关键词"/>
+                    <input id="query-arg" type="text" class="form-control" :placeholder="language.search" v-model="query_arg"  data-container="body" data-toggle="popover" data-placement="bottom" :data-content="language.lack_of_word"/>
                     <span class="input-group-btn">
                       <button id="search-btn" class="btn btn-default" @click="search()">Search!</button>&nbsp;
                     </span>
@@ -27,8 +27,8 @@
             <div class="list-group">
                 <router-link :id="`paper_title_${paper.id}`" :to="`/papers/detail?paper_id=${paper.id}`" class="list-group-item paper-list" v-for="paper in papers_list">
                     <h2 class="list-group-item-heading">{{paper.title}}</h2>
-                    <p class="list-group-item-text">作者：{{paper.authors}}</p>
-                    <p class="list-group-item-text">会议：{{paper.conference}}</p>
+                    <p class="list-group-item-text">{{language.author}}{{paper.authors}}</p>
+                    <p class="list-group-item-text">{{language.conf}}{{paper.conference}}</p>
                 </router-link>
             </div>
         </div>
@@ -52,55 +52,65 @@ import {pre_route, on_route_reload} from "academia/util/route";
 import {AUTH_TOKEN_HEADER} from "academia/config";
 
 export default {
-    //View data
-    data() {
-      return {
-        papers_list: [],
-        query_arg: ""
-      };
+  //View data
+  data() {
+    return {
+      papers_list: [],
+      query_arg: "",
+      language: {
+        search: "",
+        lack_of_word: ""
+      }
+    };
+  },
+  beforeRouteEnter: pre_route(),
+  //Methods
+  methods: {
+    init() {
+      this.query_arg = decodeURIComponent(this.$route.query.query);
+      this.current_num = 0;
+      this.each_load = 10;
+      Paper.findAll({
+        query: contains("title", this.query_arg),
+        offset: 0,
+        limit: this.each_load
+      }).then((plist) => {
+        this.current_num += plist.length
+        this.papers_list = plist
+        return plist;
+      });
+      //Setting language
+      let lang = this.$root.settings.lang;
+      this.language.author = lang == '#langCN' ? '作者：' : 'Author: ';
+      this.language.conf = lang == '#langCN' ? '会议：' : 'Conference: ';
+      this.language.search = lang == '#langCN' ? '在Academia上搜索论文' : 'Search papers via Academia';
+      this.language.lack_of_word = lang == '#langCN' ? '你至少需要一个关键词' : 'At least on keyword is required';
     },
-    beforeRouteEnter: pre_route(),
-    //Methods
-    methods: {
-      init() {
-        this.query_arg = decodeURIComponent(this.$route.query.query);
-        this.current_num = 0
-        this.each_load = 10
-        Paper.findAll({
-          query: contains("title", this.query_arg),
-          offset: 0,
-          limit: this.each_load
-        }).then((plist) => {
-          this.current_num += plist.length
-          this.papers_list = plist
-          return plist;
-        })
-      },
-      search() {
-        if (this.query_arg.length == 0) {
-          $("#query-arg").popover('show');
-        } else {
-          $("#query-arg").popover('hide');
-          this.$router.push({path: "/papers/list", query: {query: encodeURIComponent(this.query_arg)}});
+    search() {
+      if (this.query_arg.length == 0) {
+        $("#query-arg").popover('show');
+      } else {
+        $("#query-arg").popover('hide');
+        this.$router.push({path: "/papers/list", query: {query: encodeURIComponent(this.query_arg)}});
+      }
+    },
+    detail(p_id) {
+      this.$router.push({path: "/papers/detail", query: {paper_id: p_id}});
+    },
+    more_paper() {
+      console.log("more_paper")
+      Paper.findAll({
+        query: contains("title", this.query_arg),
+        offset: this.current_num,
+        limit: this.each_load
+      }).then((plist) => {
+        this.current_num += plist.length
+        for (let item of plist) {
+          this.papers_list.push(item)
         }
-      },
-      detail(p_id) {
-        this.$router.push({path: "/papers/detail", query: {paper_id: p_id}});
-      },
-      more_paper() {
-        console.log("more_paper")
-        Paper.findAll({
-          query: contains("title", this.query_arg),
-          offset: this.current_num,
-          limit: this.each_load
-        }).then((plist) => {
-          this.current_num += plist.length
-          for (let item of plist) {
-            this.papers_list.push(item)
-          }
-          return plist;
-        })
-      },
+        return plist;
+      })
+    },
   },
   watch: {
       $route: on_route_reload

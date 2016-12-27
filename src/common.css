@@ -12,6 +12,13 @@
     transform: translateY(-50%);
 }
 
+.vertical
+{   display: block;
+    /*position: absolute;*/
+    top: 40%;
+    transform: translateY(-50%);
+}
+
 .paper-list {
 	margin: 15px;
 }
