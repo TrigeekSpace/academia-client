@@ -60,7 +60,8 @@ export default {
             note_title: "",
             paper_title: "",
             //Update mode
-            update_mode: false
+            update_mode: false,
+            language: {}
         };
     },
     beforeRouteEnter: pre_route(login_required),
