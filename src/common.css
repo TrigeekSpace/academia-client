@@ -8,15 +8,13 @@
 .center-vertical
 {   display: block;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    margin: auto;
 }
 
 .vertical
 {   display: block;
     /*position: absolute;*/
     top: 40%;
-    transform: translateY(-50%);
 }
 
 .paper-list {
