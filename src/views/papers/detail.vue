@@ -84,7 +84,8 @@ export default {
                       // order: {
                       //   collectors: False
                       // }
-                  }
+                  },
+                  bypassCache: true
                 });
                 this.paper = to_plain(this._paper, ["notes"]);
             }
