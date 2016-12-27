@@ -15,7 +15,8 @@ module.exports = {
             "bootstrap",
             "lodash",
             "simplemde-css",
-            "marked"
+            "marked",
+            "db.js"
         ],
     },
     output: {
@@ -59,7 +60,8 @@ module.exports = {
         new webpack.ProvidePlugin({"$": "jquery", "jQuery": "jquery"}),
         //External modules
         new webpack.ExternalsPlugin("commonjs", [
-            "fs"
+            "fs",
+            "path"
         ])
     ],
     resolve: {

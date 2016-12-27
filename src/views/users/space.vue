@@ -36,7 +36,7 @@
                         <img class="portrait" src="https://media.52poke.com/wiki/thumb/5/53/054Psyduck.png/240px-054Psyduck.png" />
                     </div>
                     <div class="form-group">
-o                        <label>{{language.portrait}}</label>
+                        <label>{{language.portrait}}</label>
                         <input type="file" id="avatar-picker" />
                     </div>
                 </div>
@@ -137,7 +137,7 @@ export default {
     beforeRouteEnter: pre_route(login_required),
     methods: {
         //Initialization
-        async init() {   
+        async init() {
             //User instance
             let user_id = this.$route.query.user_id || this.$root.user.id;
 

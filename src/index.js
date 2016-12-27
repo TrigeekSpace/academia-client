@@ -3,10 +3,12 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import _ from "lodash";
 import "bootstrap";
+import fs from "fs";
 
 import "bootstrap-cosmo";
 import "simplemde-css";
 
+import {data_path} from "academia/util/core";
 import {inject_route_ctx} from "academia/util/route";
 import Root from "academia/views/root.vue";
 import "academia/common.css";
@@ -33,13 +35,29 @@ let routes = [
     {name: "upload_note", path: "/notes/upload", component: require("academia/views/notes/upload.vue")},
     //Local pages
     {name: "transfer_tasks", path: "/local/transfer", component: require("academia/views/local/transfer.vue")},
-    {name: "offline", path: "/local/offline", component: require("academia/views/local/offline.vue")}
+    {name: "offline", path: "/local/offline", component: require("academia/views/local/offline.vue")},
+    {name: "local_files", path: "/local/files", component: require("academia/views/local/files.vue")}
 ];
 //Router
 let router = new VueRouter({routes});
 //Enable context injection
 router.beforeEach(inject_route_ctx(router));
 
+//[ Files Folder ]
+//Data root
+if (!fs.existsSync(data_path()))
+    fs.mkdirSync(data_path());
+//Paper files directory
+if (!fs.existsSync(data_path("papers")))
+    fs.mkdirSync(data_path("papers"));
+//Note files directory
+if (!fs.existsSync(data_path("notes")))
+    fs.mkdirSync(data_path("notes"));
+
+//[ Online Detection ]
+setInterval(() => {
+    root_view.online = navigator.onLine;
+}, 10000);
 
 //[ Root View ]
 //Root node
@@ -63,13 +81,16 @@ export let root_view = new Vue({
         settings: {
             lang: '#langCN'
         },
+        //Side bar
         side_bar_list: {
             search: "",
             space: "",
             upload: "",
             setting: "",
             mission: ""
-        }
+        },
+        //Online
+        online: true
     },
     //Methods
     methods: {

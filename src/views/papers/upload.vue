@@ -102,7 +102,6 @@ export default {
             console.log("added");
         },
         upload() {
-
             console.log(`${this.title}, ${this.authors}`);
 
             if (!this.check_input()) {
@@ -123,7 +122,7 @@ export default {
               msgbox({
                       type: "error",
                       title: "无法上传论文",
-                      message: "你需要选择上传的文件"
+                      message: "你需要选择上传的文件。"
                   });
                 return;
             }
