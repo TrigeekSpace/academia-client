@@ -97,7 +97,7 @@ o                        <label>{{language.portrait}}</label>
             <!-- Collected notes -->
             <div class="row">
                 <h2>{{language.note_collect}}</h2>
-                <hr />
+                <!-- <hr /> -->
             </div>
         </div>
         <div class="col-sm-1 col-md-1 col-lg-1"></div>

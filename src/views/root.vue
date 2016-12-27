@@ -50,7 +50,7 @@
         <router-view></router-view>
         <!-- Page bottom -->
         <div align="center">
-            <hr />
+            <hr v-if="$root.show_copyright" />
             <h6 v-if="$root.show_copyright">Copyright &copy; Trigeek 2016. Released under BSD license.</h6>
         </div>
     </div>

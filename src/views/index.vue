@@ -1,23 +1,21 @@
 <template>
-    <div>
-        <div class="row center-vertical">
-            <div class="col-sm-2 col-md-3 col-lg-3"></div>
-            <div class="col-sm-8 col-md-6 col-lg-6">
-                <div align="center">
-                    <h1 class="big-title">Academia Search</h1>
-                    <br>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="search_input" :placeholder="language.search" v-model="search_text" data-toggle="popover" data-placement="bottom" :data-content="language.lack_of_word" data-trigger="manual" v-on:keyup.enter="search()">
-                        <span class="input-group-btn">
-                            <button id="search-btn" class="btn btn-default" @click="search()">
-                                Search!
-                            </button>
-                        </span>
-                    </div>
+    <div class="row vertical">
+        <div class="col-sm-2 col-md-3 col-lg-3"></div>
+        <div class="col-sm-8 col-md-6 col-lg-6">
+            <div align="center">
+                <h1 class="big-title">Academia Search</h1>
+                <br>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search_input" :placeholder="language.search" v-model="search_text" data-toggle="popover" data-placement="bottom" :data-content="language.lack_of_word" data-trigger="manual" v-on:keyup.enter="search()">
+                    <span class="input-group-btn">
+                        <button id="search-btn" class="btn btn-default" @click="search()">
+                            Search!
+                        </button>
+                    </span>
                 </div>
             </div>
-            <div class="col-sm-2 col-md-3 col-lg-3"></div>
         </div>
+        <div class="col-sm-2 col-md-3 col-lg-3"></div>
     </div>
 </template>
 
