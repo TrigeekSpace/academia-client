@@ -97,9 +97,9 @@
                 </div>
             </div>
             <!-- Collected notes -->
+            <!--
             <div class="row">
                 <h2>{{language.note_collect}}</h2>
-                <!-- <hr /> -->
             </div>
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12">
@@ -111,6 +111,7 @@
                 </div>
                 </div>
             </div>
+            -->
         </div>
         <div class="col-sm-1 col-md-1 col-lg-1"></div>
     </div>
