@@ -43,7 +43,7 @@
         </ul>
         <ul class="nav sidebar-group">
             <li><router-link to="/local/transfer"><span class="glyphicon glyphicon-transfer"></span> {{$root.side_bar_list.mission}}</router-link></li>
-            <li><router-link to="/local/files"><span class="glyphicon glyphicon-file"></span> 本地文件</router-link></li>
+            <li><router-link to="/local/files"><span class="glyphicon glyphicon-file"></span> {{$root.side_bar_list.local}}</router-link></li>
         </ul>
     </div>
     <!-- Content view -->

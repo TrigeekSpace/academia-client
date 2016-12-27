@@ -5,34 +5,34 @@
         <div class="hidden-sm hidden-md col-lg-1"></div>
         <div class="col-sm-12 col-md-12 col-lg-10">
             <div>
-                <h1>上传笔记</h1>
+                <h1>{{language.upload_note}}</h1>
                 <hr />
                 <form @submit.prevent>
                     <!-- Note title -->
                     <div class="form-group">
-                        <label>笔记名称</label>
-                        <input type="text" class="form-control" placeholder="笔记名称" v-model="note_title" />
+                        <label>{{language.note_title}}</label>
+                        <input type="text" class="form-control" :placeholder="language.note_title" v-model="note_title" />
                     </div>
                     <!-- Related paper title -->
                     <div class="form-group">
-                        <label>相关论文</label>
-                        <input disabled="disable" type="text" class="form-control" placeholder="相关论文" v-model="paper_title" />
+                        <label>{{language.relate_paper}}</label>
+                        <input disabled="disable" type="text" class="form-control" :placeholder="language.relate_paper" v-model="paper_title" />
                     </div>
                     <!-- Note content -->
                     <div class="form-group">
-                        <label>笔记内容</label>
+                        <label>{{language.note_content}}</label>
                         <textarea id="note-content"></textarea>
                     </div>
                     <!-- Annotation file -->
                     <div class="form-group">
-                        <label>批注论文</label>
+                        <label>{{language.annotation}}</label>
                         <input type="file" id="file-selector" />
                     </div>
                     <!-- Note operations -->
                     <div class="form-group" align="right">
-                        <button class="btn btn-primary" @click="update_note()" v-if="update_mode">保存</button>&nbsp;
-                        <button id="note_upload" class="btn btn-primary" @click="create_note()" v-if="!update_mode">发布</button>&nbsp;
-                        <button class="btn btn-default" @click="$router.back()">取消</button>
+                        <button class="btn btn-primary" @click="update_note()" v-if="update_mode">{{language.save}}</button>&nbsp;
+                        <button id="note_upload" class="btn btn-primary" @click="create_note()" v-if="!update_mode">{{language.publish}}</button>&nbsp;
+                        <button class="btn btn-default" @click="$router.back()">{{language.cancel}}</button>
                     </div>
                 </form>
             </div>
@@ -61,7 +61,10 @@ export default {
             paper_title: "",
             //Update mode
             update_mode: false,
-            language: {}
+            language: {
+                note_title: "",
+                relate_paper: ""
+            }
         };
     },
     beforeRouteEnter: pre_route(login_required),
@@ -92,6 +95,16 @@ export default {
                 this.note_title = note.title;
                 this.note_content = note.content;
             }
+            // Setting language
+            let lang = this.$root.settings.lang;
+            this.language.upload_note = lang == '#langCN' ? '上传笔记' : 'Upload Note';
+            this.language.note_title = lang == '#langCN' ? '笔记名称' : 'Note title';
+            this.language.relate_paper = lang == '#langCN' ? '相关论文' : 'Related Paper';
+            this.language.note_content = lang == '#langCN' ? '笔记内容' : 'Note Content';
+            this.language.annotation = lang == '#langCN' ? '批注论文' : 'Annotation';
+            this.language.save = lang == '#langCN' ? '保存' : 'Save';
+            this.language.publish = lang == '#langCN' ? '发布' : 'Publish';
+            this.language.cancel = lang == '#langCN' ? '取消' : 'Cancel';
         },
         //Update note
         async update_note()
