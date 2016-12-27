@@ -59,8 +59,7 @@ export default {
             this.language.language = lang == '#langCN' ? '语言：' : 'language:';
         },
         //Update user information
-        update_settings()
-        {
+        update_settings() {
             let settings = {};
             if ($('#langCN', this.$root.$el)[0].checked) {
                 settings['lang'] = '#langCN';
