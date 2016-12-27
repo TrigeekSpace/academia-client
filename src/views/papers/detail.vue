@@ -17,8 +17,8 @@
             <button id="download-paper" class="btn btn-default" @click="download_paper()" :disabled="!$root.online">{{language.download}}</button>
             <button id="collect-paper" class="btn btn-primary" v-if="$root.user&&(!collected)" @click="toggle_collect_status()" :disabled="!$root.online">{{language.mark}}</button>
             <button id="decollect-paper" class="btn btn-primary" v-if="$root.user&&collected" @click="toggle_collect_status()" :disabled="!$root.online">{{language.undo}}</button>
-            <router-link id="upload-note" class="btn btn-success" :to="`/notes/upload?paper_id=${paper.id}`" :disabled="!$root.online">{{language.write}}</router-link>
-            <router-link id="view-paper-content" class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">{{language.view}}</router-link>
+            <router-link tag="button" id="upload-note" class="btn btn-success" :to="`/notes/upload?paper_id=${paper.id}`" :disabled="!$root.online">{{language.write}}</router-link>
+            <router-link tag="button" id="view-paper-content" class="btn btn-info" :to="`/papers/content?paper_id=${paper.id}`">{{language.view}}</router-link>
         </div>
         <!-- Questions -->
         <h2>{{language.question}}</h2>

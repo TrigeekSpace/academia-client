@@ -14,7 +14,7 @@
                 <h2>论文</h2>
                 <div class="list-group">
                     <router-link :to="`/papers/detail?paper_id=${paper.id}`" class="list-group-item" v-for="paper of local_papers">
-                        <h3 class="list-group-item-heading">{{paper.title}}</h2>
+                        <h3 class="list-group-item-heading">{{paper.title}}</h3>
                         <p class="list-group-item-text">作者：{{paper.authors}}</p>
                         <p class="list-group-item-text">会议：{{paper.conference}}</p>
                     </router-link>
@@ -24,7 +24,7 @@
             <div class="row">
                 <h2>笔记</h2>
                 <div class="list-group">
-                    <router-link :to="`/papers/details?paper_id=${note.paper.id}&note_id=${note.id}`" class="list-group-item" v-for="note of local_notes">
+                    <router-link :to="`/papers/content?paper_id=${note.paper.id}&note_id=${note.id}`" class="list-group-item" v-for="note of local_notes">
                         <h3 class="list-group-item-heading">{{note.title}}</h3>
                         <p class="list-group-item-text">论文：{{note.paper.title}}</p>
                         <p class="list-group-item-text">用户：{{note.author.username}}</p>

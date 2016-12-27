@@ -17,7 +17,7 @@
             <button class="btn btn-default" @click="download_note()">下载笔记</button>
             <button class="btn btn-primary" v-if="!note_collected" @click="toggle_collect_status()" :disabled="!$root.online">{{language.collect}}</button>
             <button class="btn btn-primary" v-if="note_collected" @click="toggle_collect_status()" :disabled="!$root.online">{{language.decollect}}</button>
-            <router-link class="btn btn-success" v-if="$root.user.id==current_note.author.id" :to="`/notes/upload?paper_id=${paper.id}&note_id=${current_note.id}`" :disabled="!$root.online">{{language.edit}}</router-link>
+            <router-link tag="button" class="btn btn-success" v-if="$root.user.id==current_note.author.id" :to="`/notes/upload?paper_id=${paper.id}&note_id=${current_note.id}`" :disabled="!$root.online">{{language.edit}}</router-link>
             <button class="btn btn-danger" v-if="$root.user.id==current_note.author.id" @click="delete_note()" :disabled="!$root.online">{{language.remove}}</button>
         </div>
         <!-- PDF view -->
@@ -44,10 +44,11 @@
 <script>
 import _ from "lodash";
 import marked from "marked";
+import fs from "fs";
 
 import {Paper, Note, local_db} from "academia/models";
 import {BKND_URL} from "academia/config";
-import {to_plain} from "academia/util/api";
+import {to_plain, progress_listener} from "academia/util/api";
 import {pre_route, on_route_change} from "academia/util/route";
 import {data_path} from "academia/util/core";
 
@@ -204,14 +205,14 @@ export default {
 
             //Get note data
             let note_data = await Note.find(this._note.id, {
-                params: {"with": ["author"]},
+                params: {"with": ["author", "paper"]},
                 bypassCache: true
             });
 
             let db = await local_db;
             //Insert paper data into local DB
-            await db.papers.add({
-                item: to_plain(note_data, ["author"]),
+            await db.notes.add({
+                item: to_plain(note_data, ["author", "paper"]),
                 key: note_data.id
             });
             //Save note file

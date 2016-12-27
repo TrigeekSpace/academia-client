@@ -12,6 +12,7 @@ import {data_path} from "academia/util/core";
 import {inject_route_ctx} from "academia/util/route";
 import Root from "academia/views/root.vue";
 import {adaptor} from "academia/models";
+import {AUTH_TOKEN_HEADER} from "academia/config";
 import "academia/common.css";
 
 //[ Router ]
@@ -91,7 +92,7 @@ export let root_view = new Vue({
             mission: ""
         },
         //Online
-        online: true
+        online: navigator.onLine
     },
     //Methods
     methods: {
