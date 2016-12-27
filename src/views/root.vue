@@ -9,7 +9,7 @@
             </div>
             <!-- Menu -->
             <ul class="nav navbar-nav">
-                <li class="active" href="javascript:void(0)" @click="$root.toggle_sidebar()" id="menu-button"><a href="javascript:void(0)"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Menu</a></li>
+                <li class="active" href="javascript:void(0)" @click="$root.toggle_sidebar()" id="menu-button"><a href="javascript:void(0)"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;{{$root.side_bar_list.menu}}</a></li>
                 <li id="back-button"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
                 <li id="forward-button"><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
             </ul>
