@@ -27,14 +27,7 @@
         <h2>{{language.recom}}</h2>
         <hr />
     </div>
-    <!-- Questions -->
-    <h2>{{language.question}}</h2>
-    <hr />
-    <!-- Notes -->
-    <h2>{{language.recom}}</h2>
-    <hr />
-  </div>
-  <div class="hidden-sm hidden-md col-lg-1"></div>
+<div class="hidden-sm hidden-md col-lg-1"></div>
 </div>
 </template>
 <!-- Script -->
@@ -69,7 +62,8 @@ export default {
     methods: {
         //Initialization
         async init()
-        {   let paper_id = Number(this.$route.query.paper_id);
+        {
+            let paper_id = Number(this.$route.query.paper_id);
             let db = await local_db;
 
             //Get paper information
