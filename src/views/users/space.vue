@@ -6,7 +6,7 @@
         <div class="col-sm-10 col-md-10 col-lg-10">
             <!-- Personal information -->
             <div class="row">
-                <h1>{{language.info}}</h1>
+                <h1>个人信息</h1>
                 <hr />
             </div>
             <!-- Display mode -->
@@ -15,10 +15,10 @@
                     <img class="portrait" src="https://media.52poke.com/wiki/thumb/5/53/054Psyduck.png/240px-054Psyduck.png" />
                 </div>
                 <div class="col-sm-4 col-md-4 col-lg-4">
-                    <p><strong>{{language.username}}</strong><br/>{{user.username}}</p>
-                    <p><strong>{{language.email}}</strong><br/>{{user.email}}</p>
-                    <p><strong>{{language.occupation}}</strong><br/>{{user.job}}</p>
-                    <p><strong>{{language.score}}</strong><br />{{user.contribution}}</p>
+                    <p><strong>用户名：</strong><br/>{{user.username}}</p>
+                    <p><strong>邮箱：</strong><br/>{{user.email}}</p>
+                    <p><strong>职业：</strong><br/>{{user.job}}</p>
+                    <p><strong>贡献值：</strong><br />{{user.contribution}}</p>
                 </div>
                 <div class="col-sm-5 col-md-5 col-lg-5">
                     <div class="form-group">
@@ -43,20 +43,20 @@
                 <!-- User information -->
                 <div class="col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
-                        <label>{{language.username}}</label>
+                        <label>用户名：</label>
                         <br />
                         {{user.username}}
                     </div>
                     <div class="form-group">
-                        <label>{{language.email}}</label>
+                        <label>邮箱：</label>
                         <input type="text" class="form-control" v-model="update_info.email" />
                     </div>
                     <div class="form-group">
-                        <label>{{language.occupation}}</label>
+                        <label>职业：</label>
                         <input type="text" class="form-control" v-model="update_info.job" />
                     </div>
                     <div class="form-group">
-                        <label>{{language.score}}</label>
+                        <label>贡献值：</label>
                         <br />
                         {{user.contribution}}
                     </div>
