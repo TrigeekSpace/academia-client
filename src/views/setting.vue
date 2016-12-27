@@ -39,11 +39,11 @@
 <script>
 import {User} from "academia/models";
 import {to_plain} from "academia/util/api";
-import {on_route_change, pre_route, login_required} from "academia/util/route";
+import {on_route_change, pre_route} from "academia/util/route";
 import {msgbox} from "academia/util/core";
 
 export default {
-    beforeRouteEnter: pre_route(login_required),
+    beforeRouteEnter: pre_route(),
     data(){
         return {
             language: {

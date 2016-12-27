@@ -59,10 +59,13 @@ export default {
             password2: null,
             language: {
                 username: "",
+                email: "",
+                passwd: "",
+                pass2: ""
             }
         };
     },
-    beforeRouteEnter: pre_route(login_required),
+    beforeRouteEnter: pre_route(),
     //Methods
     methods: {
         //Initialization
@@ -76,7 +79,7 @@ export default {
             this.language.email = lang == '#langCN' ? '邮箱' : 'E-mail';
             this.language.passwd = lang == '#langCN' ? '密码' : 'Password';
             this.language.pass2 = lang == '#langCN' ? '再次输入密码' : 'Repeat Password';
-        }
+        },
         //User register
         async register_user()
         {   try
