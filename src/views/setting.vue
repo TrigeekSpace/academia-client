@@ -64,7 +64,6 @@ export default {
             let settings = {};
             if ($('#langCN', this.$root.$el)[0].checked) {
                 settings['lang'] = '#langCN';
-                return;
             } else {
                 settings['lang'] = '#langEN';
             }
