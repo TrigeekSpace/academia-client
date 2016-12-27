@@ -83,7 +83,6 @@
             <!-- Collected papers -->
             <div class="row">
                 <h2>{{language.paper_collect}}</h2>
-                  <hr />
             </div>
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12">
@@ -100,21 +99,11 @@
             <!--
             <div class="row">
                 <h2>{{language.note_collect}}</h2>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="list-group">
-                    <router-link :id="`note_title_${paper.id}`" :to="`/papers/detail?paper_id=${note.paper.id}&note_id=${note.id}`" class="list-group-item note-list" v-for="note of user.collect_notes">
-                        <h2 class="list-group-item-heading">{{note.title}}</h2>
-                        <p class="list-group-item-text">{{language.author}}{{note.authors}}</p>
-                    </router-link>
-                </div>
-                </div>
+                <hr />
             </div>
             -->
-        </div>
         <div class="col-sm-1 col-md-1 col-lg-1"></div>
-    </div>
+        </div>
 </div>
 </template>
 <!-- script -->
@@ -160,8 +149,9 @@ export default {
                     with: ["collect_papers"]
                 }
             });
+
             //Vue user data
-            this.user = to_plain(this._user, ["collect_papers", "collect_notes"]);
+            this.user = to_plain(this._user, ["collect_papers"]);
             // Setting language
             let lang = this.$root.settings.lang;
             this.language.info = lang == '#langCN' ? '个人信息' : 'Personal';
