@@ -11,6 +11,7 @@ import "simplemde-css";
 import {data_path} from "academia/util/core";
 import {inject_route_ctx} from "academia/util/route";
 import Root from "academia/views/root.vue";
+import {adaptor} from "academia/models";
 import "academia/common.css";
 
 //[ Router ]
@@ -139,6 +140,13 @@ export let root_view = new Vue({
     render: (resolve) => resolve(Root),
     router
 });
+
+//Log-in data
+let login_data = JSON.parse(localStorage.getItem("login"));
+if (login_data)
+{   root_view.user = login_data.user;
+    adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = login_data.token;
+}
 
 router.beforeEach((to, from, next)=>{
     let $root = root_view;
