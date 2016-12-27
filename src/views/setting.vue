@@ -28,7 +28,7 @@
             <!-- Display mode actions -->
             <div class="row">
                 <div class="col-sm-9 col-md-9 col-lg-9"></div>
-                <button class="btn btn-primary" @click="update_settings()">保存修改</button>
+                <button class="btn btn-primary" @click="update_settings()">{{language.save}}</button>
             </div>
         </div>
         <div class="col-sm-1 col-md-1 col-lg-1"></div>
@@ -56,7 +56,8 @@ export default {
         init() {
             let lang = this.$root.settings.lang;
             this.language.preference = lang == '#langCN' ? '偏好设置' : 'Preference';
-            this.language.language = lang == '#langCN' ? '语言：' : 'language:';
+            this.language.language = lang == '#langCN' ? '语言：' : 'Language:';
+            this.language.save = lang == '#langCN' ? '保存修改' : 'Save Change';
         },
         //Update user information
         update_settings() {

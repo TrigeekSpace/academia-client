@@ -5,31 +5,31 @@
         <div class="col-sm-3 col-md-4 col-lg-4"></div>
         <div class="col-sm-6 col-md-4 col-lg-4">
             <div class="well" align="center">
-                <h2>登录</h2>
+                <h2>{{language.login}}</h2>
                 <hr />
                 <!-- Log-in first prompt -->
                 <div class="alert alert-warning" v-if="$route.query.next">
-                    要使用此功能，请先登录。
+                    {{language.login_first}}
                 </div>
                 <!-- Register prompt -->
                 <div class="alert alert-info">
-                    还没有Academia账户？
-                    <router-link to="/users/register" class="alert-link">点此注册</router-link>。
+                    {{language.no_account}}
+                    <router-link to="/users/register" class="alert-link">{{language.register}}</router-link>。
                 </div>
                 <!-- Log-in form -->
                 <form class="form-horizontal" @submit.prevent>
                     <!-- Username -->
                     <div class="form-group form-group-padding-fixes">
-                        <input type="text" class="form-control" placeholder="用户名" v-model="username" />
+                        <input type="text" class="form-control" :placeholder="language.username" v-model="username" />
                     </div>
                     <!-- Password -->
                     <div class="form-group form-group-padding-fixes">
-                        <input type="password" class="form-control" placeholder="密码" v-model="password" data-trigger="manual" v-on:keyup.enter="login()"/>
+                        <input type="password" class="form-control" :placeholder="language.passwd" v-model="password" data-trigger="manual" v-on:keyup.enter="login()"/>
                     </div>
                     <!-- Operations -->
                     <div class="form-group form-group-well">
-                        <button id="login_btn" class="btn btn-primary" @click="login()">登录</button>&nbsp;&nbsp;
-                         <button class="btn btn-default">忘记密码</button>
+                        <button id="login_btn" class="btn btn-primary" @click="login()">{{language.login}}</button>&nbsp;&nbsp;
+                         <button class="btn btn-default">{{language.forget}}</button>
                     </div>
                 </form>
             </div>
@@ -45,17 +45,36 @@ import {AUTH_TOKEN_HEADER} from "academia/config";
 import {urlsafe_b64decode, msgbox} from "academia/util/core";
 import {to_plain} from "academia/util/api";
 import {unify_error} from "academia/util/error";
+import {on_route_change, pre_route} from "academia/util/route";
 
 export default {
     //View data
     data()
     {   return {
             username: null,
-            password: null
+            password: null,
+            language: {
+                username: "",
+                passwd: "",
+            }
         };
     },
+    beforeRouteEnter: pre_route(),
     //Methods
     methods: {
+        //Initialization
+        async init() {
+            // Setting language
+            let lang = this.$root.settings.lang;
+            this.language.login = lang == '#langCN' ? '登录' : 'Login';
+            this.language.login_first = lang == '#langCN' ? '要使用此功能，请先登录。' : 'Please login first';
+            this.language.no_account = lang == '#langCN' ? '还没有Academia账户？' : 'Still have no Academia account?';
+            this.language.register = lang == '#langCN' ? '点此注册' : 'Register';
+            this.language.username = lang == '#langCN' ? '用户名' : 'Username';
+            this.language.email = lang == '#langCN' ? '邮箱' : 'E-mail';
+            this.language.passwd = lang == '#langCN' ? '密码' : 'Password';
+            this.language.forget = lang == '#langCN' ? '忘记密码' : 'Forget Password';
+        },
         //Log-in
         async login()
         {   try
