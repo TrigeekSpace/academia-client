@@ -80,6 +80,7 @@ export let root_view = new Vue({
             this.side_bar_list.upload = lang == '#langCN' ? '上传论文' : 'Upload';
             this.side_bar_list.setting = lang == '#langCN' ? '偏好设置' : 'Setting';
             this.side_bar_list.mission = lang == '#langCN' ? '传输任务' : 'Mission';
+            this.side_bar_list.menu = lang == '#langCN' ? '菜单' : 'Menu';
         },
         //Toggle sidebar
         toggle_sidebar()
