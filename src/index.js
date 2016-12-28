@@ -62,6 +62,20 @@ setInterval(() => {
   root_view.online = navigator.onLine;
 }, 10000);
 
+//[ Persistent Settings ]
+//Log-in data
+let login_data = JSON.parse(localStorage.getItem("login"));
+//User
+let store_user = null;
+
+if (login_data)
+{   store_user = login_data.user;
+    adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = login_data.token;
+}
+
+//Language
+let language = localStorage.getItem("lang")||"#langCN";
+
 //[ Root View ]
 //Root node
 export let root_node = $("<div />");
@@ -74,7 +88,7 @@ export let root_view = new Vue({
   //Root level data
   data: {
     //Current user
-    user: null,
+    user: store_user,
     //Show or hide sidebar
     show_side_bar: false,
     //File uploads & downloads
@@ -83,7 +97,7 @@ export let root_view = new Vue({
     show_copyright: false,
     language_dict: language_dict,
     settings: {
-      lang: '#langCN'
+      lang: language
     },
     //Side bar
     side_bar_list: {
@@ -135,17 +149,15 @@ export let root_view = new Vue({
       }
     }
   },
+  watch: {
+    ["settings.lang"](value)
+    {   localStorage.setItem("lang", value);
+    }
+  },
   el: root_node[0],
   render: (resolve) => resolve(Root),
   router
 });
-
-//Log-in data
-let login_data = JSON.parse(localStorage.getItem("login"));
-if (login_data)
-{   root_view.user = login_data.user;
-  adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = login_data.token;
-}
 
 router.beforeEach((to, from, next)=>{
   let $root = root_view;
