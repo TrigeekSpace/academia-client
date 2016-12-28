@@ -12,7 +12,7 @@
             <!-- Display mode -->
             <div class="row" v-if="!edit_mode">
                 <div class="col-sm-3 col-md-3 col-lg-3">
-                    <img class="portrait" src="https://media.52poke.com/wiki/thumb/5/53/054Psyduck.png/240px-054Psyduck.png" />
+                    <img class="portrait" :src="avatar_url" />
                 </div>
                 <div class="col-sm-4 col-md-4 col-lg-4">
                     <p><strong>{{language.username}}</strong><br/>{{user.username}}</p>
@@ -33,7 +33,7 @@
                 <!-- Avatar -->
                 <div class="col-sm-3 col-md-3 col-lg-3">
                     <div class="form-group">
-                        <img class="portrait" src="https://media.52poke.com/wiki/thumb/5/53/054Psyduck.png/240px-054Psyduck.png" />
+                        <img class="portrait" :src="avatar_url" />
                     </div>
                     <div class="form-group">
                         <label>{{language.portrait}}</label>
@@ -122,9 +122,12 @@
 </template>
 <!-- script -->
 <script>
+import $ from "jquery";
+
 import {User} from "academia/models";
 import {to_plain} from "academia/util/api";
-import {on_route_change, pre_route, login_required} from "academia/util/route";
+import {on_route_change, pre_route, login_required, online_only} from "academia/util/route";
+import {BKND_URL, DEFAULT_AVATAR} from "academia/config";
 
 export default {
     data()
@@ -150,7 +153,7 @@ export default {
             language: {}
         };
     },
-    beforeRouteEnter: pre_route(login_required),
+    beforeRouteEnter: pre_route(login_required, online_only),
     methods: {
         //Initialization
         async init() {
@@ -172,8 +175,18 @@ export default {
         },
         //Update user information
         async update_user_info()
-        {   //Update user information
-            await this._user.DSUpdate(this.update_info, {
+        {   let update_info = {};
+
+            //Avatar upload
+            let avatar_picker = $("#avatar-picker")[0];
+            if (avatar_picker.files.length>0)
+            {   update_info.avatar = avatar_picker.files[0];
+            }
+            //Mix-in updated data
+            _.extend(update_info, this.update_info);
+            console.log(update_info);
+            //Update user information
+            await this._user.DSUpdate(update_info, {
                 method: "PATCH"
             });
             //Vue user data
@@ -194,6 +207,14 @@ export default {
 
             //Set edit mode variable
             this.edit_mode = mode;
+        }
+    },
+    computed: {
+        avatar_url()
+        {   if (this.user&&this.user.avatar)
+                return `${BKND_URL}/depot/${this.user.avatar}`;
+            else
+                return DEFAULT_AVATAR;
         }
     },
     watch: {

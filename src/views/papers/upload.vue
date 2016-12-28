@@ -27,22 +27,12 @@
           <div class="form-inline">
             <select class="form-control" id="year_select" v-model="year">
               <option>{{language.choose_year}}</option>
+              <option v-for="n in 50" :value="n">{{n+1970}}</option>
             </select>
             {{language.year}}
             <select class="form-control" v-model="month">
               <option>{{language.choose_month}}</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-              <option>6</option>
-              <option>7</option>
-              <option>8</option>
-              <option>9</option>
-              <option>10</option>
-              <option>11</option>
-              <option>12</option>
+              <option v-for="n in 12" :value="n">{{n}}</option>
             </select>
             {{language.month}}
           </div>
@@ -115,7 +105,7 @@ export default {
         msgbox({
           type: "error",
           title: "无法上传论文",
-          message: "您尚未填写笔记标题或内容。"
+          message: "您尚未填写笔记标题或内容，或尚未输入论文发布日期。"
         });
         return;
       }
@@ -149,7 +139,10 @@ export default {
         authors: this.authors,
         abstract: this.abstract,
         conference: this.conference,
-        // publish_date: this.publish_date(),
+        publish_date: new Date(
+            Number(this.year)+1970,
+            Number(this.month)-1
+        ),
         paper_file: this.upload_file
       }, {
         onUploadProgress: progress_listener(new_upload_task)
@@ -159,11 +152,11 @@ export default {
 
       this.$router.push("/");
     },
-    publish_date() {
-      return `${this.year}-${this.month}`;
-    },
     check_input() {
-      return this.title.length > 0 && this.authors.length > 0;
+      return (this.title.length>0)
+        &&(this.authors.length>0)
+        &&(!isNaN(Number(this.year)))
+        &&(!isNaN(Number(this.month)));
     }
   },
   watch: {

@@ -9,6 +9,10 @@
 <!-- Script -->
 <script>
 export default {
-    
+    mounted()
+    {   setInterval(() => {
+            
+        }, 10000);
+    }
 }
 </script>
