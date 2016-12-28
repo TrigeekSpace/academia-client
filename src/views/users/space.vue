@@ -127,7 +127,7 @@ import $ from "jquery";
 import {User} from "academia/models";
 import {to_plain} from "academia/util/api";
 import {on_route_change, pre_route, login_required, online_only} from "academia/util/route";
-import {BKND_URL, DEFAULT_AVATAR} from "academia/config";
+import {DEFAULT_AVATAR} from "academia/config";
 
 export default {
     data()
@@ -212,7 +212,7 @@ export default {
     computed: {
         avatar_url()
         {   if (this.user&&this.user.avatar)
-                return `${BKND_URL}/depot/${this.user.avatar}`;
+                return `${this.$root.settings.bknd_url}/depot/${this.user.avatar}`;
             else
                 return DEFAULT_AVATAR;
         }

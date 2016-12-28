@@ -47,7 +47,6 @@ import marked from "marked";
 import fs from "fs";
 
 import {Paper, Note, local_db} from "academia/models";
-import {BKND_URL} from "academia/config";
 import {to_plain, progress_listener} from "academia/util/api";
 import {pre_route, on_route_change} from "academia/util/route";
 import {data_path} from "academia/util/core";
@@ -76,8 +75,8 @@ export default {
   //Mount
   methods: {
     async init()
-    {   let db = await local_db;
-
+    { let db = await local_db;
+      let bknd_url = this.$root.settings.bknd_url;
       //Paper ID
       let paper_id = parseInt(this.$route.query.paper_id);
       //Display mode
@@ -102,7 +101,7 @@ export default {
       if (this.display_mode=="paper")
       {   //Set PDF URL
         this.pdf_url = (this.$root.online)
-          ?`${BKND_URL}/depot/${this.paper.paper_file}`
+          ?`${bknd_url}/depot/${this.paper.paper_file}`
           :"file://"+data_path("papers", String(paper_id));
         //Show PDF file
         this.active_view = "pdf";
@@ -126,7 +125,7 @@ export default {
 
         //Set PDF URL
         this.pdf_url = (this.$root.online)
-          ?`${BKND_URL}/depot/${note.annotation_file}`
+          ?`${bknd_url}/depot/${note.annotation_file}`
           :"file://"+data_path("notes", String(note_id));
         //Show PDF file
         this.active_view = "pdf";
@@ -189,7 +188,7 @@ export default {
 
       //Begin downloading paper
       let note_file_resp = await adaptor.http({
-        url: `${BKND_URL}/depot/${this._note.annotation_file}`,
+        url: `${bknd_url}/depot/${this._note.annotation_file}`,
         onDownloadProgress: progress_listener(new_download_task),
         responseType: "arraybuffer"
       });
