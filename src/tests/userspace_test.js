@@ -22,7 +22,7 @@ describe("Userspace Page", function() {
     await delay(100);
     let c_view = get_current_view(root_view);
 
-    $("#paper-title-1", root_view.$el)[0].click();
+    $("#paper_title_1", root_view.$el)[0].click();
     await delay(100);
     assert.equal(location.hash, "#/papers/detail?paper_id=1");
     root_view.user = undefined;
@@ -58,22 +58,15 @@ describe("Userspace Page", function() {
     adaptor.http.oneshot("/notes/1", NOTE_DATA);
     root_view.$router.push({name: "user_space"});
     await delay(100);
-    console.log($("#modify-user-info-btn", root_view.$el)[0]);
+    console.log(location.hash);
     let c_view = get_current_view(root_view);
-    $("#modify-user-info-btn", root_view.$el)[0].click();
+    $("#modify-user-info-btn", root_view.$el).click();
     await delay(100);
-
-    adaptor.http.oneshot("/users/1", {
-      ...USER_DATA,
-      email: "233@33.dd",
-      job: "test_job",
-      self_introduction: "self_introduction"
-    })
-
+    console.log(c_view)
     c_view.update_info.email = "233@33.dd";
     c_view.update_info.job = "test_job";
     c_view.update_info.self_introduction = "self_introduction";
-    $("#save-modify-info", root_view.$el)[0].click();
+    $("#save-modify-info", root_view.$el).click();
     await delay(100);
 
     assert.equal(c_view.user.email, "233@33.dd");
