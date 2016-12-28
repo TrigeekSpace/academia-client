@@ -2,3 +2,5 @@
 /node_modules
 # Webpack bundles
 /dist/webpack
+# Release directory
+release

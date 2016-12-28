@@ -64,7 +64,7 @@
 import $ from "jquery";
 import _ from "lodash";
 
-import {pre_route, login_required, on_route_change} from "academia/util/route";
+import {pre_route, login_required, on_route_change, online_only} from "academia/util/route";
 import {Paper, Note, adaptor} from "academia/models";
 import {to_plain, progress_listener} from "academia/util/api";
 import {unify_error} from "academia/util/error";
@@ -86,14 +86,14 @@ export default {
       }
     }
   },
-  beforeRouteEnter: pre_route(login_required),
+  beforeRouteEnter: pre_route(login_required, online_only),
   methods: {
     init() {
-      let sel = $("#year_select");
+      /*let sel = $("#year_select");
       const year_start = 2016;
       for (let i = 0; i < 50; i++) {
         sel.append(`<option>${year_start - i}</option>`);
-      }
+    }*/
       // Setting language
       let lang = this.$root.settings.lang;
       this.language = this.$root.language_dict[lang].papers.upload;

@@ -48,7 +48,7 @@
 <script>
 import {Paper, adaptor} from "academia/models";
 import {to_plain, icontains} from "academia/util/api";
-import {pre_route, on_route_change} from "academia/util/route";
+import {pre_route, on_route_change, online_only} from "academia/util/route";
 import {AUTH_TOKEN_HEADER} from "academia/config";
 
 export default {
@@ -63,7 +63,7 @@ export default {
     }
   };
   },
-  beforeRouteEnter: pre_route(),
+  beforeRouteEnter: pre_route(online_only),
   //Methods
   methods: {
   init() {

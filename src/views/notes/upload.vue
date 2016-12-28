@@ -48,7 +48,7 @@ import SimpleMDE from "simplemde";
 
 import {Paper, Note, adaptor} from "academia/models";
 import {to_plain, progress_listener} from "academia/util/api";
-import {pre_route, login_required, on_route_change} from "academia/util/route";
+import {pre_route, login_required, on_route_change, online_only} from "academia/util/route";
 import {unify_error} from "academia/util/error";
 import {msgbox} from "academia/util/core";
 
@@ -67,7 +67,7 @@ export default {
       }
     };
   },
-  beforeRouteEnter: pre_route(login_required),
+  beforeRouteEnter: pre_route(login_required, online_only),
   //Methods
   methods: {
     async init()

@@ -45,7 +45,7 @@ import {AUTH_TOKEN_HEADER} from "academia/config";
 import {urlsafe_b64decode, msgbox} from "academia/util/core";
 import {to_plain} from "academia/util/api";
 import {unify_error} from "academia/util/error";
-import {on_route_change, pre_route} from "academia/util/route";
+import {on_route_change, pre_route, online_only} from "academia/util/route";
 
 export default {
   //View data
@@ -59,7 +59,7 @@ export default {
       }
     };
   },
-  beforeRouteEnter: pre_route(),
+  beforeRouteEnter: pre_route(online_only),
   //Methods
   methods: {
     //Initialization

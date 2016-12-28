@@ -47,7 +47,7 @@
 import {User} from "academia/models";
 import {msgbox} from "academia/util/core";
 import {unify_error} from "academia/util/error";
-import {on_route_change, pre_route} from "academia/util/route";
+import {on_route_change, pre_route, online_only} from "academia/util/route";
 
 export default {
   //View model data
@@ -65,7 +65,7 @@ export default {
       }
     };
   },
-  beforeRouteEnter: pre_route(),
+  beforeRouteEnter: pre_route(online_only),
   //Methods
   methods: {
     //Initialization
