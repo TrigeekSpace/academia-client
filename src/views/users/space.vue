@@ -178,7 +178,7 @@ export default {
         {   let update_info = {};
 
             //Avatar upload
-            let avatar_picker = $("#avatar-picker")[0];
+            let avatar_picker = $("#avatar-picker", this.$el)[0];
             if (avatar_picker.files.length>0)
             {   update_info.avatar = avatar_picker.files[0];
             }

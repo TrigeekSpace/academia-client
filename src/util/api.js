@@ -231,7 +231,8 @@ export let and = _.bind(Array, null, "and"),
     lte = _.bind(Array, null, "lte"),
     in_ = _.bind(Array, null, "in"),
     nin = _.bind(Array, null, "nin"),
-    contains = _.bind(Array, null, "contains");
+    contains = _.bind(Array, null, "contains"),
+    icontains = _.bind(Array, null, "icontains");
 
 //[ Model-related ]
 /**

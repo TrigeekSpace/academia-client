@@ -47,8 +47,8 @@
 <!-- Script -->
 <script>
 import {Paper, adaptor} from "academia/models";
-import {to_plain, contains} from "academia/util/api";
-import {pre_route, on_route_reload} from "academia/util/route";
+import {to_plain, icontains} from "academia/util/api";
+import {pre_route, on_route_change} from "academia/util/route";
 import {AUTH_TOKEN_HEADER} from "academia/config";
 
 export default {
@@ -71,7 +71,7 @@ export default {
     this.current_num = 0;
     this.each_load = 10;
     Paper.findAll({
-    query: contains("title", this.query_arg),
+    query: icontains("title", this.query_arg),
     offset: 0,
     limit: this.each_load
     }).then((plist) => {
@@ -97,7 +97,7 @@ export default {
   more_paper() {
     console.log("more_paper")
     Paper.findAll({
-    query: contains("title", this.query_arg),
+    query: icontains("title", this.query_arg),
     offset: this.current_num,
     limit: this.each_load
     }).then((plist) => {
@@ -110,7 +110,7 @@ export default {
   },
   },
   watch: {
-    $route: on_route_reload
+    $route: on_route_change
   }
 };
 </script>

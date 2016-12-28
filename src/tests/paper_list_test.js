@@ -17,7 +17,7 @@ describe("Search Result Page", function() {
     console.log(location.hash)
     let c_view = get_current_view(root_view);
     console.log($("#paper_title_1", root_view.$el));
-    $("#paper_title_1", root_view.$el).click();
+    $("#paper_title_1", root_view.$el)[0].click();
     await delay(100);
     assert.equal(location.hash, "#/papers/detail?paper_id=1");
   });
@@ -35,7 +35,7 @@ describe("Search Result Page", function() {
 
     let c_view = get_current_view(root_view);
 
-    $("#paper_title_2", root_view.$el).click();
+    $("#paper_title_2", root_view.$el)[0].click();
     await delay(100);
     assert.equal(location.hash, "#/papers/detail?paper_id=2");
   });
