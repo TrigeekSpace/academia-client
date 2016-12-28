@@ -49,7 +49,6 @@ import {Paper, adaptor, local_db} from "academia/models";
 import {to_plain, progress_listener} from "academia/util/api";
 import {pre_route, on_route_change} from "academia/util/route";
 import {data_path} from "academia/util/core";
-import {BKND_URL} from "academia/config";
 
 export default {
     beforeRouteEnter: pre_route(),
@@ -121,10 +120,11 @@ export default {
             };
             //Add download task
             this.$root.download_tasks.push(new_download_task);
-
+            //root addr
+            let bknd_url = this.$root.settings.bknd_url;
             //Begin downloading paper
             let paper_file_resp = await adaptor.http({
-                url: `${BKND_URL}/depot/${this.paper.paper_file}`,
+                url: `${bknd_url}/depot/${this.paper.paper_file}`,
                 onDownloadProgress: progress_listener(new_download_task),
                 responseType: "arraybuffer"
             });

@@ -12,7 +12,7 @@ import {data_path} from "academia/util/core";
 import {inject_route_ctx} from "academia/util/route";
 import Root from "academia/views/root.vue";
 import {adaptor} from "academia/models";
-import {AUTH_TOKEN_HEADER} from "academia/config";
+import {AUTH_TOKEN_HEADER, BKND_URL} from "academia/config";
 import "academia/common.css";
 import language_dict from "academia/dict"
 
@@ -76,6 +76,9 @@ if (login_data)
 //Language
 let language = localStorage.getItem("lang")||"#langCN";
 
+//backend addr
+let bknd_url = localStorage.getItem("bknd_url")||BKND_URL;
+
 //[ Root View ]
 //Root node
 export let root_node = $("<div />");
@@ -97,7 +100,8 @@ export let root_view = new Vue({
     show_copyright: false,
     language_dict: language_dict,
     settings: {
-      lang: language
+      lang: language,
+      bknd_url
     },
     //Side bar
     side_bar_list: {
@@ -115,6 +119,11 @@ export let root_view = new Vue({
     change_language(lang) {
       this.settings['lang'] = lang;
       this.side_bar_list = this.language_dict[lang].side_bar_list;
+    },
+    change_bknd_addr(addr) {
+      // TO-DO : verify bknd_url
+      this.settings['bknd_url'] = addr;
+      adaptor.defaults.basePath = addr;
     },
     //Toggle sidebar
     toggle_sidebar()
@@ -152,6 +161,10 @@ export let root_view = new Vue({
   watch: {
     ["settings.lang"](value)
     {   localStorage.setItem("lang", value);
+    },
+    ["settings.bknd_url"](value)
+    {   localStorage.setItem("bknd_url", value);
+        console.log("bknd_url changed");
     }
   },
   el: root_node[0],
