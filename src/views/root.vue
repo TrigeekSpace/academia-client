@@ -15,8 +15,8 @@
       </ul>
       <!-- Anonymous user -->
       <ul class="nav navbar-nav navbar-right" v-if="!$root.user">
-        <li><router-link to="/users/register"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;{{$root.side_bar_list.register}}</router-link></li>
-        <li><router-link to="/users/login"><span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;{{$root.side_bar_list.login}}</router-link></li>
+        <li><router-link id="register-btn" to="/users/register"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;{{$root.side_bar_list.register}}</router-link></li>
+        <li><router-link id="login-btn" to="/users/login"><span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;{{$root.side_bar_list.login}}</router-link></li>
       </ul>
       <!-- Current user -->
       <ul class="nav navbar-nav navbar-right" v-if="$root.user">

@@ -22,7 +22,8 @@ describe("Paper Upload Page", function() {
     c_view.conference = "test_conf";
     c_view.year = "2010";
     c_view.month = "10";
-    let file_selector = $("#file-selector", root_view.$el)[0];
+    let file_selector = $("#file-selector", root_view.$el);
+    console.log(file_selector);
     append(file_selector.files, "file_placeholder");
     $("#paper-upload", root_view.$el).click();
     await delay(100);
