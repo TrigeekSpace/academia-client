@@ -14,31 +14,32 @@ import Root from "academia/views/root.vue";
 import {adaptor} from "academia/models";
 import {AUTH_TOKEN_HEADER} from "academia/config";
 import "academia/common.css";
+import language_dict from "academia/dict"
 
 //[ Router ]
 //Use Vue router
 Vue.use(VueRouter);
 //Routes
 let routes = [
-    //Index page (Paper search)
-    {name: "index", path: "/", component: require("academia/views/index.vue")},
-    //Index page (Paper search)
-    {name: "setting", path: "/setting", component: require("academia/views/setting.vue")},
-    //User pages
-    {name: "login", path: "/users/login", component: require("academia/views/users/login.vue")},
-    {name: "register", path: "/users/register", component: require("academia/views/users/register.vue")},
-    {name: "user_space", path: "/users/space", component: require("academia/views/users/space.vue")},
-    //Paper pages
-    {name: "paper_detail", path: "/papers/detail", component: require("academia/views/papers/detail.vue")},
-    {name: "paper_content", path: "/papers/content", component: require("academia/views/papers/content.vue")},
-    {name: "paper_list", path: "/papers/list", component: require("academia/views/papers/list.vue")},
-    {name: "upload_paper", path: "/papers/upload", component: require("academia/views/papers/upload.vue")},
-    //Note pages
-    {name: "upload_note", path: "/notes/upload", component: require("academia/views/notes/upload.vue")},
-    //Local pages
-    {name: "transfer_tasks", path: "/local/transfer", component: require("academia/views/local/transfer.vue")},
-    {name: "offline", path: "/local/offline", component: require("academia/views/local/offline.vue")},
-    {name: "local_files", path: "/local/files", component: require("academia/views/local/files.vue")}
+  //Index page (Paper search)
+  {name: "index", path: "/", component: require("academia/views/index.vue")},
+  //Index page (Paper search)
+  {name: "setting", path: "/setting", component: require("academia/views/setting.vue")},
+  //User pages
+  {name: "login", path: "/users/login", component: require("academia/views/users/login.vue")},
+  {name: "register", path: "/users/register", component: require("academia/views/users/register.vue")},
+  {name: "user_space", path: "/users/space", component: require("academia/views/users/space.vue")},
+  //Paper pages
+  {name: "paper_detail", path: "/papers/detail", component: require("academia/views/papers/detail.vue")},
+  {name: "paper_content", path: "/papers/content", component: require("academia/views/papers/content.vue")},
+  {name: "paper_list", path: "/papers/list", component: require("academia/views/papers/list.vue")},
+  {name: "upload_paper", path: "/papers/upload", component: require("academia/views/papers/upload.vue")},
+  //Note pages
+  {name: "upload_note", path: "/notes/upload", component: require("academia/views/notes/upload.vue")},
+  //Local pages
+  {name: "transfer_tasks", path: "/local/transfer", component: require("academia/views/local/transfer.vue")},
+  {name: "offline", path: "/local/offline", component: require("academia/views/local/offline.vue")},
+  {name: "local_files", path: "/local/files", component: require("academia/views/local/files.vue")}
 ];
 //Router
 let router = new VueRouter({routes});
@@ -48,17 +49,17 @@ router.beforeEach(inject_route_ctx(router));
 //[ Files Folder ]
 //Data root
 if (!fs.existsSync(data_path()))
-    fs.mkdirSync(data_path());
+  fs.mkdirSync(data_path());
 //Paper files directory
 if (!fs.existsSync(data_path("papers")))
-    fs.mkdirSync(data_path("papers"));
+  fs.mkdirSync(data_path("papers"));
 //Note files directory
 if (!fs.existsSync(data_path("notes")))
-    fs.mkdirSync(data_path("notes"));
+  fs.mkdirSync(data_path("notes"));
 
 //[ Online Detection ]
 setInterval(() => {
-    root_view.online = navigator.onLine;
+  root_view.online = navigator.onLine;
 }, 10000);
 
 //[ Root View ]
@@ -66,96 +67,91 @@ setInterval(() => {
 export let root_node = $("<div />");
 //Do not show UI in test mode
 if (process.env.NODE_ENV!="test")
-    root_node.appendTo("body");
+  root_node.appendTo("body");
 
 //Root view
 export let root_view = new Vue({
-    //Root level data
-    data: {
-        //Current user
-        user: null,
-        //Show or hide sidebar
-        show_side_bar: false,
-        //File uploads & downloads
-        upload_tasks: [],
-        download_tasks: [],
-        show_copyright: false,
-        settings: {
-            lang: '#langCN'
-        },
-        //Side bar
-        side_bar_list: {
-            search: "",
-            space: "",
-            upload: "",
-            setting: "",
-            mission: ""
-        },
-        //Online
-        online: navigator.onLine
+  //Root level data
+  data: {
+    //Current user
+    user: null,
+    //Show or hide sidebar
+    show_side_bar: false,
+    //File uploads & downloads
+    upload_tasks: [],
+    download_tasks: [],
+    show_copyright: false,
+    language_dict: language_dict,
+    settings: {
+      lang: '#langCN'
     },
-    //Methods
-    methods: {
-        change_language(lang) {
-            this.settings['lang'] = lang;
-            this.side_bar_list.search = lang == '#langCN' ? '论文搜索' : 'Search';
-            this.side_bar_list.space = lang == '#langCN' ? '我的空间' : 'Space';
-            this.side_bar_list.upload = lang == '#langCN' ? '上传论文' : 'Upload';
-            this.side_bar_list.setting = lang == '#langCN' ? '偏好设置' : 'Setting';
-            this.side_bar_list.mission = lang == '#langCN' ? '传输任务' : 'Mission';
-            this.side_bar_list.local = lang == '#langCN' ? '本地文件' : 'Local File';
-            this.side_bar_list.menu = lang == '#langCN' ? '菜单' : 'Menu';
-        },
-        //Toggle sidebar
-        toggle_sidebar()
-        {   if (!this.show_side_bar) {
-                this.show_side_bar = !this.show_side_bar;
-                if (this.show_side_bar) {
-                    $("#root-side-bar").animate({
-                        left: 0
-                    }, 100);
-                }
-                else {
-                    $("#root-side-bar").animate({
-                        left: "-200px"
-                    }, 100);
-                }
-            }
-        },
-        //close sidebar
-        close_sidebar()
-        {   if (this.show_side_bar) {
-                this.show_side_bar = !this.show_side_bar;
-                if (this.show_side_bar) {
-                    $("#root-side-bar").animate({
-                        left: 0
-                    }, 100);
-                }
-                else {
-                    $("#root-side-bar").animate({
-                        left: "-200px"
-                    }, 100);
-                }
-            }
+    //Side bar
+    side_bar_list: {
+      search: "",
+      space: "",
+      upload: "",
+      setting: "",
+      mission: ""
+    },
+    //Online
+    online: navigator.onLine
+  },
+  //Methods
+  methods: {
+    change_language(lang) {
+      this.settings['lang'] = lang;
+      this.side_bar_list = this.language_dict[lang].side_bar_list;
+    },
+    //Toggle sidebar
+    toggle_sidebar()
+    {   if (!this.show_side_bar) {
+        this.show_side_bar = !this.show_side_bar;
+        if (this.show_side_bar) {
+          $("#root-side-bar").animate({
+            left: 0
+          }, 100);
         }
+        else {
+          $("#root-side-bar").animate({
+            left: "-200px"
+          }, 100);
+        }
+      }
     },
-    el: root_node[0],
-    render: (resolve) => resolve(Root),
-    router
+    //close sidebar
+    close_sidebar()
+    {   if (this.show_side_bar) {
+        this.show_side_bar = !this.show_side_bar;
+        if (this.show_side_bar) {
+          $("#root-side-bar").animate({
+            left: 0
+          }, 100);
+        }
+        else {
+          $("#root-side-bar").animate({
+            left: "-200px"
+          }, 100);
+        }
+      }
+    }
+  },
+  el: root_node[0],
+  render: (resolve) => resolve(Root),
+  router
 });
 
 //Log-in data
 let login_data = JSON.parse(localStorage.getItem("login"));
 if (login_data)
 {   root_view.user = login_data.user;
-    adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = login_data.token;
+  adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER] = login_data.token;
 }
 
 router.beforeEach((to, from, next)=>{
-    let $root = root_view;
-    if (to.path == '/')
-        $root.show_copyright = false;
-    else
-        $root.show_copyright = true;
-    next();
+  let $root = root_view;
+  if (to.path == '/')
+    $root.show_copyright = false;
+  else
+    $root.show_copyright = true;
+  next();
 });

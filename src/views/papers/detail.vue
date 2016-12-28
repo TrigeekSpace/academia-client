@@ -102,16 +102,7 @@ export default {
 
             //Language settings
             let lang = this.$root.settings.lang;
-            this.language.author = lang == '#langCN' ? '作者' : 'Author';
-            this.language.conf = lang == '#langCN' ? '会议' : 'Conference';
-            this.language.date = lang == '#langCN' ? '会议日期' : 'Date';
-            this.language.download = lang == '#langCN' ? '下载论文' : 'Download';
-            this.language.mark = lang == '#langCN' ? '收藏论文' : 'Mark';
-            this.language.undo = lang == '#langCN' ? '取消收藏' : 'Undo';
-            this.language.write = lang == '#langCN' ? '撰写笔记' : 'Write';
-            this.language.view = lang == '#langCN' ? '在线查看' : 'View';
-            this.language.question = lang == '#langCN' ? '热门问答' : 'Questions';
-            this.language.recom = lang == '#langCN' ? '推荐笔记' : 'Recommendations';
+            this.language = this.$root.language_dict[lang].papers.detail;
         },
         //Toggle collect status
         async toggle_collect_status()

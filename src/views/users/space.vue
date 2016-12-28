@@ -168,21 +168,7 @@ export default {
             this.user = to_plain(this._user, ["collect_papers", "collect_notes"]);
             // Setting language
             let lang = this.$root.settings.lang;
-            this.language.info = lang == '#langCN' ? '个人信息' : 'Personal';
-            this.language.username = lang == '#langCN' ? '用户名：' : 'Username:';
-            this.language.email = lang == '#langCN' ? '邮箱：' : 'E-mail:';
-            this.language.occupation = lang == '#langCN' ? '职业：' : 'Occupation:';
-            this.language.score = lang == '#langCN' ? '贡献值：' : 'Score:';
-            this.language.introduction = lang == '#langCN' ? '个人简介：' : 'Introduction:';
-            this.language.intro_content = lang == '#langCN' ? '这个用户太懒了，什么都没写。' : 'The user is too lazy to write a single word here.';
-            this.language.portrait = lang == '#langCN' ? '选择头像' : 'choose picture';
-            this.language.edit = lang == '#langCN' ? '编辑用户信息' : 'edit';
-            this.language.save = lang == '#langCN' ? '保存' : 'save';
-            this.language.paper_collect = lang == '#langCN' ? '我收藏的论文' : 'Paper collection';
-            this.language.note_collect = lang == '#langCN' ? '我收藏的笔记' : 'Note collection';
-            this.language.author = lang == '#langCN' ? '作者：' : 'Author: ';
-            this.language.conf = lang == '#langCN' ? '会议：' : 'Conference: ';
-            this.language.cancel = lang == '#langCN' ? '取消' : 'cancel';
+            this.language = this.$root.language_dict[lang].user.space;
         },
         //Update user information
         async update_user_info()

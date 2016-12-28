@@ -97,14 +97,7 @@ export default {
       }
       // Setting language
       let lang = this.$root.settings.lang;
-      this.language.upload_note = lang == '#langCN' ? '上传笔记' : 'Upload Note';
-      this.language.note_title = lang == '#langCN' ? '笔记名称' : 'Note title';
-      this.language.relate_paper = lang == '#langCN' ? '相关论文' : 'Related Paper';
-      this.language.note_content = lang == '#langCN' ? '笔记内容' : 'Note Content';
-      this.language.annotation = lang == '#langCN' ? '批注论文' : 'Annotation';
-      this.language.save = lang == '#langCN' ? '保存' : 'Save';
-      this.language.publish = lang == '#langCN' ? '发布' : 'Publish';
-      this.language.cancel = lang == '#langCN' ? '取消' : 'Cancel';
+      this.language = this.$root.language_dict[lang].notes.upload;
     },
     //Update note
     async update_note()

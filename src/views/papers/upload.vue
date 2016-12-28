@@ -106,18 +106,7 @@ export default {
       }
       // Setting language
       let lang = this.$root.settings.lang;
-      this.language.upload_paper = lang == '#langCN' ? '上传论文' : 'Upload Paper';
-      this.language.paper_title = lang == '#langCN' ? '论文标题' : 'Paper title';
-      this.language.author = lang == '#langCN' ? '论文作者' : 'Paper Author';
-      this.language.conference = lang == '#langCN' ? '发布会议' : 'Conference';
-      this.language.date = lang == '#langCN' ? '发表时间' : 'Publish Date';
-      this.language.choose_year = lang == '#langCN' ? '选择年份' : 'Choose Year';
-      this.language.year = lang == '#langCN' ? '年' : 'Year';
-      this.language.choose_month = lang == '#langCN' ? '选择月份' : 'Choose Month';
-      this.language.month = lang == '#langCN' ? '月' : 'Month';
-      this.language.abstract = lang == '#langCN' ? '论文摘要' : 'Abstract';
-      this.language.choose_file = lang == '#langCN' ? '选择文件' : 'Choose File';
-      this.language.submit = lang == '#langCN' ? '提交' : 'Submit';
+      this.language = this.$root.language_dict[lang].papers.upload;
     },
     upload() {
       console.log(`${this.title}, ${this.authors}`);
