@@ -120,10 +120,31 @@ export let root_view = new Vue({
       this.settings['lang'] = lang;
       this.side_bar_list = this.language_dict[lang].side_bar_list;
     },
-    change_bknd_addr(addr) {
-      // TO-DO : verify bknd_url
+    async change_bknd_addr(addr) {
+      try {
+        var resp = await adaptor.http({
+          url: addr + "/ping"
+        });
+      }
+      catch (e) {
+        return false;
+      }
+      if (!("academia_bknd" in resp.data)) {
+        return false;
+      }
+      // logout first
+      if (this.$root.user) {
+        User.logout();
+        delete adaptor.defaults.httpConfig.headers[AUTH_TOKEN_HEADER];
+        this.$root.user = null;
+        localStorage.removeItem("login"); 
+      }
+
+      // change settings
       this.settings['bknd_url'] = addr;
       adaptor.defaults.basePath = addr;
+      console.log(adaptor.defaults.basePath);
+      return true;
     },
     //Toggle sidebar
     toggle_sidebar()

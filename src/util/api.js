@@ -123,13 +123,14 @@ function get_res_path(model)
  * @return A function corresponding with given resource action API endpoint.
  */
 export function res_action(model, name, default_http_opts={})
-{   //Path
-    let path = `${get_res_path(model)}/${name}`;
+{   
     //Adaptor and transport
     let adaptor = model.getAdapter(ADAPTOR_NAME);
 
     return function(params=null, http_opts={})
-    {   //HTTP options
+    {   //Path
+        let path = `${get_res_path(model)}/${name}`;
+        //HTTP options
         let final_opts = _.merge(
             {url: path, data: params, method: "POST"},
             default_http_opts,
@@ -149,13 +150,13 @@ export function res_action(model, name, default_http_opts={})
  * @return A function corresponding with given resource API endpoint.
  */
 export function res_data(model, name, default_http_opts={})
-{   //Path
-    let path = `${get_res_path(model)}/${name}`;
-    //Adaptor and transport
+{   //Adaptor and transport
     let adaptor = model.getAdapter(ADAPTOR_NAME);
 
     return function(params=null, http_opts={})
-    {   //HTTP options
+    {   //Path
+        let path = `${get_res_path(model)}/${name}`;
+        //HTTP options
         let final_opts = _.merge(
             {url: path, params: params, method: "GET"},
             default_http_opts,
