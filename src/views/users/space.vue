@@ -105,6 +105,7 @@
                     <router-link :id="`note_title_${note.id}`" :to="`/papers/content?paper_id=${note.paper}&note_id=${note.id}`" class="list-group-item paper-list" v-for="note of user.collect_notes">
                         <h2 class="list-group-item-heading">{{note.title}}</h2>
                         <p class="list-group-item-text">{{language.author}}{{note.author.username}}</p>
+                        <p class="list-group-item-text">{{language.date}}{{note.last_modified}}</p>
                     </router-link>
                 </div>
                 </div>
@@ -130,28 +131,28 @@ import {on_route_change, pre_route, login_required, online_only} from "academia/
 import {DEFAULT_AVATAR} from "academia/config";
 
 export default {
-    data()
-    {   return {
-            //User information
-            user: {
-                id: null,
-                username: null,
-                email: null,
-                job: null,
-                contribution: null,
-                collect_papers: []
-            },
-            //Updated user information
-            update_info: {
-                email: null,
-                job: null,
-                self_introduction: null
-            },
-            //Edit mode
-            edit_mode: false,
-            //Language setting
-            language: {}
-        };
+    data() {
+      return {
+          //User information
+          user: {
+              id: null,
+              username: null,
+              email: null,
+              job: null,
+              contribution: null,
+              collect_papers: []
+          },
+          //Updated user information
+          update_info: {
+              email: null,
+              job: null,
+              self_introduction: null
+          },
+          //Edit mode
+          edit_mode: false,
+          //Language setting
+          language: {}
+      };
     },
     beforeRouteEnter: pre_route(login_required, online_only),
     methods: {
@@ -169,6 +170,8 @@ export default {
 
             //Vue user data
             this.user = to_plain(this._user, ["collect_papers", "collect_notes"]);
+
+
             // Setting language
             let lang = this.$root.settings.lang;
             this.language = this.$root.language_dict[lang].user.space;

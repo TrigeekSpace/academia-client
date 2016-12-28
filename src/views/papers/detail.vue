@@ -5,11 +5,11 @@
         <h1>{{paper.title}}</h1>
         <hr />
         <!-- Author -->
-        <p><b>{{language.author}}</b>：{{paper.authors}}</p>
+        <p><b>{{language.author}}</b>{{paper.authors}}</p>
         <!-- Conference -->
-        <p><b>{{language.conf}}</b>：{{paper.conference}}</p>
+        <p><b>{{language.conf}}</b>{{paper.conference}}</p>
         <!-- Publish date -->
-        <p><b>{{language.date}}</b>：{{paper.publish_date}}</p>
+        <p><b>{{language.date}}</b>{{paper.publish_date}}</p>
         <!-- Abstract -->
         <blockquote class="blockquote">{{paper.abstract}}</blockquote>
         <!-- Paper operations -->
@@ -31,6 +31,7 @@
                 <router-link :id="`note_title_${note.id}`" :to="`/papers/content?paper_id=${paper.id}&note_id=${note.id}`" class="list-group-item paper-list" v-for="note of paper.notes">
                     <h2 class="list-group-item-heading">{{note.title}}</h2>
                     <p class="list-group-item-text">{{language.author}}{{note.author.username}}</p>
+                    <p class="list-group-item-text">{{language.date}}{{note.last_modified}}</p>
                 </router-link>
             </div>
             </div>

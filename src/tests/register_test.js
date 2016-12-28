@@ -24,9 +24,6 @@ describe("Register Page", function() {
     adaptor.http.mock("/users", USER_DATA)
     root_view.$router.push({path: "/users/register"});
     await delay(100);
-    console.log("----------------------------------------------");
-    console.log(location.hash);
-    console.log("----------------------------------------------");
     let c_view = get_current_view(root_view);
     c_view.username = "user111";
     c_view.email = "aa@bbb.ccc";

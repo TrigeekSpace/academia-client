@@ -75,9 +75,9 @@ export default {
         lack_of_word: '你至少需要一个关键词'
       },
       detail: {
-        author: '作者',
-        conf: '会议',
-        date: '会议日期',
+        author: '作者：',
+        conf: '会议：',
+        date: '日期：',
         download: '下载论文',
         mark: '收藏论文',
         undo: '取消收藏',
@@ -186,9 +186,9 @@ export default {
         lack_of_word: 'At least on keyword is required',
       },
       detail: {
-        author: 'Author',
-        conf: 'Conference',
-        date: 'Date',
+        author: 'Author:',
+        conf: 'Conference:',
+        date: 'Date:',
         download: 'Download',
         mark: 'Mark',
         undo: 'Undo',
