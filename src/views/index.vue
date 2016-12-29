@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import {on_route_change, pre_route} from "academia/util/route";
+import {on_route_change, pre_route, online_only} from "academia/util/route";
 
 export default {
   data() {
@@ -33,7 +33,7 @@ export default {
     }
   };
   },
-  beforeRouteEnter: pre_route(),
+  beforeRouteEnter: pre_route(online_only),
   methods: {
   init() {
     // Setting language

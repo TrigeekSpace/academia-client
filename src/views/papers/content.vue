@@ -188,7 +188,7 @@ export default {
 
       //Begin downloading paper
       let note_file_resp = await adaptor.http({
-        url: `${bknd_url}/depot/${this._note.annotation_file}`,
+        url: `${this.$root.settings.bknd_url}/depot/${this._note.annotation_file}`,
         onDownloadProgress: progress_listener(new_download_task),
         responseType: "arraybuffer"
       });
