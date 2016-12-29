@@ -110,8 +110,8 @@ export default {
           this.language.modal_content = lang == '#langCN' ? '失败：服务器地址不正确' : 'Failed: Invalid Server Address';
           this.bknd_change_success = false;
         }
+        $("#prefChangeSuccessModal").modal("toggle");
       }
-      $("#prefChangeSuccessModal").modal("toggle");
       
       this.language.preference = lang == '#langCN' ? '偏好设置' : 'Preference';
       this.language.language = lang == '#langCN' ? '语言：' : 'Language:';

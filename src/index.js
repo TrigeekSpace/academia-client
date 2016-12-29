@@ -201,3 +201,4 @@ router.beforeEach((to, from, next)=>{
     $root.show_copyright = true;
   next();
 });
+
