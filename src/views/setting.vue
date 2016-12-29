@@ -10,15 +10,15 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-1 col-md-1 col-lg-1"></div>
-    <div class="col-sm-10 col-md-10 col-lg-10">
+    <div class="col-sm-1 col-md-2 col-lg-3"></div>
+    <div class="col-sm-10 col-md-8 col-lg-6">
       <div class="row">
         <h1>{{language.preference}}</h1>
         <hr />
       </div>
       <div class="row">
         <div class="form-group">
-          <label class="col-md-2 col-lg-2 control-label">{{language.language}}</label>
+          <label class="control-label">{{language.language}}</label>
           <div class="radio">
             <label>
             <input type="radio" name="langOptions" id="langCN" value="option1" checked="">
@@ -36,19 +36,15 @@
       <!-- Display mode actions -->
       <div class="row">
         <div class="form-group">
-          <label class="col-md-2 col-lg-2 control-label">{{language.bknd_addr}}</label>
-          <div class="col-sm-6">
-            <input class="form-control" :placeholder="language.bknd_addr" v-model="bknd_addr">
-          </div>
+          <label class="control-label">{{language.bknd_addr}}</label>
+          <input class="form-control" :placeholder="language.bknd_addr" v-model="bknd_addr" />
           <p class="help-block">{{language.help_content}}</p>
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-9 col-md-9 col-lg-9"></div>
+      <div class="row" align="right">
         <button class="btn btn-primary" @click="update_settings()">{{language.save}}</button>
       </div>
     </div>
-    <div class="col-sm-1 col-md-1 col-lg-1"></div>
   </div>
 </div>
 </template>
