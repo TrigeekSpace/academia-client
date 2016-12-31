@@ -6,7 +6,9 @@
   "scripts": {
     "start": "concurrently \"electron .\" \"webpack -w --color\"",
     "test": "NODE_ENV=test concurrently \"electron .\" \"webpack -w --color\"",
-    "release": "electron-packager --ignore '^node_modules$' --ignore '^src$' --ignore '^vendor$' --out release ."
+    "release": "npm run release-mac && npm run release-linux",
+    "release-mac": "electron-packager --platform darwin --arch x64 --ignore node_modules --ignore src --out release .",
+    "release-linux": "electron-packager --platform linux --arch x64 --ignore node_modules --ignore src --out release ."
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
